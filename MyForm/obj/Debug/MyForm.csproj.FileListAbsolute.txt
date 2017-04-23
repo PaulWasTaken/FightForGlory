@@ -1,0 +1,8 @@
+c:\users\паша\documents\visual studio 2012\Projects\FightForGlory\MyForm\bin\Debug\MyForm.exe.config
+c:\users\паша\documents\visual studio 2012\Projects\FightForGlory\MyForm\obj\Debug\MyForm.csprojResolveAssemblyReference.cache
+c:\users\паша\documents\visual studio 2012\Projects\FightForGlory\MyForm\obj\Debug\MyForm.Properties.Resources.resources
+c:\users\паша\documents\visual studio 2012\Projects\FightForGlory\MyForm\obj\Debug\MyForm.csproj.GenerateResource.Cache
+C:\Users\Паша\Documents\Visual Studio 2012\Projects\FightForGlory\MyForm\bin\Debug\MyForm.exe
+C:\Users\Паша\Documents\Visual Studio 2012\Projects\FightForGlory\MyForm\bin\Debug\MyForm.pdb
+C:\Users\Паша\Documents\Visual Studio 2012\Projects\FightForGlory\MyForm\obj\Debug\MyForm.exe
+C:\Users\Паша\Documents\Visual Studio 2012\Projects\FightForGlory\MyForm\obj\Debug\MyForm.pdb
