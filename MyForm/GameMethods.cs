@@ -12,7 +12,7 @@ namespace Game
         public static Image ResizeBitmap(Image image, double newWidth, double newHeight)
         {
             Image result = new Bitmap((int)newWidth, (int)newHeight);
-            using (Graphics g = Graphics.FromImage((Image)result))
+            using (var g = Graphics.FromImage((Image)result))
                 g.DrawImage(image, 0, 0, (int)newWidth, (int)newHeight);
             return result;
         }

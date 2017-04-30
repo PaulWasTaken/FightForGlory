@@ -1,16 +1,10 @@
 ﻿using Game.Properties;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game
 {
     public class Wisp : Object
     {
-        public override int Damage { get { return 20;} }
+        public override int Damage => 20;
 
         public Wisp(HitBox body, bool lookRight, Fighter enemy)
         {
@@ -33,28 +27,28 @@ namespace Game
         {
             if (Speed > 0)
             {
-                if (!Opponent.Block.Blocking || Opponent.Block.Side != BlockSide.Left)
-                    if (X >= Opponent.Body.TopLeftX && X <= Opponent.Body.BotRightX)
-                    {
-                        Opponent.HealthPoints -= Damage;
-                        return true;
-                    }
+                if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Left) return false;
+                if (X >= Opponent.Body.TopLeftX && X <= Opponent.Body.BotRightX)
+                {
+                    Opponent.HealthPoints -= Damage;
+                    return true;
+                }
             }
             else
             {
-                if (!Opponent.Block.Blocking || Opponent.Block.Side != BlockSide.Right)
-                    if (X <= Opponent.Body.BotRightX && X >= Opponent.Body.TopLeftX)
-                    {
-                        Opponent.HealthPoints -= Damage;
-                        return true;
-                    }
+                if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Right) return false;
+                if (X <= Opponent.Body.BotRightX && X >= Opponent.Body.TopLeftX)
+                {
+                    Opponent.HealthPoints -= Damage;
+                    return true;
+                }
             }
             return false;
         }
     }
     public class Spear : Object
     {
-        public override int Damage { get { return 20;} }
+        public override int Damage => 20;
 
         public Spear(HitBox body, bool lookRight, Fighter enemy)
         {
@@ -79,29 +73,29 @@ namespace Game
         {
             if (Speed > 0)
             {
-                if (!Opponent.Block.Blocking || Opponent.Block.Side != BlockSide.Left)
-                    if (X >= Opponent.Body.TopLeftX && X <= Opponent.Body.BotRightX)
-                    {
-                        Opponent.HealthPoints -= Damage;
-                        return true;
-                    }
+                if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Left) return false;
+                if (X >= Opponent.Body.TopLeftX && X <= Opponent.Body.BotRightX)
+                {
+                    Opponent.HealthPoints -= Damage;
+                    return true;
+                }
             }
             else
             {
-                if (!Opponent.Block.Blocking || Opponent.Block.Side != BlockSide.Right)
-                    if (X <= Opponent.Body.BotRightX && X >= Opponent.Body.TopLeftX)
-                    {
-                        Opponent.HealthPoints -= Damage;
-                        return true;
-                    }
+                if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Right) return false;
+                if (X <= Opponent.Body.BotRightX && X >= Opponent.Body.TopLeftX)
+                {
+                    Opponent.HealthPoints -= Damage;
+                    return true;
+                }
             }
             return false;
         }
     }
     public class Bolt : Object
     {
-        public override int Damage { get { return 40; } }
-        private bool IsFirtsTime = true;
+        public override int Damage => 40;
+        private bool isFirstTime = true;
 
         public Bolt(HitBox body, bool lookRight, Fighter enemy)
         {
@@ -114,8 +108,8 @@ namespace Game
                 var distance = enemy.Body.TopLeftX - body.BotRightX;
                 if (distance < 0)
                 {
-                    distance = GameWindow.Resolution.X - body.BotRightX;
-                    X = GameWindow.Resolution.X;
+                    distance = Settings.Resolution.X - body.BotRightX;
+                    X = Settings.Resolution.X;
                 }
                 Picture = GameMethods.ResizeBitmap(Resources.LightningRight, distance, height);
             }
@@ -136,12 +130,12 @@ namespace Game
 
         public override bool CheckState()
         {
-            if (IsFirtsTime)
+            if (isFirstTime)
             {
-                if (X != 0 && X != GameWindow.Resolution.X)
+                if (X != 0 && X != Settings.Resolution.X)
                     if (Opponent.Body.BotRightY > Y)
                         Opponent.HealthPoints -= Damage;
-                IsFirtsTime = false;
+                isFirstTime = false;
                 return false;
             }
             return true;

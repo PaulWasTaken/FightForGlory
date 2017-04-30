@@ -34,22 +34,18 @@ namespace Game
         {
             if (Source.LookRight)
             {
-                if (Source.X <= Peak && Source.X < GameWindow.Resolution.X)
+                if (!(Source.X <= Peak) || !(Source.X < Settings.Resolution.X)) return true;
+                Source.X += Delta;
+                Source.Body.BotRightX += Delta;
+                Source.Body.TopLeftX += Delta;
+                if (Source.Opponent.Block.Blocking && Source.Opponent.Block.Side == BlockSide.Left) return false;
+                if (Source.Body.BotRightX + Range >= Source.Opponent.Body.TopLeftX &&
+                    Source.Body.BotRightX + Range <= Source.Opponent.Body.BotRightX)
                 {
-                    Source.X += Delta;
-                    Source.Body.BotRightX += Delta;
-                    Source.Body.TopLeftX += Delta;
-                    if (!Source.Opponent.Block.Blocking || Source.Opponent.Block.Side != BlockSide.Left)
-                    {
-                        if (Source.Body.BotRightX + Range >= Source.Opponent.Body.TopLeftX && Source.Body.BotRightX + Range <= Source.Opponent.Body.BotRightX)
-                        {
-                            Source.Opponent.HealthPoints -= Damage;
-                            return true;
-                        }
-                    }
-                    return false;
+                    Source.Opponent.HealthPoints -= Damage;
+                    return true;
                 }
-                return true;
+                return false;
             }
             else
             {
@@ -60,7 +56,8 @@ namespace Game
                     Source.Body.TopLeftX -= Delta;
                     if (!Source.Opponent.Block.Blocking || Source.Opponent.Block.Side != BlockSide.Right)
                     {
-                        if (Source.Body.TopLeftX - Range <= Source.Opponent.Body.BotRightX && Source.Body.TopLeftX - Range >= Source.Opponent.Body.TopLeftX)
+                        if (Source.Body.TopLeftX - Range <= Source.Opponent.Body.BotRightX &&
+                            Source.Body.TopLeftX - Range >= Source.Opponent.Body.TopLeftX)
                         {
                             Source.Opponent.HealthPoints -= Damage;
                             return true;
