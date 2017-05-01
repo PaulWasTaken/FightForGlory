@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6C23CBCD-A7C3-4C09-A849-7AB42E5A7403}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Game</RootNamespace>
+    <AssemblyName>LiveOrJoin</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseStructures\AbstractClasses\Fighter.cs" />
+    <Compile Include="BaseStructures\AbstractClasses\Object.cs" />
+    <Compile Include="BaseStructures\ComboDetector\ComboDetector.cs" />
+    <Compile Include="BaseStructures\ComboDetector\Node.cs" />
+    <Compile Include="BaseStructures\Enums\BattleStance.cs" />
+    <Compile Include="BaseStructures\Enums\BlockSide.cs" />
+    <Compile Include="BaseStructures\Enums\ComboName.cs" />
+    <Compile Include="BaseStructures\Enums\FigterMotionState.cs" />
+    <Compile Include="BaseStructures\Enums\PlayerNumber.cs" />
+    <Compile Include="BaseStructures\BlockState.cs" />
+    <Compile Include="BaseStructures\Enums\MovingSide.cs" />
+    <Compile Include="BaseStructures\ImageInfo.cs" />
+    <Compile Include="BaseStructures\HitBox.cs" />
+    <Compile Include="BaseStructures\Display.cs" />
+    <Compile Include="Figters\Necromancer.cs" />
+    <Compile Include="Figters\Paladin.cs" />
+    <Compile Include="GameMethods.cs" />
+    <Compile Include="GameObjects.cs" />
+    <Compile Include="GameWindows\GameWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseStructures\AbstractClasses\SpecialStrike.cs" />
+    <Compile Include="GameWindows\MainMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameWindows\MainMenu.Designer.cs">
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntryPoint.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GameWindows\ScreenSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameWindows\ScreenSelector.Designer.cs">
+      <DependentUpon>ScreenSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GameWindows\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Figters\Skeleton.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SpecialStrikes\DevastatingCharge.cs" />
+    <Compile Include="Figters\Unicorn.cs" />
+    <EmbeddedResource Include="GameWindows\GameWindow.resx">
+      <DependentUpon>GameWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GameWindows\MainMenu.resx">
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GameWindows\ScreenSelector.resx">
+      <DependentUpon>ScreenSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Images\Wisp.png" />
+    <None Include="bin\Debug\Images\SkeletonBlockRight.png" />
+    <None Include="bin\Debug\Images\SkeletonBlockLeft.png" />
+    <None Include="bin\Debug\Images\LightningRight.png" />
+    <None Include="bin\Debug\Images\LightningLeft.png" />
+    <None Include="bin\Debug\Images\NecromancerTeleportLeft.png" />
+    <None Include="bin\Debug\Images\NecromancerTeleportRight.png" />
+    <None Include="bin\Debug\Images\UnicornRight.png" />
+    <None Include="bin\Debug\Images\NecromancerLeft.png" />
+    <None Include="bin\Debug\Images\Swords.ico" />
+    <None Include="bin\Debug\Images\PaladinBlockRight.png" />
+    <None Include="bin\Debug\Images\PaladinMoveRight.png" />
+    <None Include="bin\Debug\Images\PaladinAttackLeft.png" />
+    <None Include="bin\Debug\Images\PaladinAttackRight.png" />
+    <None Include="bin\Debug\Images\PaladinLeft.png" />
+    <None Include="bin\Debug\Images\PaladinRight.png" />
+    <None Include="bin\Debug\Images\SkeletonMoveLeft.png" />
+    <None Include="bin\Debug\Images\SkeletonLeft.png" />
+    <None Include="bin\Debug\Images\SkeletonRight.png" />
+    <None Include="bin\Debug\Images\Background.jpg" />
+    <None Include="bin\Debug\Images\SkeletonAttackLeft.png" />
+    <None Include="bin\Debug\Images\SkeletonAttackRight.png" />
+    <None Include="bin\Debug\Images\PaladinBlockLeft.png" />
+    <None Include="bin\Debug\Images\MMBackground.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
