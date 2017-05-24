@@ -3,21 +3,14 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
-using Game.BaseStructures.ComboDetector;
+using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
-using Game.GameWindows;
+using Game.GameInformation;
 
 namespace Game.Figters
 {
     public class Skeleton : Fighter
     {
-        public override Dictionary<PlayerNumber, List<Keys[]>> Combinations => 
-            new Dictionary<PlayerNumber, List<Keys[]>>()
-        {
-            {PlayerNumber.FirstPlayer, new List<Keys[]>() { new[] { Keys.I, Keys.O, Keys.P } }},
-            {PlayerNumber.SecondPlayer, new List<Keys[]>() { new[] { Keys.B, Keys.N, Keys.M } }}
-        };
-
         public Skeleton(string name, float x, float y)
         {
             State = FighterMotionState.NotMoving;
@@ -25,40 +18,17 @@ namespace Game.Figters
             LookRight = false;
             Block = new BlockState();
             Picture = new ImageInfo(name);
-            Body = new HitBox(x, y);
 
             Name = name;
             HealthPoints = Stats[name]["HealthPoints"];
             AttackDamage = Stats[name]["AttackDamage"];
             AttackRange = Stats[name]["AttackRange"];
-
-            Combos = new ComboDetector(name);
-
-            if (x < Settings.Resolution.X / 2)
-            {
-                Combos.Add(new[] { Keys.I, Keys.O, Keys.P }, ComboName.ThrowSpear);
-                CurrentImage = Picture.Right;
-                LookRight = true;
-            }
-            else
-            {
-                Combos.Add(new[] { Keys.B, Keys.N, Keys.M }, ComboName.ThrowSpear);
-                CurrentImage = Picture.Left;
-            }
+            
+            CurrentImage = LookRight ? Picture.Right : Picture.Left;
             PreviousImage = CurrentImage;
-            ComboPerfomer = new Dictionary<ComboName, Action>();
-            FormComboPerfomer();
             X = x;
             Y = y;
-        }
-
-        public override void FormComboPerfomer()
-        {
-            ComboPerfomer[ComboName.ThrowSpear] = () => {
-                if (!(ManaPoints >= 40)) return;
-                ManaPoints -= 40;
-                Settings.GameObjects.Add(new Spear(Body, LookRight, Opponent));
-            };
+            Body = new HitBox(X, Y);
         }
 
         public override void ManaRegeneration()
@@ -80,13 +50,32 @@ namespace Game.Figters
 
         public override void AttackCooldown()
         {
-            var cooldown = new Timer() { Interval = 250, Enabled = true };
+            var cooldown = new Timer { Interval = 250, Enabled = true };
             cooldown.Tick += (sender, args) =>
             {
                 Attack = false;
                 CurrentImage = PreviousImage;
                 cooldown.Dispose();
             };
+        }
+
+        public override ComboController GetCombos()
+        {
+            var comboDetector = new ComboDetector();
+            var comboPerfomer = new Dictionary<ComboName, Func<GameObject>>();
+
+            if (Number == PlayerNumber.FirstPlayer)
+                comboDetector.Add(new[] { Keys.I, Keys.O, Keys.P }, ComboName.ThrowSpear);
+            else
+                comboDetector.Add(new[] { Keys.B, Keys.N, Keys.M }, ComboName.ThrowSpear);
+
+            comboPerfomer[ComboName.ThrowSpear] = () => {
+                if (ManaPoints < 40) return null;
+                ManaPoints -= 40;
+                return new Spear(Body, LookRight, Opponent);
+            };
+
+            return new ComboController(comboDetector, comboPerfomer);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
-using Game.GameWindows;
+using Game.GameInformation;
 
 namespace Game.SpecialStrikes
 {
@@ -13,8 +13,8 @@ namespace Game.SpecialStrikes
             Source = master;
             Range = Source.AttackRange;
             Damage = Source.AttackDamage;
-            var dx = Settings.Resolution.X / 4;
-            Delta = dx / 3;
+            var dx = GameSettings.Resolution.X / 4;
+            Delta = dx / 3f;
             if (Source.LookRight)
             {
                 Source.PreviousImage = Source.Picture.Right;
@@ -31,7 +31,7 @@ namespace Game.SpecialStrikes
         {
             if (Source.LookRight)
             {
-                if (!(Source.X <= Peak) || !(Source.X < Settings.Resolution.X)) return true;
+                if (!(Source.X <= Peak) || !(Source.X < GameSettings.Resolution.X)) return true;
                 Source.X += Delta;
                 Source.Body.BotRightX += Delta;
                 Source.Body.TopLeftX += Delta;

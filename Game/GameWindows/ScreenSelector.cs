@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
+using Game.BaseStructures.AbstractClasses;
 using Game.Figters;
+using Game.GameInformation;
 using Game.Properties;
 
 namespace Game.GameWindows
@@ -9,6 +11,10 @@ namespace Game.GameWindows
     {
         private bool isFirstPlayer = true;
         private bool isSecondPlayer = true;
+
+        public Fighter FirstPlayer;
+        public Fighter SecondPlayer;
+
         public ScreenSelector()
         {
             InitializeComponent();
@@ -22,13 +28,13 @@ namespace Game.GameWindows
         {
             if (isFirstPlayer)
             {
-                Settings.FirstPlayer = new Necromancer("Necromancer", this.Width / 2 - 200, this.Height / 1.5f);
+                FirstPlayer = new Necromancer("Necromancer", this.Width / 2 - 200, this.Height / 1.5f);
                 isFirstPlayer = false;
                 return;
             }
             if (isSecondPlayer)
             {
-                Settings.SecondPlayer = new Necromancer("Necromancer", this.Width / 2 + 200, this.Height / 1.5f);
+                SecondPlayer = new Necromancer("Necromancer", this.Width / 2 + 200, this.Height / 1.5f);
                 isSecondPlayer = false;
             }
         }
@@ -37,13 +43,13 @@ namespace Game.GameWindows
         {
             if (isFirstPlayer)
             {
-                Settings.FirstPlayer = new Paladin("Paladin", this.Width / 2 - 200, this.Height / 1.5f);
+                FirstPlayer = new Paladin("Paladin", this.Width / 2 - 200, this.Height / 1.5f);
                 isFirstPlayer = false;
                 return;
             }
             if (isSecondPlayer)
             {
-                Settings.SecondPlayer = new Paladin("Paladin", this.Width / 2 + 200, this.Height / 1.5f);
+                SecondPlayer = new Paladin("Paladin", this.Width / 2 + 200, this.Height / 1.5f);
                 isSecondPlayer = false;
             }
         }
@@ -52,13 +58,13 @@ namespace Game.GameWindows
         {
             if (isFirstPlayer)
             {
-                Settings.FirstPlayer = new Skeleton("Skeleton", this.Width / 2 - 200, this.Height / 1.5f);
+                FirstPlayer = new Skeleton("Skeleton", this.Width / 2 - 200, this.Height / 1.5f);
                 isFirstPlayer = false;
                 return;
             }
             if (isSecondPlayer)
             {
-                Settings.SecondPlayer = new Skeleton("Skeleton", this.Width / 2 + 200, this.Height / 1.5f);
+                SecondPlayer = new Skeleton("Skeleton", this.Width / 2 + 200, this.Height / 1.5f);
                 isSecondPlayer = false;
             }
         }
@@ -67,13 +73,13 @@ namespace Game.GameWindows
         {
             if (isFirstPlayer)
             {
-                Settings.FirstPlayer = new Unicorn("Unicorn", this.Width / 2 - 200, this.Height / 1.5f);
+                FirstPlayer = new Unicorn("Unicorn", this.Width / 2 - 200, this.Height / 1.5f);
                 isFirstPlayer = false;
                 return;
             }
             if (isSecondPlayer)
             {
-                Settings.SecondPlayer = new Unicorn("Unicorn", this.Width / 2 + 200, this.Height / 1.5f);
+                SecondPlayer = new Unicorn("Unicorn", this.Width / 2 + 200, this.Height / 1.5f);
                 isSecondPlayer = false;
             }
         }

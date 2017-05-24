@@ -1,4 +1,5 @@
-﻿using Game.GameWindows;
+﻿using Game.GameInformation;
+using Game.GameWindows;
 
 namespace Game.BaseStructures
 {
@@ -15,8 +16,8 @@ namespace Game.BaseStructures
         {
             TopLeftX = x + 20;
             TopLeftY = y;
-            BotRightX = TopLeftX + Settings.Resolution.X / 16;
-            BotRightY = y + Settings.Resolution.Y / 4.5f;
+            BotRightX = TopLeftX + GameSettings.Resolution.X / 16f;
+            BotRightY = y + GameSettings.Resolution.Y / 4.5f;
             Width = (int)(BotRightX - TopLeftX);
             Height = (int)(BotRightY - TopLeftY);
         }

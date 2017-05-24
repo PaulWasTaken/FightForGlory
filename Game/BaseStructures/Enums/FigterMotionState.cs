@@ -2,8 +2,8 @@
 {
     public enum FighterMotionState
     {
-        NotMoving,
-        MovingLeft,
-        MovingRight
+        MovingLeft = -1,
+        NotMoving = 0,
+        MovingRight = 1
     }
 }

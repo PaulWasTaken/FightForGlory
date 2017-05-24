@@ -3,111 +3,35 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
-using Game.BaseStructures.ComboDetector;
+using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
-using Game.GameWindows;
+using Game.GameInformation;
+using Game.GameObjects;
 using Game.Properties;
-using Settings = Game.GameWindows.Settings;
 
 namespace Game.Figters
 {
     public class Necromancer : Fighter
     {
-        public override Dictionary<PlayerNumber, List<Keys[]>> Combinations => 
-            new Dictionary<PlayerNumber, List<Keys[]>>()
-        {
-            {PlayerNumber.FirstPlayer, new List<Keys[]>() { new[] { Keys.Z }, new[] { Keys.S } }},
-            {PlayerNumber.SecondPlayer, new List<Keys[]>() { new[] { Keys.Down }, new[] { Keys.K } }}
-        };
-
         public Necromancer(string name, float x, float y)
         {
             State = FighterMotionState.NotMoving;
             Attack = false;
-            LookRight = false;
+            LookRight = Number == PlayerNumber.FirstPlayer;
             Block = new BlockState();
             Picture = new ImageInfo(name);
-            Body = new HitBox(x, y);
 
             Name = name;
             HealthPoints = Stats[name]["HealthPoints"];
             AttackDamage = Stats[name]["AttackDamage"];
             AttackRange = Stats[name]["AttackRange"];
 
-            Combos = new ComboDetector(name);
-            ComboPerfomer = new Dictionary<ComboName, Action>();
-            FormComboPerfomer();
-
-            if (x < Settings.Resolution.X / 2)
-            {
-                Combos.Add(new[] { Keys.Z, Keys.Z, Keys.Z, Keys.Z, Keys.Z }, ComboName.LightningAttack);
-                Combos.Add(new[] { Keys.S, Keys.S, Keys.S }, ComboName.Teleport);
-                CurrentImage = Picture.Right;
-                LookRight = true;
-            }
-            else
-            {
-                Combos.Add(new[] { Keys.K, Keys.K, Keys.K, Keys.K, Keys.K }, ComboName.LightningAttack);
-                Combos.Add(new[] { Keys.Down, Keys.Down, Keys.Down }, ComboName.Teleport);
-                CurrentImage = Picture.Left;
-            }
+            CurrentImage = LookRight ? Picture.Right : Picture.Left;
             PreviousImage = CurrentImage;
             
             X = x;
             Y = y;
-        }
-
-        public override void FormComboPerfomer()
-        {
-            ComboPerfomer[ComboName.LightningAttack] = () => 
-            {
-                if (ManaPoints >= 40)
-                {
-                    ManaPoints -= 40;
-                    GameWindow.GameObjects.Add(new Bolt(Body, LookRight, Opponent));
-                    if (LookRight)
-                    {
-                        PreviousImage = CurrentImage;
-                        CurrentImage = Picture.AttackRight;
-                        AttackCooldown();
-                    }
-                    else
-                    {
-                        PreviousImage = CurrentImage;
-                        CurrentImage = Picture.AttackLeft;
-                        AttackCooldown();
-                    }
-                }
-            };
-            ComboPerfomer[ComboName.Teleport] = () =>
-            {
-                if (ManaPoints >= 10)
-                {
-                    ManaPoints -= 10;
-                    PreviousImage = CurrentImage;
-                    var dx = 300;
-                    if (LookRight)
-                    {
-                        if (Body.BotRightX + dx < Settings.Resolution.X)
-                        {
-                            X += dx;
-                            Body.BotRightX += dx;
-                            Body.TopLeftX += dx;
-                            CurrentImage = Resources.NecromancerTeleportRight;
-                            TeleportCooldown();
-                        }
-                    }
-                    else
-                        if (Body.TopLeftX - dx > 0)
-                        {
-                            X -= dx;
-                            Body.BotRightX -= dx;
-                            Body.TopLeftX -= dx;
-                            CurrentImage = Resources.NecromancerTeleportLeft;
-                            TeleportCooldown();
-                        }
-                }
-            };
+            Body = new HitBox(X, Y);
         }
 
         public override void ManaRegeneration()
@@ -146,6 +70,77 @@ namespace Game.Figters
                 CurrentImage = PreviousImage;
                 cooldown.Dispose();
             };
+        }
+
+        public override ComboController GetCombos()
+        {
+            var comboDetector = new ComboDetector();
+            var comboPerfomer = new Dictionary<ComboName, Func<GameObject>>();
+
+            if (Number == PlayerNumber.FirstPlayer)
+            {
+                comboDetector.Add(new[] { Keys.Z, Keys.Z, Keys.Z, Keys.Z, Keys.Z }, ComboName.LightningAttack);
+                comboDetector.Add(new[] { Keys.S, Keys.S, Keys.S }, ComboName.Teleport);
+            }
+            else
+            {
+                comboDetector.Add(new[] { Keys.K, Keys.K, Keys.K, Keys.K, Keys.K }, ComboName.LightningAttack);
+                comboDetector.Add(new[] { Keys.Down, Keys.Down, Keys.Down }, ComboName.Teleport);
+            }
+
+            comboPerfomer[ComboName.LightningAttack] = () =>
+            {
+                if (!(ManaPoints >= 40)) return null;
+                ManaPoints -= 40;
+                if (LookRight)
+                {
+                    PreviousImage = CurrentImage;
+                    CurrentImage = Picture.AttackRight;
+                    AttackCooldown();
+                }
+                else
+                {
+                    PreviousImage = CurrentImage;
+                    CurrentImage = Picture.AttackLeft;
+                    AttackCooldown();
+                }
+                return new Bolt(Body, LookRight, Opponent);
+            };
+
+            comboPerfomer[ComboName.Teleport] = () =>
+            {
+                if (ManaPoints >= 10)
+                {
+                    ManaPoints -= 10;
+                    PreviousImage = CurrentImage;
+                    var dx = 300;
+                    if (LookRight)
+                    {
+                        if (Body.BotRightX + dx < GameSettings.Resolution.X)
+                        {
+                            X += dx;
+                            Body.BotRightX += dx;
+                            Body.TopLeftX += dx;
+                            CurrentImage = Resources.NecromancerTeleportRight;
+                            TeleportCooldown();
+                        }
+                    }
+                    else
+                    {
+                        if (Body.TopLeftX - dx > 0)
+                        {
+                            X -= dx;
+                            Body.BotRightX -= dx;
+                            Body.TopLeftX -= dx;
+                            CurrentImage = Resources.NecromancerTeleportLeft;
+                            TeleportCooldown();
+                        }
+                    }
+                    return null;
+                }
+                return null;
+            };
+            return new ComboController(comboDetector, comboPerfomer);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using Game.GameWindows;
+using Game.GameInformation;
 
 namespace Game.BaseStructures
 {
@@ -49,22 +49,22 @@ namespace Game.BaseStructures
             var imgMoveLeft = new DirectoryInfo("Images").GetFiles(name + "MoveLeft.png");
 
             FormImageInfo(
-                ResizeBitmap(Image.FromFile(imgRight.First().FullName), Settings.Resolution.X / 10,
-                    Settings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgLeft.First().FullName), Settings.Resolution.X / 10,
-                    Settings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgAttackRight.First().FullName), Settings.Resolution.X / 10,
-                    Settings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgAttackLeft.First().FullName), Settings.Resolution.X / 10,
-                    Settings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgBlockRight.First().FullName), Settings.Resolution.X / 10,
-                    Settings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgBlockLeft.First().FullName), Settings.Resolution.X / 10,
-                    Settings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgMoveRight.First().FullName), Settings.Resolution.X / 10,
-                    Settings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgMoveLeft.First().FullName), Settings.Resolution.X / 10,
-                    Settings.Resolution.Y / 4.5)
+                ResizeBitmap(Image.FromFile(imgRight.First().FullName), GameSettings.Resolution.X / 10,
+                    GameSettings.Resolution.Y / 4.5),
+                ResizeBitmap(Image.FromFile(imgLeft.First().FullName), GameSettings.Resolution.X / 10,
+                    GameSettings.Resolution.Y / 4.5),
+                ResizeBitmap(Image.FromFile(imgAttackRight.First().FullName), GameSettings.Resolution.X / 10,
+                    GameSettings.Resolution.Y / 4.5),
+                ResizeBitmap(Image.FromFile(imgAttackLeft.First().FullName), GameSettings.Resolution.X / 10,
+                    GameSettings.Resolution.Y / 4.5),
+                ResizeBitmap(Image.FromFile(imgBlockRight.First().FullName), GameSettings.Resolution.X / 10,
+                    GameSettings.Resolution.Y / 4.5),
+                ResizeBitmap(Image.FromFile(imgBlockLeft.First().FullName), GameSettings.Resolution.X / 10,
+                    GameSettings.Resolution.Y / 4.5),
+                ResizeBitmap(Image.FromFile(imgMoveRight.First().FullName), GameSettings.Resolution.X / 10,
+                    GameSettings.Resolution.Y / 4.5),
+                ResizeBitmap(Image.FromFile(imgMoveLeft.First().FullName), GameSettings.Resolution.X / 10,
+                    GameSettings.Resolution.Y / 4.5)
             );
         }
 

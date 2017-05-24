@@ -62,9 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseStructures\AbstractClasses\Fighter.cs" />
-    <Compile Include="BaseStructures\AbstractClasses\Object.cs" />
-    <Compile Include="BaseStructures\ComboDetector\ComboDetector.cs" />
-    <Compile Include="BaseStructures\ComboDetector\Node.cs" />
+    <Compile Include="BaseStructures\AbstractClasses\GameObject.cs" />
+    <Compile Include="BaseStructures\ComboWorker\ComboDetector.cs" />
+    <Compile Include="BaseStructures\ComboWorker\Node.cs" />
     <Compile Include="BaseStructures\Enums\BattleStance.cs" />
     <Compile Include="BaseStructures\Enums\BlockSide.cs" />
     <Compile Include="BaseStructures\Enums\ComboName.cs" />
@@ -75,10 +75,17 @@
     <Compile Include="BaseStructures\ImageInfo.cs" />
     <Compile Include="BaseStructures\HitBox.cs" />
     <Compile Include="BaseStructures\Display.cs" />
+    <Compile Include="ComboController.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandProcessor.cs" />
     <Compile Include="Figters\Necromancer.cs" />
     <Compile Include="Figters\Paladin.cs" />
+    <Compile Include="GameInformation\GameState.cs" />
+    <Compile Include="GameInformation\GameSettings.cs" />
     <Compile Include="GameMethods.cs" />
-    <Compile Include="GameObjects.cs" />
+    <Compile Include="GameObjects\Bolt.cs" />
+    <Compile Include="GameObjects\Spear.cs" />
+    <Compile Include="GameObjects\Wisp.cs" />
     <Compile Include="GameWindows\GameWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,15 +97,14 @@
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="EntryPoint.cs" />
+    <Compile Include="Commands\ICommandProcessor.cs" />
+    <Compile Include="GameController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameWindows\ScreenSelector.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GameWindows\ScreenSelector.Designer.cs">
       <DependentUpon>ScreenSelector.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GameWindows\Settings.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Figters\Skeleton.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

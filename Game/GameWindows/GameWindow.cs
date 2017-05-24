@@ -1,15 +1,46 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
+using Game.Commands;
+using Game.GameInformation;
 
 namespace Game.GameWindows
 {
-    public class GameWindow : Settings
+    public class GameWindow : Form
     {
-        public GameWindow(int width, int height) : base(width, height)
+        private readonly GameSettings settings;
+        private GameState gameState;
+        private readonly GameController gameController;
+        public GameWindow(int width, int height)
         {
+            DoubleBuffered = true;
+            var backGround = new DirectoryInfo("Images").GetFiles("Background.jpg");
+            StartPosition = FormStartPosition.CenterScreen;
+            BackgroundImage = new Bitmap(Image.FromFile(backGround.First().FullName));
+            var icon = new DirectoryInfo("Images").GetFiles("Swords.ico");
+            MaximizeBox = false;
+            Icon = new Icon(icon.First().FullName);
+            Width = width;
+            Height = height;
+            Visible = false;
+
+            settings = new GameSettings(width, height);
+
+            using (var selector = new ScreenSelector())
+            {
+                selector.ShowDialog();
+                gameState = new GameState(selector.FirstPlayer, selector.SecondPlayer);
+            }
+
+            gameController = new GameController(settings, gameState);
+
+            settings.DictWithComboControllers[PlayerNumber.FirstPlayer] = gameState.FirstPlayer.GetCombos();
+            settings.DictWithComboControllers[PlayerNumber.SecondPlayer] = gameState.SecondPlayer.GetCombos();
+
             var timer = new Timer {Interval = 20};
             timer.Tick += TimerTick;
             timer.Start();
@@ -17,42 +48,43 @@ namespace Game.GameWindows
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (Finished)
+            if (gameState.Finished)
             {
-                e.Graphics.DrawString(Lost.Item2 + " won!", new Font("Arial", 20), Brushes.Green, Resolution.X / 2 - 200, Resolution.Y / 2);
+                e.Graphics.DrawString(gameState.Lost.Item2 + " won!", new Font("Arial", 20), 
+                    Brushes.Green, GameSettings.Resolution.X / 2 - 200, GameSettings.Resolution.Y / 2.0f);
                 return;
             }
-            if (Lost.Item1)
+            if (gameState.Lost.Item1)
             {
-                var timer = new Timer() { Interval = 2000 };
+                var timer = new Timer { Interval = 2000 };
                 timer.Tick += RestartTheGame;
                 timer.Start();
-                Finished = true;
+                gameState.Finished = true;
             }
 
-            foreach (var fighter in Fighters)
+            foreach (var fighter in gameState.Fighters)
             {
                 e.Graphics.DrawImage(fighter.CurrentImage, new PointF(fighter.X, fighter.Y));
                 DrawBars(fighter, e);
             }
 
-            foreach (var obj in GameObjects)
+            foreach (var obj in gameState.GameObjects)
             {
                 obj.Move();
                 if (obj.CheckState())
                 {
-                    GameObjects.Remove(obj);
+                    gameState.GameObjects.Remove(obj);
                     break;
                 }
                 e.Graphics.DrawImage(obj.Picture, obj.X, obj.Y);
             }
 
-            foreach (var strike in SpecialStrikes)
+            foreach (var strike in gameState.SpecialStrikes)
             {
                 if (strike.IfReached())
                 {
                     strike.FixPicture();
-                    SpecialStrikes.Remove(strike);
+                    gameState.SpecialStrikes.Remove(strike);
                     break;
                 }
             }
@@ -62,70 +94,57 @@ namespace Game.GameWindows
         {
             if (fighter.Number == PlayerNumber.FirstPlayer)
             {
-                e.Graphics.DrawRectangle(new Pen(Color.Black), 0, 0, Resolution.X / 2 - XIndent, 20);
-                e.Graphics.FillRectangle(Brushes.Red, 2, 2, (float)(fighter.Body.Width * fighter.HealthPoints / 100) * 8 - XIndent, 18);
+                e.Graphics.DrawRectangle(new Pen(Color.Black), 0, 0, GameSettings.Resolution.X / 2.0f - settings.XIndent, 20);
+                e.Graphics.FillRectangle(Brushes.Red, 2, 2, 
+                    fighter.Body.Width * fighter.HealthPoints / 100 * 8 - settings.XIndent, 18);
 
-                e.Graphics.DrawRectangle(new Pen(Color.Black), 0, 20, Resolution.X / 2 - XIndent, 20);
-                e.Graphics.FillRectangle(Brushes.Blue, 2, 22, (float)(fighter.Body.Width * fighter.ManaPoints / 100) * 8 - XIndent, 18);
+                e.Graphics.DrawRectangle(new Pen(Color.Black), 0, 20, GameSettings.Resolution.X / 2.0f - settings.XIndent, 20);
+                e.Graphics.FillRectangle(Brushes.Blue, 2, 22, 
+                    fighter.Body.Width * fighter.ManaPoints / 100 * 8 - settings.XIndent, 18);
             }
             else
             {
-                e.Graphics.DrawRectangle(new Pen(Color.Black), Resolution.X / 2, 0, Resolution.X / 2 - XIndent, 20);
-                e.Graphics.FillRectangle(Brushes.Red, Resolution.X / 2, 2, (float)(fighter.Body.Width * fighter.HealthPoints / 100) * 8 - XIndent, 18);
+                e.Graphics.DrawRectangle(new Pen(Color.Black), GameSettings.Resolution.X / 2.0f, 0,
+                    GameSettings.Resolution.X / 2.0f - settings.XIndent, 20);
+                e.Graphics.FillRectangle(Brushes.Red, GameSettings.Resolution.X / 2.0f, 2, 
+                    fighter.Body.Width * fighter.HealthPoints / 100 * 8 - settings.XIndent, 18);
 
-                e.Graphics.DrawRectangle(new Pen(Color.Black), Resolution.X / 2, 20, Resolution.X / 2 - XIndent, 20);
-                e.Graphics.FillRectangle(Brushes.Blue, Resolution.X / 2, 22, (float)(fighter.Body.Width * fighter.ManaPoints / 100) * 8 - XIndent, 18);
+                e.Graphics.DrawRectangle(new Pen(Color.Black), GameSettings.Resolution.X / 2.0f, 20,
+                    GameSettings.Resolution.X / 2.0f - settings.XIndent, 20);
+                e.Graphics.FillRectangle(Brushes.Blue, GameSettings.Resolution.X / 2.0f, 22, 
+                    fighter.Body.Width * fighter.ManaPoints / 100 * 8 - settings.XIndent, 18);
             }
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            foreach (var fighter in Fighters)
-            {
-                if (SpecialStrikes.Count != 0)
-                    break;
-                if (fighter.Combos.IncludedValues.Contains(e.KeyData))
-                {
-                    fighter.CheckForCombo(e);
-                }
-                if (Cooperator[fighter].Contains(e.KeyData))
-                {
-                    ButtonHandler[fighter][e.KeyData]();
-                    return;
-                }                
-            }
+            gameController.KeyDown(e);
             base.OnKeyDown(e);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            if ((e.KeyData == Keys.A && FirstPlayer.State == FighterMotionState.MovingLeft) ||
-                (e.KeyData == Keys.D && FirstPlayer.State == FighterMotionState.MovingRight))
-                FirstPlayer.State = FighterMotionState.NotMoving;
-            if ((e.KeyData == Keys.Left && SecondPlayer.State == FighterMotionState.MovingLeft) ||
-                (e.KeyData == Keys.Right && SecondPlayer.State == FighterMotionState.MovingRight))
-                SecondPlayer.State = FighterMotionState.NotMoving;
-
+            gameController.KeyUp(e);
             base.OnKeyUp(e);
         }
 
-
         private void TimerTick(object sender, EventArgs args)
         {
-            foreach (var fighter in Fighters)
+            foreach (var fighter in gameState.Fighters)
             {
-                if (SpecialStrikes.Count != 0)
+                if (gameState.SpecialStrikes.Count != 0)
                     break;
+                /*
                 if (fighter.State == FighterMotionState.MovingLeft)
-                    fighter.Update(-10);
+                    fighter.Update((int)fighter.State * 10, settings.Resolution.X);
                 if (fighter.State == FighterMotionState.MovingRight)
-                    fighter.Update(10);
+                    fighter.Update(10, settings.Resolution.X);
+                    */
+                fighter.Update((int)fighter.State * 10, GameSettings.Resolution.X);
                 fighter.ToTheGround();
                 fighter.ManaRegeneration();
                 if (fighter.HealthPoints <= 0)
-                {
-                    Lost = Tuple.Create(true, fighter.Opponent.Number.ToString());
-                }
+                    gameState.Lost = Tuple.Create(true, fighter.Opponent.Number.ToString());
             }           
             Invalidate();
         }

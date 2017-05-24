@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
-using Game.BaseStructures.ComboDetector;
+using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
+using Game.GameInformation;
 using Game.GameWindows;
 using Game.SpecialStrikes;
 
@@ -12,58 +13,25 @@ namespace Game.Figters
 {
     public class Unicorn : Fighter
     {
-        public override Dictionary<PlayerNumber, List<Keys[]>> Combinations => 
-            new Dictionary<PlayerNumber, List<Keys[]>>()
-        {
-            {PlayerNumber.FirstPlayer, new List<Keys[]>() { new[] { Keys.D, Keys.Z }, new[] { Keys.A, Keys.Z } }},
-            {PlayerNumber.SecondPlayer, new List<Keys[]>() { new[] { Keys.Right, Keys.K }, new[] { Keys.Left, Keys.K } }}
-        };
-
         public Unicorn(string name, float x, float y)
         {
             State = FighterMotionState.NotMoving;
             Attack = false;
-            LookRight = false;
+            LookRight = Number == PlayerNumber.FirstPlayer;
             Block = new BlockState();
             Picture = new ImageInfo(name);
-            Body = new HitBox(x, y);
 
             Name = name;
             HealthPoints = Stats[name]["HealthPoints"];
             AttackDamage = Stats[name]["AttackDamage"];
             AttackRange = Stats[name]["AttackRange"];
-
-            Combos = new ComboDetector(name);
-
-            if (x < Settings.Resolution.X / 2)
-            {
-                Combos.Add(new[] { Keys.D, Keys.D, Keys.D, Keys.Z }, ComboName.DevastatingCharge);
-                Combos.Add(new[] { Keys.A, Keys.A, Keys.A, Keys.Z }, ComboName.DevastatingCharge);
-                CurrentImage = Picture.Right;
-                LookRight = true;
-            }
-            else
-            {
-                Combos.Add(new[] { Keys.Right, Keys.Right, Keys.Right, Keys.K }, ComboName.DevastatingCharge);
-                Combos.Add(new[] { Keys.Left, Keys.Left, Keys.Left, Keys.K }, ComboName.DevastatingCharge);
-                CurrentImage = Picture.Left;
-            }
+            
+            CurrentImage = LookRight ? Picture.Right : Picture.Left;
             PreviousImage = CurrentImage;
-            ComboPerfomer = new Dictionary<ComboName, Action>();
-            FormComboPerfomer();
+            
             X = x;
             Y = y;
-        }
-
-        public override void FormComboPerfomer()
-        {
-            ComboPerfomer[ComboName.DevastatingCharge] = () => {
-                if (ManaPoints >= 30)
-                {
-                    ManaPoints -= 30;
-                    GameWindow.SpecialStrikes.Add(new DevastatingCharge(this));
-                }
-            };
+            Body = new HitBox(X, Y);
         }
 
         public override void ManaRegeneration()
@@ -92,6 +60,38 @@ namespace Game.Figters
                 CurrentImage = PreviousImage;
                 cooldown.Dispose();
             };
+        }
+
+        public override ComboController GetCombos()
+        {
+            return new ComboController(new ComboDetector(), new Dictionary<ComboName, Func<GameObject>>());
+            var comboDetector = new ComboDetector();
+            var comboPerfomer = new Dictionary<ComboName, Func<GameObject>>();
+
+            if (Number == PlayerNumber.FirstPlayer)
+            {
+                comboDetector.Add(new[] { Keys.D, Keys.D, Keys.D, Keys.Z }, ComboName.DevastatingCharge);
+                comboDetector.Add(new[] { Keys.A, Keys.A, Keys.A, Keys.Z }, ComboName.DevastatingCharge);
+                CurrentImage = Picture.Right;
+                LookRight = true;
+            }
+            else
+            {
+                comboDetector.Add(new[] { Keys.Right, Keys.Right, Keys.Right, Keys.K }, ComboName.DevastatingCharge);
+                comboDetector.Add(new[] { Keys.Left, Keys.Left, Keys.Left, Keys.K }, ComboName.DevastatingCharge);
+                CurrentImage = Picture.Left;
+            }
+
+            comboPerfomer[ComboName.DevastatingCharge] = () => {
+                if (ManaPoints >= 30)
+                {
+                    ManaPoints -= 30;
+                    //GameWindow.SpecialStrikes.Add(new DevastatingCharge(this));
+                }
+                return null;
+            };
+            
+            return new ComboController(comboDetector, comboPerfomer);
         }
     }
 }
