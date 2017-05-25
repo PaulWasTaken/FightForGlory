@@ -5,7 +5,6 @@ using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
-using Game.GameInformation;
 
 namespace Game.Figters
 {
