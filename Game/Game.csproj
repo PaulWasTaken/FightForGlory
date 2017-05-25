@@ -145,32 +145,6 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Debug\Images\Wisp.png" />
-    <None Include="bin\Debug\Images\SkeletonBlockRight.png" />
-    <None Include="bin\Debug\Images\SkeletonBlockLeft.png" />
-    <None Include="bin\Debug\Images\LightningRight.png" />
-    <None Include="bin\Debug\Images\LightningLeft.png" />
-    <None Include="bin\Debug\Images\NecromancerTeleportLeft.png" />
-    <None Include="bin\Debug\Images\NecromancerTeleportRight.png" />
-    <None Include="bin\Debug\Images\UnicornRight.png" />
-    <None Include="bin\Debug\Images\NecromancerLeft.png" />
-    <None Include="bin\Debug\Images\Swords.ico" />
-    <None Include="bin\Debug\Images\PaladinBlockRight.png" />
-    <None Include="bin\Debug\Images\PaladinMoveRight.png" />
-    <None Include="bin\Debug\Images\PaladinAttackLeft.png" />
-    <None Include="bin\Debug\Images\PaladinAttackRight.png" />
-    <None Include="bin\Debug\Images\PaladinLeft.png" />
-    <None Include="bin\Debug\Images\PaladinRight.png" />
-    <None Include="bin\Debug\Images\SkeletonMoveLeft.png" />
-    <None Include="bin\Debug\Images\SkeletonLeft.png" />
-    <None Include="bin\Debug\Images\SkeletonRight.png" />
-    <None Include="bin\Debug\Images\Background.jpg" />
-    <None Include="bin\Debug\Images\SkeletonAttackLeft.png" />
-    <None Include="bin\Debug\Images\SkeletonAttackRight.png" />
-    <None Include="bin\Debug\Images\PaladinBlockLeft.png" />
-    <None Include="bin\Debug\Images\MMBackground.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 и x64%29</ProductName>
@@ -181,6 +155,129 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NecromancerAttackLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\LightningLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\LightningRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\MMBackground.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NecromancerAttackRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NecromancerBlockLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NecromancerBlockRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NecromancerLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NecromancerMoveLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NecromancerMoveRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NecromancerRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NecromancerTeleportLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\NecromancerTeleportRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\PaladinAttackLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\PaladinAttackRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\PaladinBlockLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\PaladinBlockRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\PaladinLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\PaladinMoveLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\PaladinMoveRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\PaladinRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SkeletonAttackLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SkeletonAttackRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SkeletonBlockLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SkeletonBlockRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SkeletonLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SkeletonMoveLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SkeletonMoveRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SkeletonRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SpearLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\SpearRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\UnicornAttackLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\UnicornAttackRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\UnicornBlockLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\UnicornBlockRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\UnicornLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\UnicornMoveLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\UnicornMoveRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\UnicornRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\Wisp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

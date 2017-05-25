@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
+using System.Reflection;
 using Game.GameInformation;
 
 namespace Game.BaseStructures
@@ -14,66 +14,32 @@ namespace Game.BaseStructures
         public Image AttackLeft { get; private set; }
         public Image BlockLeft { get; private set; }
         public Image BlockRight { get; private set; }
+
         private Image MoveLeft { get; set; }
         private Image MoveRight { get; set; }
 
         private int counter = 1;
 
-        private Image[] MovingRight { get; set; }
-        private Image[] MovingLeft { get; set; }
+        private readonly Image[] MovingRight;
+        private readonly Image[] MovingLeft;
 
-        private void FormImageInfo(Image right, Image left, Image attackRight, Image atackLeft, Image blockRight,
-            Image blockLeft, Image moveRight, Image moveLeft)
+        private static Image ResizeImage(Image imgToResize, Size size)
         {
-            Right = right;
-            Left = left;
-            AttackRight = attackRight;
-            AttackLeft = atackLeft;
-            BlockRight = blockRight;
-            BlockLeft = blockLeft;
-            MoveRight = moveRight;
-            MoveLeft = moveLeft;
-            MovingLeft = new[] {left, moveLeft};
-            MovingRight = new[] {right, moveRight};
+            return new Bitmap(imgToResize, size);
         }
 
         public ImageInfo(string name)
         {
-            var imgRight = new DirectoryInfo("Images").GetFiles(name + "Right.png");
-            var imgLeft = new DirectoryInfo("Images").GetFiles(name + "Left.png");
-            var imgAttackRight = new DirectoryInfo("Images").GetFiles(name + "AttackRight.png");
-            var imgAttackLeft = new DirectoryInfo("Images").GetFiles(name + "AttackLeft.png");
-            var imgBlockRight = new DirectoryInfo("Images").GetFiles(name + "BlockRight.png");
-            var imgBlockLeft = new DirectoryInfo("Images").GetFiles(name + "BlockLeft.png");
-            var imgMoveRight = new DirectoryInfo("Images").GetFiles(name + "MoveRight.png");
-            var imgMoveLeft = new DirectoryInfo("Images").GetFiles(name + "MoveLeft.png");
-
-            FormImageInfo(
-                ResizeBitmap(Image.FromFile(imgRight.First().FullName), GameSettings.Resolution.X / 10,
-                    GameSettings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgLeft.First().FullName), GameSettings.Resolution.X / 10,
-                    GameSettings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgAttackRight.First().FullName), GameSettings.Resolution.X / 10,
-                    GameSettings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgAttackLeft.First().FullName), GameSettings.Resolution.X / 10,
-                    GameSettings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgBlockRight.First().FullName), GameSettings.Resolution.X / 10,
-                    GameSettings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgBlockLeft.First().FullName), GameSettings.Resolution.X / 10,
-                    GameSettings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgMoveRight.First().FullName), GameSettings.Resolution.X / 10,
-                    GameSettings.Resolution.Y / 4.5),
-                ResizeBitmap(Image.FromFile(imgMoveLeft.First().FullName), GameSettings.Resolution.X / 10,
-                    GameSettings.Resolution.Y / 4.5)
-            );
-        }
-
-        private Image ResizeBitmap(Image image, double newWidth, double newHeight)
-        {
-            Image result = new Bitmap((int) newWidth, (int) newHeight);
-            using (var g = Graphics.FromImage((Image) result))
-                g.DrawImage(image, 0, 0, (int) newWidth, (int) newHeight);
-            return result;
+            var properties = GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var size = new Size(GameSettings.Resolution.X / 10, (int) (GameSettings.Resolution.Y / 4.5));
+            foreach (var property in properties)
+            {
+                var propertyInfo = typeof(Properties.Resources).GetProperty(name + property.Name);
+                var image = (Bitmap)propertyInfo.GetValue(null, null);
+                property.SetValue(this, ResizeImage(image, size));
+            }
+            MovingLeft = new[] { Left, MoveLeft };
+            MovingRight = new[] { Right, MoveRight };
         }
 
         public Image GetRight()
