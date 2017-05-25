@@ -1,52 +1,50 @@
-﻿using Game;
+﻿using System.Drawing;
+using System.Security.Cryptography.X509Certificates;
 using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.Properties;
 
-public class Spear : GameObject
+namespace Game.GameObjects
 {
-    public override int Damage => 20;
-
-    public Spear(HitBox body, bool lookRight, Fighter enemy)
+    public class Spear : GameObject
     {
-        Opponent = enemy;
-        Y = body.BotRightY - (body.BotRightY - body.TopLeftY) / 1.5f;
-        if (lookRight)
-        {
-            Picture = GameMethods.ResizeBitmap(Resources.SpearRight, 160, 40);
-            Speed = 60;
-            X = body.BotRightX;
+        public override int Damage => 20;
 
-        }
-        else
+        public Spear(RectangleF body, bool lookRight, Fighter enemy)
         {
-            Picture = GameMethods.ResizeBitmap(Resources.SpearLeft, 160, 40);
-            Speed = -60;
-            X = body.TopLeftX;
-        }
-    }
-
-    public override bool CheckState()
-    {
-        if (Speed > 0)
-        {
-            if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Left) return false;
-            if (X >= Opponent.Body.TopLeftX && X <= Opponent.Body.BotRightX)
+            Opponent = enemy;
+            var y = body.Bottom - (body.Bottom - body.Top) / 1.5f;
+            float x;
+            if (lookRight)
             {
+                Picture = GameMethods.ResizeBitmap(Resources.SpearRight, 160, 40);
+                Speed = 60;
+                x = body.Right;
+
+            }
+            else
+            {
+                Picture = GameMethods.ResizeBitmap(Resources.SpearLeft, 160, 40);
+                Speed = -60;
+                x = body.Left;
+            }
+            Position = new PointF(x, y);
+        }
+
+        public override bool CheckState()
+        {
+            if (Speed > 0)
+            {
+                if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Left) return false;
+                if (!this.IfReached(Opponent)) return false;
                 Opponent.HealthPoints -= Damage;
                 return true;
             }
-        }
-        else
-        {
             if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Right) return false;
-            if (X <= Opponent.Body.BotRightX && X >= Opponent.Body.TopLeftX)
-            {
-                Opponent.HealthPoints -= Damage;
-                return true;
-            }
+            if (!this.IfReached(Opponent)) return false;
+            Opponent.HealthPoints -= Damage;
+            return true;
         }
-        return false;
     }
 }

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
 using Game.Commands;
+using Game.GameInformation;
+using Game.GameObjects;
 
 namespace Game.Figters
 {
@@ -20,15 +23,13 @@ namespace Game.Figters
             Picture = new ImageInfo(name);
 
             Name = name;
-            HealthPoints = Stats[name]["HealthPoints"];
-            AttackDamage = Stats[name]["AttackDamage"];
-            AttackRange = Stats[name]["AttackRange"];
+            HealthPoints = 100;
+            AttackDamage = 10;
+            AttackRange = 10;
             
             CurrentImage = LookRight ? Picture.Right : Picture.Left;
             PreviousImage = CurrentImage;
-            X = x;
-            Y = y;
-            Body = new HitBox(X, Y);
+            Body = new RectangleF(x, y, GameSettings.Resolution.X / 16f, GameSettings.Resolution.Y / 4.5f);
         }
 
         public override void ManaRegeneration()
@@ -39,7 +40,7 @@ namespace Game.Figters
 
         public override void BlockCooldown()
         {
-            var cooldown = new Timer() { Interval = 500, Enabled = true };
+            var cooldown = new Timer { Interval = 500, Enabled = true };
             cooldown.Tick += (sender, args) =>
             {
                 Block.Blocking = false;

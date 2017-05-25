@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using Game.BaseStructures.Enums;
 using Game.GameInformation;
@@ -8,20 +7,10 @@ namespace Game.BaseStructures.AbstractClasses
 {
     public abstract class Fighter
     {
-        public Dictionary<string, Dictionary<string, int>> Stats = new Dictionary<string, Dictionary<string, int>>()
-        {
-            {"Paladin", new Dictionary<string, int>(){ {"HealthPoints", 100}, {"AttackDamage", 10}, {"AttackRange", 45}}},
-            {"Skeleton", new Dictionary<string, int>(){ {"HealthPoints", 100}, {"AttackDamage", 10}, {"AttackRange", 45}}},
-            {"Necromancer", new Dictionary<string, int>(){ {"HealthPoints", 100}, {"AttackDamage", 10}, {"AttackRange", 45}}},
-            {"Unicorn", new Dictionary<string, int>(){ {"HealthPoints", 100}, {"AttackDamage", 10}, {"AttackRange", 45}}}
-        };
-
         public PlayerNumber Number { get; set; }
         public bool IsFrozen { get; set; }
         public Fighter Opponent { get; set; }
         public string Name { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
         public float HealthPoints { get; set; }
         public float ManaPoints { get; set; }
         public float AttackDamage { get; set; }
@@ -29,7 +18,7 @@ namespace Game.BaseStructures.AbstractClasses
         public ImageInfo Picture { get; set; }
         public Image CurrentImage { get; set; }
         public bool OnGround { get; set; }
-        public HitBox Body { get; set; }
+        public RectangleF Body { get; set; }
         public bool LookRight { get; set; }
         public BlockState Block { get; set; }
         public bool Attack { get; set; }
@@ -43,12 +32,8 @@ namespace Game.BaseStructures.AbstractClasses
 
         public void ToTheGround()
         {
-            if (Y < GameSettings.Resolution.Y / 1.5f)
-            {
-                Y += 15;
-                Body.BotRightY += 15;
-                Body.TopLeftY += 15;
-            }
+            if (Body.Y < GameSettings.Resolution.Y / 1.5f)
+                Body = GameMethods.MoveRect(Body, 0, 15);
             else
                 OnGround = true;
         }
@@ -57,11 +42,9 @@ namespace Game.BaseStructures.AbstractClasses
         {
             if (Attack || Block.Blocking)
                 return;
-            if (!OnGround || !(Y / 2 > 200)) return;
+            if (!OnGround || !(Body.Y / 2 > 200)) return;
             OnGround = false;
-            Y -= 300;
-            Body.BotRightY -= 300;
-            Body.TopLeftY -= 300;
+            Body = GameMethods.MoveRect(Body, 0, -300);
         }
 
         public void UpdateImage(int action)
@@ -85,20 +68,13 @@ namespace Game.BaseStructures.AbstractClasses
             State = side;
         }
 
-        public void Update(int dx, int rightEdge)
+        public void Update(int dx)
         {
             if (Attack || Block.Blocking)
                 return;
-            var delta = X + dx;
-            if (delta < rightEdge - Body.Width && delta > 0
-                && (Body.BotRightX + dx < Opponent.Body.TopLeftX
-                    || Body.TopLeftX + dx > Opponent.Body.BotRightX))
-            {
-                X = delta;
-                Body.TopLeftX += dx;
-                Body.BotRightX += dx;
-                UpdateImage(Math.Sign(dx));
-            }
+            if (!this.IsMovementAllowed(dx, 0, Opponent)) return;
+            Body = GameMethods.MoveRect(Body, dx, 0);
+            UpdateImage(Math.Sign(dx));
         }
 
         public void ImageChanger(BattleStance action)
@@ -117,7 +93,7 @@ namespace Game.BaseStructures.AbstractClasses
             PreviousImage = CurrentImage;
             ImageChanger(BattleStance.Attack);
 
-            if (Opponent.Body.BotRightY < Body.TopLeftY + Body.Height / 2f)
+            if (Opponent.Body.Y + Opponent.Body.Height / 2 < Body.Y)
             {
                 Attack = true;
                 AttackCooldown();
@@ -128,7 +104,7 @@ namespace Game.BaseStructures.AbstractClasses
             {
                 Attack = true;
                 if (!Opponent.Block.Blocking || Opponent.Block.Side != BlockSide.Left)
-                    if (Body.BotRightX + AttackRange >= Opponent.Body.TopLeftX && Body.BotRightX + AttackRange <= Opponent.Body.BotRightX)
+                    if (Opponent.Body.Contains(Body.Right + AttackRange, Body.Y - Body.Height / 4))
                         Opponent.HealthPoints -= AttackDamage;
                 AttackCooldown();
             }
@@ -136,7 +112,7 @@ namespace Game.BaseStructures.AbstractClasses
             {
                 Attack = true;
                 if (!Opponent.Block.Blocking || Opponent.Block.Side != BlockSide.Right)
-                    if (Body.TopLeftX - AttackRange <= Opponent.Body.BotRightX && Body.TopLeftX - AttackRange >= Opponent.Body.TopLeftX)
+                    if (Opponent.Body.Contains(Body.Left - AttackRange, Body.Y - Body.Height / 4))
                         Opponent.HealthPoints -= AttackDamage;
                 AttackCooldown();
             }

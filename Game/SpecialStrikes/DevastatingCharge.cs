@@ -1,4 +1,5 @@
-﻿using Game.BaseStructures.AbstractClasses;
+﻿using System.Drawing;
+using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.GameInformation;
 
@@ -18,12 +19,12 @@ namespace Game.SpecialStrikes
             if (Source.LookRight)
             {
                 Source.PreviousImage = Source.Picture.Right;
-                Peak = Source.X + dx;
+                Peak = Source.Body.X + dx;
             }
             else
             {
                 Source.PreviousImage = Source.Picture.Left;
-                Peak = Source.X - dx;
+                Peak = Source.Body.X - dx;
             }
         }
 
@@ -31,39 +32,23 @@ namespace Game.SpecialStrikes
         {
             if (Source.LookRight)
             {
-                if (!(Source.X <= Peak) || !(Source.X < GameSettings.Resolution.X)) return true;
-                Source.X += Delta;
-                Source.Body.BotRightX += Delta;
-                Source.Body.TopLeftX += Delta;
+                if (!(Source.Body.X <= Peak) || !(Source.Body.X < GameSettings.Resolution.X)) return true;
+                Source.Body = GameMethods.MoveRect(Source.Body, Delta, 0);
                 if (Source.Opponent.Block.Blocking && 
                     Source.Opponent.Block.Side == BlockSide.Left) return false;
-                if (Source.Body.BotRightX + Range >= Source.Opponent.Body.TopLeftX &&
-                    Source.Body.BotRightX + Range <= Source.Opponent.Body.BotRightX)
-                {
-                    Source.Opponent.HealthPoints -= Damage;
-                    return true;
-                }
-                return false;
-            }
-            else
-            {
-                if (Source.X >= Peak && Source.X > 0)
-                {
-                    Source.X -= Delta;
-                    Source.Body.BotRightX -= Delta;
-                    Source.Body.TopLeftX -= Delta;
-                    if (Source.Opponent.Block.Blocking &&
-                        Source.Opponent.Block.Side == BlockSide.Right) return false;
-                    if (Source.Body.TopLeftX - Range <= Source.Opponent.Body.BotRightX &&
-                        Source.Body.TopLeftX - Range >= Source.Opponent.Body.TopLeftX)
-                    {
-                        Source.Opponent.HealthPoints -= Damage;
-                        return true;
-                    }
+                if (!Source.Opponent.Body.Contains(Source.Body.Right + Range, Source.Body.Top + Source.Body.Height / 2))
                     return false;
-                }
+                Source.Opponent.HealthPoints -= Damage;
                 return true;
             }
+            if (!(Source.Body.X >= Peak) || Source.Body.X <= 0) return true;
+            Source.Body = GameMethods.MoveRect(Source.Body, -Delta, 0);
+            if (Source.Opponent.Block.Blocking &&
+                Source.Opponent.Block.Side == BlockSide.Right) return false;
+            if (!Source.Opponent.Body.Contains(Source.Body.Right - Range, Source.Body.Top + Source.Body.Height / 2))
+                return false;
+            Source.Opponent.HealthPoints -= Damage;
+            return true;
         }
     }
 }

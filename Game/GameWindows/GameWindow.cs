@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
-using Game.Commands;
 using Game.GameInformation;
 
 namespace Game.GameWindows
@@ -64,7 +63,7 @@ namespace Game.GameWindows
 
             foreach (var fighter in gameState.Fighters)
             {
-                e.Graphics.DrawImage(fighter.CurrentImage, new PointF(fighter.X, fighter.Y));
+                e.Graphics.DrawImage(fighter.CurrentImage, fighter.Body.Location);
                 DrawBars(fighter, e);
             }
 
@@ -76,7 +75,7 @@ namespace Game.GameWindows
                     gameState.GameObjects.Remove(obj);
                     break;
                 }
-                e.Graphics.DrawImage(obj.Picture, obj.X, obj.Y);
+                e.Graphics.DrawImage(obj.Picture, obj.Position.X, obj.Position.Y);
             }
 
             foreach (var strike in gameState.SpecialStrikes)
@@ -140,7 +139,7 @@ namespace Game.GameWindows
                 if (fighter.State == FighterMotionState.MovingRight)
                     fighter.Update(10, settings.Resolution.X);
                     */
-                fighter.Update((int)fighter.State * 10, GameSettings.Resolution.X);
+                fighter.Update((int)fighter.State * 10);
                 fighter.ToTheGround();
                 fighter.ManaRegeneration();
                 if (fighter.HealthPoints <= 0)

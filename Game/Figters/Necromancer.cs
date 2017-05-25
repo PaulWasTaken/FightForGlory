@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
@@ -23,16 +24,14 @@ namespace Game.Figters
             Picture = new ImageInfo(name);
 
             Name = name;
-            HealthPoints = Stats[name]["HealthPoints"];
-            AttackDamage = Stats[name]["AttackDamage"];
-            AttackRange = Stats[name]["AttackRange"];
+            HealthPoints = 100;
+            AttackDamage = 0;
+            AttackRange = 0;
 
             CurrentImage = LookRight ? Picture.Right : Picture.Left;
             PreviousImage = CurrentImage;
             
-            X = x;
-            Y = y;
-            Body = new HitBox(X, Y);
+            Body = new RectangleF(x, y, GameSettings.Resolution.X / 16f, GameSettings.Resolution.Y / 4.5f);
         }
 
         public override void ManaRegeneration()
@@ -54,7 +53,7 @@ namespace Game.Figters
 
         public override void AttackCooldown()
         {
-            var cooldown = new Timer() { Interval = 200, Enabled = true };
+            var cooldown = new Timer { Interval = 200, Enabled = true };
             cooldown.Tick += (sender, args) =>
             {
                 Attack = false;
@@ -106,28 +105,20 @@ namespace Game.Figters
                 {
                     ManaPoints -= 10;
                     PreviousImage = CurrentImage;
-                    var dx = 300;
+                    var dx = GameSettings.Resolution.X / 5;
                     if (LookRight)
                     {
-                        if (Body.BotRightX + dx < GameSettings.Resolution.X)
-                        {
-                            X += dx;
-                            Body.BotRightX += dx;
-                            Body.TopLeftX += dx;
-                            CurrentImage = Resources.NecromancerTeleportRight;
-                            TeleportCooldown();
-                        }
+                        if (!this.IsMovementAllowed(dx, 0, Opponent)) return null;
+                        Body = GameMethods.MoveRect(Body, dx, 0);
+                        CurrentImage = Resources.NecromancerTeleportRight;
+                        TeleportCooldown();
                     }
                     else
                     {
-                        if (Body.TopLeftX - dx > 0)
-                        {
-                            X -= dx;
-                            Body.BotRightX -= dx;
-                            Body.TopLeftX -= dx;
-                            CurrentImage = Resources.NecromancerTeleportLeft;
-                            TeleportCooldown();
-                        }
+                        if (!this.IsMovementAllowed(-dx, 0, Opponent)) return null;
+                        Body = GameMethods.MoveRect(Body, -dx, 0);
+                        CurrentImage = Resources.NecromancerTeleportLeft;
+                        TeleportCooldown();
                     }
                     return null;
                 }

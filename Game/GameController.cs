@@ -8,7 +8,7 @@ namespace Game
     public class GameController
     {
         private readonly GameSettings settings;
-        private GameState gameState;
+        private readonly GameState gameState;
         private readonly CommandProcessor commandProcessor;
 
         public GameController(GameSettings settings, GameState gameState)
@@ -25,18 +25,16 @@ namespace Game
                 var comboPerformer = settings.DictWithComboControllers[fighter.Number];
                 if (gameState.SpecialStrikes.Count != 0)
                     break;
-                if (settings.Determinater[fighter.Number].ContainsKey(e.KeyData))
+                if (!settings.Determinater[fighter.Number].ContainsKey(e.KeyData)) continue;
+                var command = settings.Determinater[fighter.Number][e.KeyData];
+                if (comboPerformer.CheckForCombo(command))
                 {
-                    var command = settings.Determinater[fighter.Number][e.KeyData];
-                    if (comboPerformer.CheckForCombo(command))
-                    {
-                        var res = comboPerformer.PerformCombo();
-                        if (res != null)
-                            gameState.GameObjects.Add(res);
-                    }
-                    commandProcessor.Perfrom(command, fighter);
-                    return;
+                    var res = comboPerformer.PerformCombo();
+                    if (res != null)
+                        gameState.GameObjects.Add(res);
                 }
+                commandProcessor.Perfrom(command, fighter);
+                return;
             }
         }
 

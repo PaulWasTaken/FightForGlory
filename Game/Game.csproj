@@ -73,7 +73,6 @@
     <Compile Include="BaseStructures\BlockState.cs" />
     <Compile Include="BaseStructures\Enums\MovingSide.cs" />
     <Compile Include="BaseStructures\ImageInfo.cs" />
-    <Compile Include="BaseStructures\HitBox.cs" />
     <Compile Include="BaseStructures\Display.cs" />
     <Compile Include="ComboController.cs" />
     <Compile Include="Commands\Command.cs" />

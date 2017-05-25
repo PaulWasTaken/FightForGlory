@@ -6,12 +6,11 @@ namespace Game.BaseStructures.AbstractClasses
     {
         public float Speed { get; set; }
         public Image Picture { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
+        public PointF Position { get; set; }
         public abstract int Damage { get; }
         public void Move()
         {
-            X += Speed;
+            Position = new PointF(Position.X + Speed, Position.Y);
         }
 
         public abstract bool CheckState();

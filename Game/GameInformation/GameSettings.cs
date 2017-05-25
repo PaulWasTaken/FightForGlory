@@ -53,7 +53,7 @@ namespace Game.GameInformation
                 {Keys.S, Command.Down },
                 {Keys.Z, Command.NormalAttack},
                 {Keys.X, Command.StrongAttack},
-                {Keys.LShiftKey, Command.Block}
+                {Keys.ShiftKey|Keys.Shift, Command.Block}
             }
             },
             {PlayerNumber.SecondPlayer, new Dictionary<Keys, Command>()
