@@ -5,6 +5,7 @@ using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
+using Game.Commands;
 
 namespace Game.Figters
 {
@@ -60,13 +61,10 @@ namespace Game.Figters
 
         public override ComboController GetCombos()
         {
-            var comboDetector = new ComboDetector();
+            var comboDetector = new ComboDetector<Command>();
             var comboPerfomer = new Dictionary<ComboName, Func<GameObject>>();
 
-            if (Number == PlayerNumber.FirstPlayer)
-                comboDetector.Add(new[] { Keys.I, Keys.O, Keys.P }, ComboName.ThrowSpear);
-            else
-                comboDetector.Add(new[] { Keys.B, Keys.N, Keys.M }, ComboName.ThrowSpear);
+            comboDetector.Add(new[] { Command.NormalAttack, Command.Down, Command.StrongAttack}, ComboName.ThrowSpear);
 
             comboPerfomer[ComboName.ThrowSpear] = () => {
                 if (ManaPoints < 40) return null;

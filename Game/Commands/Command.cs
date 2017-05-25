@@ -5,7 +5,9 @@
         MoveRight,
         MoveLeft,
         Jump,
-        Attack,
+        Down,
+        NormalAttack,
+        StrongAttack,
         Block
     }
 }

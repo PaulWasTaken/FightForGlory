@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
+using Game.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GameTests
@@ -11,13 +12,13 @@ namespace GameTests
         [TestMethod]
         public void TestTree()
         {
-            var automat = new ComboDetector();
-            automat.Add(new[] { Keys.A, Keys.B, Keys.C }, ComboName.HolyLight);
-            automat.Add(new[] { Keys.B, Keys.B, Keys.C }, ComboName.HolyLight);
-            automat.Add(new[] { Keys.C, Keys.B, Keys.C }, ComboName.HolyLight);
-            automat.FindValue(Keys.A);
-            Assert.AreEqual(automat.CheckState(Keys.B), false);
-            Assert.AreEqual(automat.CheckState(Keys.C), true);
+            var automat = new ComboDetector<Command>();
+            automat.Add(new[] { Command.MoveLeft, Command.MoveRight, Command.NormalAttack }, ComboName.HolyLight);
+            //automat.Add(new[] { Keys.B, Keys.B, Keys.C }, ComboName.HolyLight);
+            //automat.Add(new[] { Keys.C, Keys.B, Keys.C }, ComboName.HolyLight);
+            automat.FindValue(Command.MoveLeft);
+            Assert.AreEqual(automat.CheckState(Command.MoveRight), false);
+            Assert.AreEqual(automat.CheckState(Command.NormalAttack), true);
             Assert.AreEqual(automat.CurrentState.Value, "Default");
         }
     }

@@ -25,16 +25,15 @@ namespace Game
                 var comboPerformer = settings.DictWithComboControllers[fighter.Number];
                 if (gameState.SpecialStrikes.Count != 0)
                     break;
-                if (comboPerformer.CheckForCombo(e))
-                {
-                    var res = comboPerformer.PerformCombo();
-                    if (res != null)
-                        gameState.GameObjects.Add(res);
-                }
-
                 if (settings.Determinater[fighter.Number].ContainsKey(e.KeyData))
                 {
                     var command = settings.Determinater[fighter.Number][e.KeyData];
+                    if (comboPerformer.CheckForCombo(command))
+                    {
+                        var res = comboPerformer.PerformCombo();
+                        if (res != null)
+                            gameState.GameObjects.Add(res);
+                    }
                     commandProcessor.Perfrom(command, fighter);
                     return;
                 }

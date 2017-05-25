@@ -1,55 +1,55 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using Game.BaseStructures.Enums;
 
 namespace Game.BaseStructures.ComboWorker
 {
-    public class ComboDetector
+    public class ComboDetector<T>
     {
         public string Name { get; set; }
-        public Node DefaultState { get; set; }
-        public Node CurrentState { get; set; }
-        private readonly HashSet<Keys> includedTops = new HashSet<Keys>();
-        public HashSet<Keys> IncludedValues { get; }
+        public Node<T> DefaultState { get; set; }
+        public Node<T> CurrentState { get; set; }
+        private readonly HashSet<T> includedTops = new HashSet<T>();
+        public HashSet<T> IncludedValues { get; }
 
         public ComboDetector()
         {
-            DefaultState = new Node { Name = ComboName.Default };
+            DefaultState = new Node<T> { Name = ComboName.Default };
             CurrentState = DefaultState;
-            IncludedValues = new HashSet<Keys>();
+            IncludedValues = new HashSet<T>();
         }
 
-        public void Add(Keys[] combo, ComboName name)
+        public void Add(T[] combo, ComboName name)
         {
-            DefaultState.NextState.Add(new Node(combo[0], name));
+            DefaultState.NextState.Add(new Node<T>(combo[0], name));
             includedTops.Add(combo[0]);
             IncludedValues.Add(combo[0]);
             var current = DefaultState.NextState.Last();
             for (var i = 1; i < combo.Length; i++)
             {
                 IncludedValues.Add(combo[i]);
-                current.NextState.Add(new Node(combo[i], name));
+                current.NextState.Add(new Node<T>(combo[i], name));
                 current = current.NextState.Last();
             }
         }
 
-        public bool CheckState(Keys value)
+        public bool CheckState(T value)
         {
             foreach (var state in CurrentState.NextState)
             {
-                CurrentState = state.Value.CompareTo(value) == 0 ? state : DefaultState;
+                CurrentState = state.Value.Equals(value) ? state : DefaultState;
             }
-            return value.CompareTo(CurrentState.Value) == 0 && CurrentState.NextState.Count == 0;
+            return value.Equals(CurrentState.Value) && CurrentState.NextState.Count == 0;
         }
 
-        public void FindValue(Keys value)
+        public void FindValue(T value)
         {
             if (!includedTops.Contains(value))
                 return;
             foreach (var state in DefaultState.NextState)
             {
-                if (state.Value.CompareTo(value) == 0)
+                if (state.Value.Equals(value))
                     CurrentState = state;
             }
         }

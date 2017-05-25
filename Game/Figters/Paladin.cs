@@ -5,6 +5,7 @@ using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
+using Game.Commands;
 using Game.GameObjects;
 
 namespace Game.Figters
@@ -34,12 +35,9 @@ namespace Game.Figters
 
         public override ComboController GetCombos()
         {
-            var detector = new ComboDetector();
+            var detector = new ComboDetector<Command>();
 
-            if (Number == PlayerNumber.FirstPlayer)
-                detector.Add(new[] { Keys.E, Keys.E, Keys.E }, ComboName.HolyLight);
-            else
-                detector.Add(new[] { Keys.O, Keys.O, Keys.O }, ComboName.HolyLight);
+            detector.Add(new[] { Command.Jump, Command.Down, Command.Down }, ComboName.HolyLight);
 
             var comboPerfomer = new Dictionary<ComboName, Func<GameObject>>();
             comboPerfomer[ComboName.HolyLight] = () => {

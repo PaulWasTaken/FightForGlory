@@ -5,6 +5,7 @@ using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
+using Game.Commands;
 using Game.GameInformation;
 using Game.GameWindows;
 using Game.SpecialStrikes;
@@ -64,8 +65,9 @@ namespace Game.Figters
 
         public override ComboController GetCombos()
         {
-            return new ComboController(new ComboDetector(), new Dictionary<ComboName, Func<GameObject>>());
-            var comboDetector = new ComboDetector();
+            return new ComboController(new ComboDetector<Command>(), new Dictionary<ComboName, Func<GameObject>>());
+            /*
+            var comboDetector = new ComboDetector<Command>();
             var comboPerfomer = new Dictionary<ComboName, Func<GameObject>>();
 
             if (Number == PlayerNumber.FirstPlayer)
@@ -92,6 +94,7 @@ namespace Game.Figters
             };
             
             return new ComboController(comboDetector, comboPerfomer);
+            */
         }
     }
 }

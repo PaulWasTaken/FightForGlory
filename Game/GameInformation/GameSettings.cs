@@ -50,8 +50,10 @@ namespace Game.GameInformation
                 {Keys.A, Command.MoveLeft},
                 {Keys.D, Command.MoveRight},
                 {Keys.Space, Command.Jump},
-                {Keys.Z, Command.Attack},
-                {Keys.X, Command.Block}
+                {Keys.S, Command.Down },
+                {Keys.Z, Command.NormalAttack},
+                {Keys.X, Command.StrongAttack},
+                {Keys.LShiftKey, Command.Block}
             }
             },
             {PlayerNumber.SecondPlayer, new Dictionary<Keys, Command>()
@@ -59,7 +61,9 @@ namespace Game.GameInformation
                 {Keys.Left, Command.MoveLeft},
                 {Keys.Right, Command.MoveRight},
                 {Keys.Up, Command.Jump},
-                {Keys.K, Command.Attack},
+                {Keys.Down, Command.Down },
+                {Keys.J, Command.NormalAttack},
+                {Keys.K, Command.StrongAttack},
                 {Keys.L, Command.Block}
             }
             }

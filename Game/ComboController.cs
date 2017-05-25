@@ -4,27 +4,28 @@ using System.Windows.Forms;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
+using Game.Commands;
 
 namespace Game
 {
     public class ComboController
     {
-        private readonly ComboDetector comboDetector;
+        private readonly ComboDetector<Command> comboDetector;
         private readonly Dictionary<ComboName, Func<GameObject>> comboPerformer;
 
-        public ComboController(ComboDetector comboDetector, Dictionary<ComboName, Func<GameObject>> comboPerformer)
+        public ComboController(ComboDetector<Command> comboDetector, Dictionary<ComboName, Func<GameObject>> comboPerformer)
         {
             this.comboDetector = comboDetector;
             this.comboPerformer = comboPerformer;
         }
-        public bool CheckForCombo(KeyEventArgs e)
+        public bool CheckForCombo(Command command)
         {
             if (comboDetector.CurrentState.Name == ComboName.Default)
             {
-                comboDetector.FindValue(e.KeyData);
+                comboDetector.FindValue(command);
                 return false;
             }
-            if (comboDetector.CheckState(e.KeyData))
+            if (comboDetector.CheckState(command))
                 return true;
             return false;
         }

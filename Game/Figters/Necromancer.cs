@@ -5,6 +5,7 @@ using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
+using Game.Commands;
 using Game.GameInformation;
 using Game.GameObjects;
 using Game.Properties;
@@ -74,19 +75,11 @@ namespace Game.Figters
 
         public override ComboController GetCombos()
         {
-            var comboDetector = new ComboDetector();
+            var comboDetector = new ComboDetector<Command>();
             var comboPerfomer = new Dictionary<ComboName, Func<GameObject>>();
 
-            if (Number == PlayerNumber.FirstPlayer)
-            {
-                comboDetector.Add(new[] { Keys.Z, Keys.Z, Keys.Z, Keys.Z, Keys.Z }, ComboName.LightningAttack);
-                comboDetector.Add(new[] { Keys.S, Keys.S, Keys.S }, ComboName.Teleport);
-            }
-            else
-            {
-                comboDetector.Add(new[] { Keys.K, Keys.K, Keys.K, Keys.K, Keys.K }, ComboName.LightningAttack);
-                comboDetector.Add(new[] { Keys.Down, Keys.Down, Keys.Down }, ComboName.Teleport);
-            }
+            comboDetector.Add(new[] { Command.NormalAttack, Command.NormalAttack, Command.NormalAttack, Command.NormalAttack, Command.NormalAttack }, ComboName.LightningAttack);
+            comboDetector.Add(new[] { Command.Down, Command.Down, Command.Down }, ComboName.Teleport);
 
             comboPerfomer[ComboName.LightningAttack] = () =>
             {

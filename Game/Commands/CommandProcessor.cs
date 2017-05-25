@@ -10,7 +10,7 @@ namespace Game.Commands
         {
             switch (command)
             {
-                case Command.Attack:
+                case Command.NormalAttack:
                     fighter.DoAttack();
                     break;
                 case Command.Block:
@@ -26,6 +26,10 @@ namespace Game.Commands
                 case Command.MoveRight:
                     fighter.ChooseYourSide(FighterMotionState.MovingRight);
                     fighter.ChangeMotionState(FighterMotionState.MovingRight);
+                    break;
+                case Command.Down:
+                    break;
+                case Command.StrongAttack:
                     break;
                 default:
                     throw new NotImplementedException();
