@@ -18,12 +18,10 @@ namespace Game.GameWindows
         public GameWindow(int width, int height)
         {
             DoubleBuffered = true;
-            var backGround = new DirectoryInfo("Images").GetFiles("Background.jpg");
             StartPosition = FormStartPosition.CenterScreen;
-            BackgroundImage = new Bitmap(Image.FromFile(backGround.First().FullName));
-            var icon = new DirectoryInfo("Images").GetFiles("Swords.ico");
+            BackgroundImage = new Bitmap(Properties.Resources.Background, new Size(width, height));
             MaximizeBox = false;
-            Icon = new Icon(icon.First().FullName);
+            Icon = Properties.Resources.Swords;
             Width = width;
             Height = height;
             Visible = false;
