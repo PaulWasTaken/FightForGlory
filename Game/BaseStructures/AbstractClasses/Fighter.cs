@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using Game.BaseStructures.Enums;
 using Game.Controllers;
 using Game.GameInformation;
@@ -31,7 +30,7 @@ namespace Game.BaseStructures.AbstractClasses
         public void ToTheGround()
         {
             if (Body.Y < GameSettings.Resolution.Y / 1.5f)
-                Body = GameMethods.MoveRect(Body, 0, 15);
+                Body = Body.Move(0, 15);
             else
                 OnGround = true;
         }
@@ -42,7 +41,7 @@ namespace Game.BaseStructures.AbstractClasses
                 return;
             if (!OnGround || !(Body.Y / 2 > 200)) return;
             OnGround = false;
-            Body = GameMethods.MoveRect(Body, 0, -300);
+            Body = Body.Move(0, -300);
         }
 
         public void Move(int dx)
@@ -50,7 +49,7 @@ namespace Game.BaseStructures.AbstractClasses
             if (Attack || Block.Blocking)
                 return;
             if (!this.IsMovementAllowed(dx, 0, Opponent)) return;
-            Body = GameMethods.MoveRect(Body, dx, 0);
+            Body = Body.Move(dx, 0);
         }
 
         public void DoAttack()

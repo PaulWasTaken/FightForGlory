@@ -37,7 +37,7 @@ namespace Game.Figters
 
         public override void BlockCooldown()
         {
-            var cooldown = new Timer() { Interval = 500, Enabled = true };
+            var cooldown = new Timer { Interval = 500, Enabled = true };
             cooldown.Tick += (sender, args) =>
             {
                 Block.Blocking = false;

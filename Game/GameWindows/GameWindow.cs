@@ -20,6 +20,8 @@ namespace Game.GameWindows
 
         public GameWindow()
         {
+            WindowState = FormWindowState.Maximized;
+            //FormBorderStyle = FormBorderStyle.None;
             Width = SystemInformation.VirtualScreen.Width;
             Height = SystemInformation.VirtualScreen.Height;
             firstPlayerLocation = new PointF(Width / 2 - 200, Height / 1.5f);

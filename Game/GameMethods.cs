@@ -1,39 +1,21 @@
 ﻿using System.Drawing;
 using Game.BaseStructures.AbstractClasses;
-using Game.BaseStructures.Enums;
 using Game.GameInformation;
 
 namespace Game
 {
-    public class GameMethods
-    {
-        public static Image ResizeBitmap(Image image, double newWidth, double newHeight)
-        {
-            Image result = new Bitmap((int)newWidth, (int)newHeight);
-            using (var g = Graphics.FromImage(result))
-                g.DrawImage(image, 0, 0, (int)newWidth, (int)newHeight);
-            return result;
-        }
-
-        public static RectangleF MoveRect(RectangleF target, float dx, float dy)
-        {
-            var rect = target;
-            rect.Offset(dx, dy);
-            return rect;
-        }
-    }
-    public static class Extansions
+    public static class Extensions
     {
         public static bool IsMovementAllowed(this Fighter fighter, float dx, float dy, Fighter opponent)
         {
             var newFighterPos = new RectangleF(fighter.Body.X + dx, fighter.Body.Y+ dy,
                                                fighter.Body.Width, fighter.Body.Height);
 
-            var notAllowed = newFighterPos.IntersectsWith(opponent.Body) || fighter.IfInTheScreen(dx, dy);
+            var notAllowed = newFighterPos.IntersectsWith(opponent.Body) || fighter.IsOutsideScreen(dx, dy);
             return !notAllowed;
         }
 
-        public static bool IfInTheScreen(this Fighter fighter, float dx, float dy)
+        public static bool IsOutsideScreen(this Fighter fighter, float dx, float dy)
         {
             var newFighterPos = new RectangleF(fighter.Body.X + dx, fighter.Body.Y + dy,
                                                fighter.Body.Width, fighter.Body.Height);
@@ -44,9 +26,24 @@ namespace Game
             return newFighterPos.IntersectsWith(leftScreenBorder) || newFighterPos.IntersectsWith(rightScreenBorder);
         }
 
-        public static bool IfReached(this GameObject obj, Fighter enemy)
+        public static bool HasReached(this GameObject obj, Fighter enemy)
         {
             return enemy.Body.Contains(obj.Position.X, obj.Position.Y);
+        }
+
+        public static RectangleF Move(this RectangleF target, float dx, float dy)
+        {
+            var rect = target;
+            rect.Offset(dx, dy);
+            return rect;
+        }
+
+        public static Image Resize(this Image image, double newWidth, double newHeight)
+        {
+            Image result = new Bitmap((int)newWidth, (int)newHeight);
+            using (var g = Graphics.FromImage(result))
+                g.DrawImage(image, 0, 0, (int)newWidth, (int)newHeight);
+            return result;
         }
     }
 }

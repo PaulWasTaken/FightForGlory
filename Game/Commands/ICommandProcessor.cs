@@ -2,7 +2,7 @@
 
 namespace Game.Commands
 {
-    interface ICommandProcessor
+    public interface ICommandProcessor
     {
         void Perfrom(Command command, Fighter fighter);
     }

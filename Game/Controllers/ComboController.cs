@@ -19,13 +19,9 @@ namespace Game.Controllers
         }
         public bool CheckForCombo(Command command)
         {
-            if (comboDetector.CurrentState.Name == ComboName.Default)
-            {
-                comboDetector.FindValue(command);
-                return false;
-            }
-            if (comboDetector.CheckState(command))
-                return true;
+            if (comboDetector.CurrentState.Name != ComboName.Default)
+                return comboDetector.CheckState(command);
+            comboDetector.FindValue(command);
             return false;
         }
 
