@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using Game.BaseStructures.Enums;
 using Game.Controllers;
 using Game.GameInformation;
@@ -61,7 +62,7 @@ namespace Game.BaseStructures.AbstractClasses
             Attack = true;
             AttackCooldown();
 
-            if (Opponent.Body.Y - Opponent.Body.Height / 2 < Body.Y)
+            if (Opponent.Body.Bottom < Body.Bottom - Body.Height / 2)
                 return;
 
             if (LookRight)
