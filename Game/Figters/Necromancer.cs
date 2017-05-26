@@ -7,9 +7,9 @@ using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
 using Game.Commands;
+using Game.Controllers;
 using Game.GameInformation;
 using Game.GameObjects;
-using Game.Properties;
 
 namespace Game.Figters
 {
@@ -21,16 +21,12 @@ namespace Game.Figters
             Attack = false;
             LookRight = Number == PlayerNumber.FirstPlayer;
             Block = new BlockState();
-            Picture = new ImageInfo(name);
 
             Name = name;
             HealthPoints = 100;
             AttackDamage = 0;
             AttackRange = 0;
 
-            CurrentImage = LookRight ? Picture.Right : Picture.Left;
-            PreviousImage = CurrentImage;
-            
             Body = new RectangleF(x, y, GameSettings.Resolution.X / 16f, GameSettings.Resolution.Y / 4.5f);
         }
 
@@ -46,7 +42,6 @@ namespace Game.Figters
             cooldown.Tick += (sender, args) =>
             {
                 Block.Blocking = false;
-                CurrentImage = PreviousImage;
                 cooldown.Dispose();
             };
         }
@@ -57,7 +52,6 @@ namespace Game.Figters
             cooldown.Tick += (sender, args) =>
             {
                 Attack = false;
-                CurrentImage = PreviousImage;
                 cooldown.Dispose();
             };
         }
@@ -67,7 +61,7 @@ namespace Game.Figters
             var cooldown = new Timer { Interval = 200, Enabled = true };
             cooldown.Tick += (sender, args) =>
             {
-                CurrentImage = PreviousImage;
+                State = FighterMotionState.NotMoving;
                 cooldown.Dispose();
             };
         }
@@ -84,18 +78,8 @@ namespace Game.Figters
             {
                 if (!(ManaPoints >= 40)) return null;
                 ManaPoints -= 40;
-                if (LookRight)
-                {
-                    PreviousImage = CurrentImage;
-                    CurrentImage = Picture.AttackRight;
-                    AttackCooldown();
-                }
-                else
-                {
-                    PreviousImage = CurrentImage;
-                    CurrentImage = Picture.AttackLeft;
-                    AttackCooldown();
-                }
+                Attack = true;
+                AttackCooldown();
                 return new Bolt(Body, LookRight, Opponent);
             };
 
@@ -104,20 +88,19 @@ namespace Game.Figters
                 if (ManaPoints >= 10)
                 {
                     ManaPoints -= 10;
-                    PreviousImage = CurrentImage;
                     var dx = GameSettings.Resolution.X / 5;
                     if (LookRight)
                     {
                         if (!this.IsMovementAllowed(dx, 0, Opponent)) return null;
                         Body = GameMethods.MoveRect(Body, dx, 0);
-                        CurrentImage = Resources.NecromancerTeleportRight;
+                        //CurrentImage = Resources.NecromancerTeleportRight;
                         TeleportCooldown();
                     }
                     else
                     {
                         if (!this.IsMovementAllowed(-dx, 0, Opponent)) return null;
                         Body = GameMethods.MoveRect(Body, -dx, 0);
-                        CurrentImage = Resources.NecromancerTeleportLeft;
+                        //CurrentImage = Resources.NecromancerTeleportLeft;
                         TeleportCooldown();
                     }
                     return null;

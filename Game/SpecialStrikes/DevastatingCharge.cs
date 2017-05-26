@@ -18,12 +18,12 @@ namespace Game.SpecialStrikes
             Delta = dx / 3f;
             if (Source.LookRight)
             {
-                Source.PreviousImage = Source.Picture.Right;
+                //Source.PreviousImage = Source.Picture.Right;
                 Peak = Source.Body.X + dx;
             }
             else
             {
-                Source.PreviousImage = Source.Picture.Left;
+                //Source.PreviousImage = Source.Picture.Left;
                 Peak = Source.Body.X - dx;
             }
         }

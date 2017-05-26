@@ -5,7 +5,7 @@ using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
 using Game.Commands;
 
-namespace Game
+namespace Game.Controllers
 {
     public class ComboController
     {

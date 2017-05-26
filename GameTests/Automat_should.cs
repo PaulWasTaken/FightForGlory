@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using Game.BaseStructures.ComboWorker;
+﻿using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
 using Game.Commands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using Game.GameInformation;
@@ -44,7 +43,7 @@ namespace Game.BaseStructures
 
         public Image GetRight()
         {
-            var image = GetRightMove();
+            var image = MovingRight;
             if (counter < 4)
             {
                 counter += 1;
@@ -61,7 +60,7 @@ namespace Game.BaseStructures
 
         public Image GetLeft()
         {
-            var image = GetLeftMove();
+            var image = MovingLeft;
             if (counter < 4)
             {
                 counter += 1;
@@ -74,16 +73,6 @@ namespace Game.BaseStructures
             }
             counter = 1;
             return image.First();
-        }
-
-        private IEnumerable<Image> GetRightMove()
-        {
-            return MovingRight;
-        }
-
-        private IEnumerable<Image> GetLeftMove()
-        {
-            return MovingLeft;
         }
     }
 }

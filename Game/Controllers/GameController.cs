@@ -3,7 +3,7 @@ using Game.BaseStructures.Enums;
 using Game.Commands;
 using Game.GameInformation;
 
-namespace Game
+namespace Game.Controllers
 {
     public class GameController
     {

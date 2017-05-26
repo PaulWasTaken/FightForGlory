@@ -20,12 +20,12 @@ namespace Game.Commands
                     fighter.Jump();
                     break;
                 case Command.MoveLeft:
-                    fighter.ChooseYourSide(FighterMotionState.MovingLeft);
-                    fighter.ChangeMotionState(FighterMotionState.MovingLeft);
+                    fighter.LookRight = false;
+                    fighter.State = FighterMotionState.MovingLeft;
                     break;
                 case Command.MoveRight:
-                    fighter.ChooseYourSide(FighterMotionState.MovingRight);
-                    fighter.ChangeMotionState(FighterMotionState.MovingRight);
+                    fighter.LookRight = true;
+                    fighter.State = FighterMotionState.MovingRight;
                     break;
                 case Command.Down:
                     break;

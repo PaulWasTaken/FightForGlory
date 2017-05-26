@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
+using Game.Controllers;
 using Game.GameInformation;
 
 namespace Game.GameWindows
@@ -38,6 +37,9 @@ namespace Game.GameWindows
             settings.DictWithComboControllers[PlayerNumber.FirstPlayer] = gameState.FirstPlayer.GetCombos();
             settings.DictWithComboControllers[PlayerNumber.SecondPlayer] = gameState.SecondPlayer.GetCombos();
 
+            settings.DictWithImageChangers[PlayerNumber.FirstPlayer] = new ImageController(gameState.FirstPlayer);
+            settings.DictWithImageChangers[PlayerNumber.SecondPlayer] = new ImageController(gameState.SecondPlayer);
+
             var timer = new Timer {Interval = 20};
             timer.Tick += TimerTick;
             timer.Start();
@@ -61,7 +63,7 @@ namespace Game.GameWindows
 
             foreach (var fighter in gameState.Fighters)
             {
-                e.Graphics.DrawImage(fighter.CurrentImage, fighter.Body.Location);
+                e.Graphics.DrawImage(settings.DictWithImageChangers[fighter.Number].CurrentImage, fighter.Body.Location);
                 DrawBars(fighter, e);
             }
 
@@ -133,11 +135,12 @@ namespace Game.GameWindows
                     break;
                 /*
                 if (fighter.State == FighterMotionState.MovingLeft)
-                    fighter.Update((int)fighter.State * 10, settings.Resolution.X);
+                    fighter.Move((int)fighter.State * 10, settings.Resolution.X);
                 if (fighter.State == FighterMotionState.MovingRight)
-                    fighter.Update(10, settings.Resolution.X);
+                    fighter.Move(10, settings.Resolution.X);
                     */
-                fighter.Update((int)fighter.State * 10);
+                fighter.Move((int)fighter.State * 10);
+                settings.DictWithImageChangers[fighter.Number].UpdateFighterImage();
                 fighter.ToTheGround();
                 fighter.ManaRegeneration();
                 if (fighter.HealthPoints <= 0)

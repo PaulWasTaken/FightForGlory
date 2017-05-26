@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using Game.BaseStructures;
-using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.Commands;
+using Game.Controllers;
 
 namespace Game.GameInformation
 {
@@ -70,6 +70,7 @@ namespace Game.GameInformation
         };
 
         public Dictionary<PlayerNumber, ComboController> DictWithComboControllers = new Dictionary<PlayerNumber, ComboController>();
+        public Dictionary<PlayerNumber, ImageController> DictWithImageChangers = new Dictionary<PlayerNumber, ImageController>();
 
         public static Display Resolution { get; set; }
         public float XIndent => Resolution.X / 80f;

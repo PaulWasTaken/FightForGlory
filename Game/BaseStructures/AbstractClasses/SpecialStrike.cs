@@ -10,7 +10,7 @@ namespace Game.BaseStructures.AbstractClasses
         public abstract bool IfReached();
         public void FixPicture()
         {
-            Source.CurrentImage = Source.PreviousImage;
+            //Source.CurrentImage = Source.PreviousImage;
             Source.State = FighterMotionState.NotMoving;
         }
     }
