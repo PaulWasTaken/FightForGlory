@@ -33,12 +33,12 @@ namespace Game.GameObjects
             if (Speed > 0)
             {
                 if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Left) return false;
-                if (!this.HasReached(Opponent)) return false;
+                if (!HasReached(Opponent)) return false;
                 Opponent.HealthPoints -= Damage;
                 return true;
             }
             if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Right) return false;
-            if (!this.HasReached(Opponent)) return false;
+            if (!HasReached(Opponent)) return false;
             Opponent.HealthPoints -= Damage;
             return true;
         }

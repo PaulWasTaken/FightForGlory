@@ -79,7 +79,7 @@
     <Compile Include="Figters\Paladin.cs" />
     <Compile Include="GameInformation\GameState.cs" />
     <Compile Include="GameInformation\GameSettings.cs" />
-    <Compile Include="GameMethods.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="GameObjects\Bolt.cs" />
     <Compile Include="GameObjects\Spear.cs" />
     <Compile Include="GameObjects\Wisp.cs" />

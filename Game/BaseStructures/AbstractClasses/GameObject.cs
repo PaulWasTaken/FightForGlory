@@ -13,6 +13,11 @@ namespace Game.BaseStructures.AbstractClasses
             Position = new PointF(Position.X + Speed, Position.Y);
         }
 
+        protected bool HasReached(Fighter enemy)
+        {
+            return enemy.Body.Contains(Position.X, Position.Y);
+        }
+
         public abstract bool CheckState();
         public Fighter Opponent { get; set; }
     }
