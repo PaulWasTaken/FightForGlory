@@ -11,7 +11,7 @@ namespace Game.GameInformation
     {
         public GameSettings(int width, int height)
         {
-            Resolution = new Rectangle(0, 0, width, height);
+            Resolution = new Point(width, height);
             MakeReversed();
             //InitializeMover();
         }
@@ -69,7 +69,7 @@ namespace Game.GameInformation
         public Dictionary<PlayerNumber, ComboController> DictWithComboControllers = new Dictionary<PlayerNumber, ComboController>();
         public Dictionary<PlayerNumber, ImageController> DictWithImageChangers = new Dictionary<PlayerNumber, ImageController>();
 
-        public static Rectangle Resolution { get; set; }
+        public static Point Resolution { get; set; }
         public float XIndent => Resolution.X / 80f;
         public float YIndent => Resolution.Y / 10f;
     }

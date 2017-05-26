@@ -17,7 +17,7 @@ namespace Game.Controllers
         {
             this.fighter = fighter;
             Trigger = true;
-            Picture = new ImageInfo(fighter.Name);
+            Picture = ImageInfo.CreateFigtherInfo(fighter.Name);
             CurrentImage = fighter.LookRight ? Picture.Right : Picture.Left;
             PreviousImage = CurrentImage;
         }
@@ -26,12 +26,12 @@ namespace Game.Controllers
         {
             if (fighter.State == FighterMotionState.MovingRight)
             {
-                CurrentImage = Picture.GetRight();
+                CurrentImage = Picture.GetMovingImage(movingRight: true);
                 fighter.LookRight = true;
             }
             if (fighter.State == FighterMotionState.MovingLeft)
             {
-                CurrentImage = Picture.GetLeft();
+                CurrentImage = Picture.GetMovingImage(movingRight: false);
                 fighter.LookRight = false;
             }
         }
