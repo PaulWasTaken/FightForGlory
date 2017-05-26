@@ -165,13 +165,17 @@ namespace Game.GameWindows
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            gameController.KeyDown(e);
+            if (gameStarted)
+                gameController.KeyDown(e);
+            e.SuppressKeyPress = true;
             base.OnKeyDown(e);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            gameController.KeyUp(e);
+            if (gameStarted)
+                gameController.KeyUp(e);
+            e.SuppressKeyPress = true;
             base.OnKeyUp(e);
         }
 
