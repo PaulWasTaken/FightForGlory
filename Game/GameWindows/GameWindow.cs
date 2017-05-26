@@ -8,34 +8,73 @@ using Game.GameInformation;
 
 namespace Game.GameWindows
 {
-    public class GameWindow : Form
+    public sealed class GameWindow : Form
     {
-        private readonly GameSettings settings;
+        private GameSettings settings;
         private GameState gameState;
-        private readonly GameController gameController;
-        public GameWindow(int width, int height)
+        private GameController gameController;
+        private bool gameStarted;
+
+        private readonly PointF firstPlayerLocation;
+        private readonly PointF secondPlayerLocation;
+
+        public GameWindow()
         {
-            DoubleBuffered = true;
+            Width = SystemInformation.VirtualScreen.Width;
+            Height = SystemInformation.VirtualScreen.Height;
+            firstPlayerLocation = new PointF(Width / 2 - 200, Height / 1.5f);
+            secondPlayerLocation = new PointF(Width / 2 + 200, Height / 1.5f);
             StartPosition = FormStartPosition.CenterScreen;
-            BackgroundImage = new Bitmap(Properties.Resources.Background, new Size(width, height));
             MaximizeBox = false;
+            DoubleBuffered = true;
             Icon = Properties.Resources.Swords;
-            Width = width;
-            Height = height;
-            Visible = false;
+            DrawMainMenu();
+        }
 
-            settings = new GameSettings(width, height);
-
-            using (var selector = new ScreenSelector())
+        // SHIT JUST GOT REAL
+        // Actually solves the problem of menu flickering
+        // No idea how it works https://stackoverflow.com/questions/8046560/how-to-stop-flickering-c-sharp-winforms
+        protected override CreateParams CreateParams
+        {
+            get
             {
-                selector.ShowDialog();
-                gameState = new GameState(selector.FirstPlayer, selector.SecondPlayer);
+                var handleParam = base.CreateParams;
+                handleParam.ExStyle |= 0x02000000;   // WS_EX_COMPOSITED       
+                return handleParam;
             }
+        }
 
+        public void DrawMainMenu()
+        {
+            BackgroundImage = new Bitmap(Properties.Resources.MMBackground, new Size(Width, Height));
+
+            var mainMenu = new MainMenu(this);
+            Controls.Add(mainMenu);
+        }
+
+        public void DrawCharactedSelectMenu()
+        {
+            Controls.Clear();
+
+            var selectMenu = new CharacterSelectMenu(this);
+            Controls.Add(selectMenu);
+        }
+
+        public void StartGame(Type[] players)
+        {
+            Controls.Clear();
+            gameStarted = true;
+            BackgroundImage = new Bitmap(Properties.Resources.Background, new Size(Width, Height));
+            settings = new GameSettings(Width, Height);
+            var firstPlayer = CreateFighter(players[0], firstPlayerLocation);
+            var secondPlayer = CreateFighter(players[1], secondPlayerLocation);
+            gameState = new GameState(firstPlayer, secondPlayer);
             gameController = new GameController(settings, gameState);
-
             settings.DictWithComboControllers[PlayerNumber.FirstPlayer] = gameState.FirstPlayer.GetCombos();
             settings.DictWithComboControllers[PlayerNumber.SecondPlayer] = gameState.SecondPlayer.GetCombos();
+
+            settings.DictWithImageChangers[PlayerNumber.FirstPlayer] = new ImageController(gameState.FirstPlayer);
+            settings.DictWithImageChangers[PlayerNumber.SecondPlayer] = new ImageController(gameState.SecondPlayer);
 
             settings.DictWithImageChangers[PlayerNumber.FirstPlayer] = new ImageController(gameState.FirstPlayer);
             settings.DictWithImageChangers[PlayerNumber.SecondPlayer] = new ImageController(gameState.SecondPlayer);
@@ -45,8 +84,17 @@ namespace Game.GameWindows
             timer.Start();
         }
 
+        private static Fighter CreateFighter(Type type, PointF location)
+        {
+            var constuctor = type.GetConstructor(new[] { typeof(string), typeof(float), typeof(float) });
+            // ReSharper disable once PossibleNullReferenceException
+            return (Fighter)constuctor.Invoke(new object[] { type.Name, location.X, location.Y });
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
+            if (!gameStarted)
+                return;
             if (gameState.Finished)
             {
                 e.Graphics.DrawString(gameState.Lost.Item2 + " won!", new Font("Arial", 20), 

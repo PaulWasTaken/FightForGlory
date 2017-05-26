@@ -1,26 +1,51 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Game.GameWindows
 {
-    public partial class MainMenu : Form
+    public sealed class MainMenu : UserControl
     {
-        public MainMenu()
+        private readonly GameWindow parent;
+
+        public MainMenu(GameWindow parent)
         {
-            InitializeComponent();
+            this.parent = parent;
+            DoubleBuffered = true;
+            Dock = DockStyle.Fill;
+            BackColor = Color.Transparent;
+            var layout = CreateLayout();
+            Controls.Add(layout);
         }
 
-        private void button_exit_Click(object sender, EventArgs e)
+        private FlowLayoutPanel CreateLayout()
         {
-            Close();
+            var layout = new FlowLayoutPanel { Dock = DockStyle.Fill };
+            var start = new Button
+            {
+                Text = @"Начать игру"
+            };
+            start.Click += OnStartClick;
+            var exit = new Button
+            {
+                Text = @"Выход"
+            };
+            exit.Click += OnExitClick;
+            layout.Controls.Add(start);
+            layout.Controls.Add(exit);
+            return layout;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void OnExitClick(object sender, EventArgs e)
+        {
+            parent.Close();
+        }
+
+        private void OnStartClick(object sender, EventArgs e)
         {
             Visible = false;
-            new GameWindow(SystemInformation.VirtualScreen.Width,
-                           SystemInformation.VirtualScreen.Height).ShowDialog();
-            Close();
+            Enabled = false;
+            parent.DrawCharactedSelectMenu();
         }
     }
 }
