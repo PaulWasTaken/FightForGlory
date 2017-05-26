@@ -70,7 +70,9 @@ namespace Game.GameWindows
             BackgroundImage = new Bitmap(Properties.Resources.Background, new Size(Width, Height));
             settings = new GameSettings(Width, Height);
             var firstPlayer = CreateFighter(players[0], firstPlayerLocation);
+            firstPlayer.Number = PlayerNumber.FirstPlayer;
             var secondPlayer = CreateFighter(players[1], secondPlayerLocation);
+            secondPlayer.Number = PlayerNumber.SecondPlayer;
 
             gameState = new GameState(firstPlayer, secondPlayer);
             gameController = new GameController(settings, gameState);
@@ -78,8 +80,9 @@ namespace Game.GameWindows
 
             settings.AddControllersForPlayer(firstPlayer);
             settings.AddControllersForPlayer(secondPlayer);
+            settings.AddControllersForObjects();
 
-            var timer = new Timer {Interval = 20};
+            var timer = new Timer {Interval = 50};
             timer.Tick += TimerTick;
             timer.Start();
         }
@@ -123,7 +126,9 @@ namespace Game.GameWindows
                     gameState.GameObjects.Remove(obj);
                     break;
                 }
-                e.Graphics.DrawImage(obj.Picture, obj.Position.X, obj.Position.Y);
+                var imageController = settings.GetObjImageController(obj.GetType().Name);
+                var image = imageController.GetCurrentObjImage(obj);
+                e.Graphics.DrawImage(image, obj.Size.X, obj.Size.Y);
             }
         }
 

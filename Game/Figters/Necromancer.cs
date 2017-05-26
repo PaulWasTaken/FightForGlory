@@ -80,7 +80,7 @@ namespace Game.Figters
                 ManaPoints -= 40;
                 Attack = true;
                 AttackCooldown();
-                return new Bolt(Body, LookRight, Number);
+                return new Lightning(Body, LookRight, Number);
             };
             /*
             comboPerfomer[ComboName.Teleport] = () =>

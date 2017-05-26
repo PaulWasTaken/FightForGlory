@@ -38,11 +38,11 @@ namespace Game.BaseStructures
             return info;
         }
 
-        public static ImageInfo CreateGameObjectInfo(string name)
+        public static ImageInfo CreateGameObjectInfo(string name, Size size)
         {
             var left = typeof(ImageInfo).GetProperty("Left");
             var right = typeof(ImageInfo).GetProperty("Right");
-            var size = new Size(GameSettings.Resolution.X / 10, (int)(GameSettings.Resolution.Y / 4.5));
+            //size = new Size(GameSettings.Resolution.X / 10, (int)(GameSettings.Resolution.Y / 4.5));
             var info = new ImageInfo(name, new []{left, right}, size);
             return info;
         }

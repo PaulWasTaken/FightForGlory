@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
-using Game.Properties;
 
 namespace Game.GameObjects
 {
@@ -12,7 +11,6 @@ namespace Game.GameObjects
         public Wisp(RectangleF body, bool lookRight, PlayerNumber source)
         {
             Source = source;
-            Picture = Resources.Wisp.Resize(40, 40);
             var y = body.Bottom - (body.Bottom - body.Top) / 1.5f;
             float x;
             if (lookRight)
@@ -25,11 +23,12 @@ namespace Game.GameObjects
                 Speed = -50;
                 x = body.Left;
             }
-            Position = new PointF(x, y);
+            Size = new RectangleF(x, y, 60, 60);
         }
 
         public override bool CheckState(Fighter opponent)
         {
+            if (IsOutsideScreen()) return true;
             if (Speed > 0)
             {
                 if (opponent.Block.Blocking && opponent.Block.Side == BlockSide.Left) return false;

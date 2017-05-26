@@ -8,6 +8,8 @@ namespace Game.Controllers
     {
         private readonly Fighter first;
         private readonly Fighter second;
+        private bool wasCompletedFirst;
+        private bool wasCompletedSecond;
 
         public CombatController(Fighter first, Fighter second)
         {
@@ -18,9 +20,25 @@ namespace Game.Controllers
         public void CheckForCombat(List<GameObject> gameObjects)
         {
             if (first.Attack)
-                HandleDamage(first, second);
+            {
+                if (!wasCompletedFirst)
+                {
+                    HandleDamage(first, second);
+                    wasCompletedFirst = true;
+                }
+            }
+            else
+                wasCompletedFirst = false;
             if (second.Attack)
-                HandleDamage(second, first);
+            {
+                if (!wasCompletedSecond)
+                {
+                    HandleDamage(second, first);
+                    wasCompletedSecond = true;
+                }
+            }
+            else
+                wasCompletedSecond = false;
             foreach (var obj in gameObjects)
             {
                 

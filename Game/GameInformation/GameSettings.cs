@@ -5,6 +5,7 @@ using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.Commands;
 using Game.Controllers;
+using Game.GameObjects;
 
 namespace Game.GameInformation
 {
@@ -77,17 +78,30 @@ namespace Game.GameInformation
             return dictWithImageControllers[player];
         }
 
+        public ImageController GetObjImageController(string name)
+        {
+            return objectImageControllers[name];
+        }
+
         public void AddControllersForPlayer(Fighter player)
         {
             dictWithComboControllers[player.Number] = player.GetCombos();
             dictWithImageControllers[player.Number] = new ImageController(player);
         }
 
+        private readonly Dictionary<string, ImageController> objectImageControllers = new Dictionary<string, ImageController>();
         private readonly Dictionary<PlayerNumber, ComboController> dictWithComboControllers = new Dictionary<PlayerNumber, ComboController>();
         private readonly Dictionary<PlayerNumber, ImageController> dictWithImageControllers = new Dictionary<PlayerNumber, ImageController>();
 
         public static Point Resolution { get; set; }
         public float XIndent => Resolution.X / 80f;
         public float YIndent => Resolution.Y / 10f;
+
+        public void AddControllersForObjects()
+        {
+            objectImageControllers.Add(typeof(Wisp).Name, new ImageController());
+            objectImageControllers.Add(typeof(Spear).Name, new ImageController());
+            objectImageControllers.Add(typeof(Lightning).Name, new ImageController());
+        }
     }
 }

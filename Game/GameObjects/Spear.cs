@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
+using Game.GameInformation;
 using Game.Properties;
 
 namespace Game.GameObjects
@@ -16,32 +17,31 @@ namespace Game.GameObjects
             float x;
             if (lookRight)
             {
-                Picture = Resources.SpearRight.Resize(160, 40);
                 Speed = 60;
                 x = body.Right;
 
             }
             else
             {
-                Picture = Resources.SpearLeft.Resize(160, 40);
                 Speed = -60;
                 x = body.Left;
             }
-            Position = new PointF(x, y);
+            Size = new RectangleF(x, y, GameSettings.Resolution.X / 10f, GameSettings.Resolution.Y / 18f);
         }
 
-        public override bool CheckState(Fighter Opponent)
+        public override bool CheckState(Fighter opponent)
         {
+            if (IsOutsideScreen()) return true;
             if (Speed > 0)
             {
-                if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Left) return false;
-                if (!this.HasReached(Opponent)) return false;
-                Opponent.HealthPoints -= Damage;
+                if (opponent.Block.Blocking && opponent.Block.Side == BlockSide.Left) return false;
+                if (!HasReached(opponent)) return false;
+                opponent.HealthPoints -= Damage;
                 return true;
             }
-            if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Right) return false;
-            if (!this.HasReached(Opponent)) return false;
-            Opponent.HealthPoints -= Damage;
+            if (opponent.Block.Blocking && opponent.Block.Side == BlockSide.Right) return false;
+            if (!HasReached(opponent)) return false;
+            opponent.HealthPoints -= Damage;
             return true;
         }
     }

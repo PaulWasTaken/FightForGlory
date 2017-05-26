@@ -9,7 +9,6 @@ namespace Game.BaseStructures.AbstractClasses
     {
         public PlayerNumber Number { get; set; }
         public bool IsFrozen { get; set; }
-        //public Fighter Opponent { get; set; }
         public string Name { get; set; }
         public float HealthPoints { get; set; }
         public float ManaPoints { get; set; }
