@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.Properties;
@@ -13,7 +12,7 @@ namespace Game.GameObjects
         public Wisp(RectangleF body, bool lookRight, PlayerNumber source)
         {
             Source = source;
-            Picture = GameMethods.ResizeBitmap(Resources.Wisp, 40, 40);
+            Picture = Resources.Wisp.Resize(40, 40);
             var y = body.Bottom - (body.Bottom - body.Top) / 1.5f;
             float x;
             if (lookRight)
@@ -34,12 +33,12 @@ namespace Game.GameObjects
             if (Speed > 0)
             {
                 if (opponent.Block.Blocking && opponent.Block.Side == BlockSide.Left) return false;
-                if (!this.IfReached(opponent)) return false;
+                if (!HasReached(opponent)) return false;
                 opponent.HealthPoints -= Damage;
                 return true;
             }
             if (opponent.Block.Blocking && opponent.Block.Side == BlockSide.Right) return false;
-            if (!this.IfReached(opponent)) return false;
+            if (!HasReached(opponent)) return false;
             opponent.HealthPoints -= Damage;
             return true;
         }

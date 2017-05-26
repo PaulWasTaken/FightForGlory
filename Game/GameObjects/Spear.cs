@@ -1,6 +1,4 @@
 ﻿using System.Drawing;
-using System.Security.Cryptography.X509Certificates;
-using Game.BaseStructures;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.Properties;
@@ -18,14 +16,14 @@ namespace Game.GameObjects
             float x;
             if (lookRight)
             {
-                Picture = GameMethods.ResizeBitmap(Resources.SpearRight, 160, 40);
+                Picture = Resources.SpearRight.Resize(160, 40);
                 Speed = 60;
                 x = body.Right;
 
             }
             else
             {
-                Picture = GameMethods.ResizeBitmap(Resources.SpearLeft, 160, 40);
+                Picture = Resources.SpearLeft.Resize(160, 40);
                 Speed = -60;
                 x = body.Left;
             }
@@ -37,12 +35,12 @@ namespace Game.GameObjects
             if (Speed > 0)
             {
                 if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Left) return false;
-                if (!this.IfReached(Opponent)) return false;
+                if (!this.HasReached(Opponent)) return false;
                 Opponent.HealthPoints -= Damage;
                 return true;
             }
             if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Right) return false;
-            if (!this.IfReached(Opponent)) return false;
+            if (!this.HasReached(Opponent)) return false;
             Opponent.HealthPoints -= Damage;
             return true;
         }

@@ -72,7 +72,6 @@
     <Compile Include="BaseStructures\BlockState.cs" />
     <Compile Include="BaseStructures\Enums\MovingSide.cs" />
     <Compile Include="BaseStructures\ImageInfo.cs" />
-    <Compile Include="BaseStructures\Display.cs" />
     <Compile Include="Controllers\CombatController.cs" />
     <Compile Include="Controllers\ComboController.cs" />
     <Compile Include="Commands\Command.cs" />
@@ -81,7 +80,7 @@
     <Compile Include="Figters\Paladin.cs" />
     <Compile Include="GameInformation\GameState.cs" />
     <Compile Include="GameInformation\GameSettings.cs" />
-    <Compile Include="GameMethods.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="GameObjects\Bolt.cs" />
     <Compile Include="GameObjects\Spear.cs" />
     <Compile Include="GameObjects\Wisp.cs" />
@@ -106,7 +105,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SpecialStrikes\DevastatingCharge.cs" />
     <Compile Include="Figters\Unicorn.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

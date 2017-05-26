@@ -16,5 +16,9 @@ namespace Game.BaseStructures.AbstractClasses
 
         public abstract bool CheckState(Fighter opponent);
         public PlayerNumber Source { get; set; }
+        protected bool HasReached(Fighter enemy)
+        {
+            return enemy.Body.Contains(Position.X, Position.Y);
+        }
     }
 }

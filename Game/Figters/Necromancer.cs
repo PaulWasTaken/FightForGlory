@@ -92,14 +92,14 @@ namespace Game.Figters
                     if (LookRight)
                     {
                         if (!this.IsMovementAllowed(dx, 0, Opponent)) return null;
-                        Body = GameMethods.MoveRect(Body, dx, 0);
+                        Body = Body.Move(dx, 0);
                         //CurrentImage = Resources.NecromancerTeleportRight;
                         TeleportCooldown();
                     }
                     else
                     {
                         if (!this.IsMovementAllowed(-dx, 0, Opponent)) return null;
-                        Body = GameMethods.MoveRect(Body, -dx, 0);
+                        Body = Body.Move(-dx, 0);
                         //CurrentImage = Resources.NecromancerTeleportLeft;
                         TeleportCooldown();
                     }

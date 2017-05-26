@@ -21,6 +21,8 @@ namespace Game.GameWindows
 
         public GameWindow()
         {
+            WindowState = FormWindowState.Maximized;
+            //FormBorderStyle = FormBorderStyle.None;
             Width = SystemInformation.VirtualScreen.Width;
             Height = SystemInformation.VirtualScreen.Height;
             firstPlayerLocation = new PointF(Width / 2 - 200, Height / 1.5f);
@@ -153,13 +155,17 @@ namespace Game.GameWindows
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            gameController.KeyDown(e);
+            if (gameStarted)
+                gameController.KeyDown(e);
+            e.SuppressKeyPress = true;
             base.OnKeyDown(e);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            gameController.KeyUp(e);
+            if (gameStarted)
+                gameController.KeyUp(e);
+            e.SuppressKeyPress = true;
             base.OnKeyUp(e);
         }
 

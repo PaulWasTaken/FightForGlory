@@ -26,7 +26,7 @@ namespace Game.GameObjects
                     distance = GameSettings.Resolution.X - body.Right;
                     x = GameSettings.Resolution.X;
                 }
-                Picture = GameMethods.ResizeBitmap(Resources.LightningRight, distance, body.Height);
+                Picture = Resources.LightningRight.Resize(distance, body.Height);
             }
             else
             {
@@ -38,7 +38,7 @@ namespace Game.GameObjects
                 }
                 else
                     x = enemy.Body.Right;
-                Picture = GameMethods.ResizeBitmap(Resources.LightningLeft, distance, body.Height);
+                Picture = Resources.LightningLeft.Resize(distance, body.Height);
             }
             Position = new PointF(x, y);
         }

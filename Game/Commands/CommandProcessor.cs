@@ -32,7 +32,7 @@ namespace Game.Commands
                 case Command.StrongAttack:
                     break;
                 default:
-                    throw new NotImplementedException();
+                    throw new NotSupportedException();
             }
         }
     }
