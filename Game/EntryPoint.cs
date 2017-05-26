@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Game.GameWindows;
 using MainMenu = Game.GameWindows.MainMenu;
 
 namespace Game
@@ -14,7 +15,7 @@ namespace Game
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainMenu());
+            Application.Run(new GameWindow());
         }
     }
 }
