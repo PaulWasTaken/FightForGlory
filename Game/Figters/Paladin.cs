@@ -40,7 +40,7 @@ namespace Game.Figters
             comboPerfomer[ComboName.HolyLight] = () => {
                 if (!(ManaPoints >= 40)) return null;
                 ManaPoints -= 40;
-                return new Wisp(Body, LookRight, Opponent);
+                return new Wisp(Body, LookRight, Number);
             };
 
             return new ComboController(detector, comboPerfomer);

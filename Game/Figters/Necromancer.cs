@@ -48,7 +48,7 @@ namespace Game.Figters
 
         public override void AttackCooldown()
         {
-            var cooldown = new Timer { Interval = 200, Enabled = true };
+            var cooldown = new Timer { Interval = 10, Enabled = true };
             cooldown.Tick += (sender, args) =>
             {
                 Attack = false;
@@ -80,9 +80,9 @@ namespace Game.Figters
                 ManaPoints -= 40;
                 Attack = true;
                 AttackCooldown();
-                return new Bolt(Body, LookRight, Opponent);
+                return new Bolt(Body, LookRight, Number);
             };
-
+            /*
             comboPerfomer[ComboName.Teleport] = () =>
             {
                 if (ManaPoints >= 10)
@@ -107,6 +107,7 @@ namespace Game.Figters
                 }
                 return null;
             };
+            */
             return new ComboController(comboDetector, comboPerfomer);
         }
     }

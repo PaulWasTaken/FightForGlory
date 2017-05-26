@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using Game.BaseStructures;
+using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.Commands;
 using Game.Controllers;
@@ -36,7 +37,7 @@ namespace Game.GameInformation
 
         private void InitializeMover()
         {
-            // In case of changing управление. Лол
+            // In case of changing управление.
         }
 
         public Dictionary<PlayerNumber, Dictionary<Command, Keys>> ReversedDeterminater =
@@ -69,8 +70,24 @@ namespace Game.GameInformation
             }
         };
 
-        public Dictionary<PlayerNumber, ComboController> DictWithComboControllers = new Dictionary<PlayerNumber, ComboController>();
-        public Dictionary<PlayerNumber, ImageController> DictWithImageChangers = new Dictionary<PlayerNumber, ImageController>();
+        public ComboController GetComboController(PlayerNumber player)
+        {
+            return dictWithComboControllers[player];
+        }
+
+        public ImageController GetImageController(PlayerNumber player)
+        {
+            return dictWithImageControllers[player];
+        }
+
+        public void AddControllersForPlayer(Fighter player)
+        {
+            dictWithComboControllers[player.Number] = player.GetCombos();
+            dictWithImageControllers[player.Number] = new ImageController(player);
+        }
+
+        private readonly Dictionary<PlayerNumber, ComboController> dictWithComboControllers = new Dictionary<PlayerNumber, ComboController>();
+        private readonly Dictionary<PlayerNumber, ImageController> dictWithImageControllers = new Dictionary<PlayerNumber, ImageController>();
 
         public static Display Resolution { get; set; }
         public float XIndent => Resolution.X / 80f;

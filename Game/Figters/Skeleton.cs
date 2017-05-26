@@ -66,7 +66,7 @@ namespace Game.Figters
             comboPerfomer[ComboName.ThrowSpear] = () => {
                 if (ManaPoints < 40) return null;
                 ManaPoints -= 40;
-                return new Spear(Body, LookRight, Opponent);
+                return new Spear(Body, LookRight, Number);
             };
 
             return new ComboController(comboDetector, comboPerfomer);

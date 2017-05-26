@@ -2,16 +2,11 @@
 
 namespace Game.BaseStructures.AbstractClasses
 {
-    public abstract class SpecialStrike
+    public interface ISpecialStrike
     {
-        public Fighter Source { get; set; }
-        public float Damage { get; set; }
-        public float Range { get; set; }
-        public abstract bool IfReached();
-        public void FixPicture()
-        {
-            //Source.CurrentImage = Source.PreviousImage;
-            Source.State = FighterMotionState.NotMoving;
-        }
+        Fighter Source { get; set; }
+        float Damage { get; set; }
+        float Range { get; set; }
+        bool IfReached(Fighter opponent);
     }
 }

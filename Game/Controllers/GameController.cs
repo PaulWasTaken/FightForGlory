@@ -22,7 +22,7 @@ namespace Game.Controllers
         {
             foreach (var fighter in gameState.Fighters)
             {
-                var comboPerformer = settings.DictWithComboControllers[fighter.Number];
+                var comboPerformer = settings.GetComboController(fighter.Number);
                 if (gameState.SpecialStrikes.Count != 0)
                     break;
                 if (!settings.Determinater[fighter.Number].ContainsKey(e.KeyData)) continue;

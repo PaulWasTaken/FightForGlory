@@ -10,7 +10,7 @@ namespace Game.BaseStructures.AbstractClasses
     {
         public PlayerNumber Number { get; set; }
         public bool IsFrozen { get; set; }
-        public Fighter Opponent { get; set; }
+        //public Fighter Opponent { get; set; }
         public string Name { get; set; }
         public float HealthPoints { get; set; }
         public float ManaPoints { get; set; }
@@ -22,11 +22,6 @@ namespace Game.BaseStructures.AbstractClasses
         public BlockState Block { get; set; }
         public bool Attack { get; set; }
         public FighterMotionState State { get; set; }
-
-        public void KnowYourEnemy(Fighter enemy)
-        {
-            Opponent = enemy;
-        }
 
         public void ToTheGround()
         {
@@ -45,38 +40,22 @@ namespace Game.BaseStructures.AbstractClasses
             Body = GameMethods.MoveRect(Body, 0, -300);
         }
 
-        public void Move(int dx)
+        public void Move(int dx, Fighter opponent)
         {
             if (Attack || Block.Blocking)
                 return;
-            if (!this.IsMovementAllowed(dx, 0, Opponent)) return;
+            if (!this.IsMovementAllowed(dx, 0, opponent)) return;
             Body = GameMethods.MoveRect(Body, dx, 0);
         }
 
         public void DoAttack()
         {
-            if (Name == "Necromancer") return;
+            //if (Name == "Necromancer") return;
             if (Attack || Block.Blocking)
                 return;
 
             Attack = true;
             AttackCooldown();
-
-            if (Opponent.Body.Bottom < Body.Bottom - Body.Height / 2)
-                return;
-
-            if (LookRight)
-            {
-                if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Left) return;
-                if (Opponent.Body.Contains(Body.Right + AttackRange, Body.Y + Body.Height / 4))
-                    Opponent.HealthPoints -= AttackDamage;
-            }
-            else
-            {
-                if (Opponent.Block.Blocking && Opponent.Block.Side == BlockSide.Right) return;
-                if (Opponent.Body.Contains(Body.Left - AttackRange, Body.Y + Body.Height / 4))
-                    Opponent.HealthPoints -= AttackDamage;
-            }
         }
 
         public void DoBlock()

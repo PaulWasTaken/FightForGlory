@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using Game.BaseStructures.Enums;
 
 namespace Game.BaseStructures.AbstractClasses
 {
@@ -13,7 +14,7 @@ namespace Game.BaseStructures.AbstractClasses
             Position = new PointF(Position.X + Speed, Position.Y);
         }
 
-        public abstract bool CheckState();
-        public Fighter Opponent { get; set; }
+        public abstract bool CheckState(Fighter opponent);
+        public PlayerNumber Source { get; set; }
     }
 }

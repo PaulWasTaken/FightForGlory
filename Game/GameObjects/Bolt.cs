@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Game.BaseStructures.AbstractClasses;
+using Game.BaseStructures.Enums;
 using Game.GameInformation;
 using Game.Properties;
 
@@ -11,9 +12,9 @@ namespace Game.GameObjects
         public override int Damage => 40;
         private bool isFirstTime = true;
 
-        public Bolt(RectangleF body, bool lookRight, Fighter enemy)
+        public Bolt(RectangleF body, bool lookRight, PlayerNumber source)
         {
-            Opponent = enemy;
+            Source = source;
             var y = body.Top;
             float x;
             if (lookRight)
@@ -42,12 +43,12 @@ namespace Game.GameObjects
             Position = new PointF(x, y);
         }
 
-        public override bool CheckState()
+        public override bool CheckState(Fighter opponent)
         {
             if (!isFirstTime) return true;
             if (Math.Abs(Position.X) > 0.01 && Math.Abs(Position.Y - GameSettings.Resolution.X) > 0.01)
-                if (Opponent.Body.Bottom > Position.Y)
-                    Opponent.HealthPoints -= Damage;
+                if (opponent.Body.Bottom > Position.Y)
+                    opponent.HealthPoints -= Damage;
             isFirstTime = false;
             return false;
         }

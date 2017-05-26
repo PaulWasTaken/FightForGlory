@@ -13,18 +13,27 @@ namespace Game.GameInformation
             SecondPlayer = second;
             Lost = Tuple.Create(false, "");
             GameObjects = new List<GameObject>();
-            SpecialStrikes = new List<SpecialStrike>();
+            SpecialStrikes = new List<ISpecialStrike>();
 
-            FirstPlayer.KnowYourEnemy(SecondPlayer);
-            FirstPlayer.Number = PlayerNumber.FirstPlayer;
-            SecondPlayer.KnowYourEnemy(FirstPlayer);
-            SecondPlayer.Number = PlayerNumber.SecondPlayer;
+            Opponent = new Dictionary<PlayerNumber, Fighter> {
+                { PlayerNumber.FirstPlayer, SecondPlayer},
+                { PlayerNumber.SecondPlayer, FirstPlayer}
+            };
+
+            
             Fighters = new List<Fighter> { FirstPlayer, SecondPlayer };
+        }
+
+        public Fighter GetOpponent(PlayerNumber number)
+        {
+            return Opponent[number];
         }
         public Fighter FirstPlayer { get; set; }
         public Fighter SecondPlayer { get; set; }
         public List<GameObject> GameObjects { get; set; }
-        public List<SpecialStrike> SpecialStrikes { get; set; }
+        public List<ISpecialStrike> SpecialStrikes { get; set; }
+
+        private Dictionary<PlayerNumber, Fighter> Opponent { get; }
 
         public List<Fighter> Fighters;
 

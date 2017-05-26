@@ -11,9 +11,9 @@ namespace Game.GameObjects
     {
         public override int Damage => 20;
 
-        public Spear(RectangleF body, bool lookRight, Fighter enemy)
+        public Spear(RectangleF body, bool lookRight, PlayerNumber source)
         {
-            Opponent = enemy;
+            Source = source;
             var y = body.Bottom - (body.Bottom - body.Top) / 1.5f;
             float x;
             if (lookRight)
@@ -32,7 +32,7 @@ namespace Game.GameObjects
             Position = new PointF(x, y);
         }
 
-        public override bool CheckState()
+        public override bool CheckState(Fighter Opponent)
         {
             if (Speed > 0)
             {

@@ -13,6 +13,7 @@ namespace Game.GameWindows
         private GameSettings settings;
         private GameState gameState;
         private GameController gameController;
+        private CombatController combatController;
         private bool gameStarted;
 
         private readonly PointF firstPlayerLocation;
@@ -68,16 +69,13 @@ namespace Game.GameWindows
             settings = new GameSettings(Width, Height);
             var firstPlayer = CreateFighter(players[0], firstPlayerLocation);
             var secondPlayer = CreateFighter(players[1], secondPlayerLocation);
+
             gameState = new GameState(firstPlayer, secondPlayer);
             gameController = new GameController(settings, gameState);
-            settings.DictWithComboControllers[PlayerNumber.FirstPlayer] = gameState.FirstPlayer.GetCombos();
-            settings.DictWithComboControllers[PlayerNumber.SecondPlayer] = gameState.SecondPlayer.GetCombos();
+            combatController = new CombatController(firstPlayer, secondPlayer);
 
-            settings.DictWithImageChangers[PlayerNumber.FirstPlayer] = new ImageController(gameState.FirstPlayer);
-            settings.DictWithImageChangers[PlayerNumber.SecondPlayer] = new ImageController(gameState.SecondPlayer);
-
-            settings.DictWithImageChangers[PlayerNumber.FirstPlayer] = new ImageController(gameState.FirstPlayer);
-            settings.DictWithImageChangers[PlayerNumber.SecondPlayer] = new ImageController(gameState.SecondPlayer);
+            settings.AddControllersForPlayer(firstPlayer);
+            settings.AddControllersForPlayer(secondPlayer);
 
             var timer = new Timer {Interval = 20};
             timer.Tick += TimerTick;
@@ -111,29 +109,19 @@ namespace Game.GameWindows
 
             foreach (var fighter in gameState.Fighters)
             {
-                e.Graphics.DrawImage(settings.DictWithImageChangers[fighter.Number].CurrentImage, fighter.Body.Location);
+                e.Graphics.DrawImage(settings.GetImageController(fighter.Number).CurrentImage, fighter.Body.Location);
                 DrawBars(fighter, e);
             }
 
             foreach (var obj in gameState.GameObjects)
             {
                 obj.Move();
-                if (obj.CheckState())
+                if (obj.CheckState(gameState.GetOpponent(obj.Source)))
                 {
                     gameState.GameObjects.Remove(obj);
                     break;
                 }
                 e.Graphics.DrawImage(obj.Picture, obj.Position.X, obj.Position.Y);
-            }
-
-            foreach (var strike in gameState.SpecialStrikes)
-            {
-                if (strike.IfReached())
-                {
-                    strike.FixPicture();
-                    gameState.SpecialStrikes.Remove(strike);
-                    break;
-                }
             }
         }
 
@@ -187,13 +175,14 @@ namespace Game.GameWindows
                 if (fighter.State == FighterMotionState.MovingRight)
                     fighter.Move(10, settings.Resolution.X);
                     */
-                fighter.Move((int)fighter.State * 10);
-                settings.DictWithImageChangers[fighter.Number].UpdateFighterImage();
+                fighter.Move((int)fighter.State * 10, gameState.GetOpponent(fighter.Number));
+                settings.GetImageController(fighter.Number).UpdateFighterImage();
                 fighter.ToTheGround();
                 fighter.ManaRegeneration();
                 if (fighter.HealthPoints <= 0)
-                    gameState.Lost = Tuple.Create(true, fighter.Opponent.Number.ToString());
-            }           
+                    gameState.Lost = Tuple.Create(true, gameState.GetOpponent(fighter.Number).Number.ToString());
+            }
+            combatController.CheckForCombat(gameState.GameObjects);          
             Invalidate();
         }
 
