@@ -25,8 +25,8 @@ namespace Game.GameWindows
             //FormBorderStyle = FormBorderStyle.None;
             Width = SystemInformation.VirtualScreen.Width;
             Height = SystemInformation.VirtualScreen.Height;
-            firstPlayerLocation = new PointF(Width / 2 - 200, Height / 1.5f);
-            secondPlayerLocation = new PointF(Width / 2 + 200, Height / 1.5f);
+            firstPlayerLocation = new PointF(Width / 2 - Width / 4, Height / 1.5f);
+            secondPlayerLocation = new PointF(Width / 2 + Width / 4, Height / 1.5f);
             StartPosition = FormStartPosition.CenterScreen;
             MaximizeBox = false;
             DoubleBuffered = true;
@@ -70,9 +70,7 @@ namespace Game.GameWindows
             BackgroundImage = new Bitmap(Properties.Resources.Background, new Size(Width, Height));
             settings = new GameSettings(Width, Height);
             var firstPlayer = CreateFighter(players[0], firstPlayerLocation);
-            firstPlayer.Number = PlayerNumber.FirstPlayer;
             var secondPlayer = CreateFighter(players[1], secondPlayerLocation);
-            secondPlayer.Number = PlayerNumber.SecondPlayer;
 
             gameState = new GameState(firstPlayer, secondPlayer);
             gameController = new GameController(settings, gameState);
@@ -82,7 +80,7 @@ namespace Game.GameWindows
             settings.AddControllersForPlayer(secondPlayer);
             settings.AddControllersForObjects();
 
-            var timer = new Timer {Interval = 50};
+            var timer = new Timer {Interval = 50};  //Kinda fps
             timer.Tick += TimerTick;
             timer.Start();
         }
@@ -91,7 +89,18 @@ namespace Game.GameWindows
         {
             var constuctor = type.GetConstructor(new[] { typeof(string), typeof(float), typeof(float) });
             // ReSharper disable once PossibleNullReferenceException
-            return (Fighter)constuctor.Invoke(new object[] { type.Name, location.X, location.Y });
+            var fighter = (Fighter)constuctor.Invoke(new object[] { type.Name, location.X, location.Y });
+            if (location.X < GameSettings.Resolution.X  / 2f)
+            {
+                fighter.Number = PlayerNumber.FirstPlayer;
+                fighter.LookRight = true;
+            }
+            else
+            {
+                fighter.Number = PlayerNumber.SecondPlayer;
+                fighter.LookRight = false;
+            }
+            return fighter;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -101,7 +110,7 @@ namespace Game.GameWindows
             if (gameState.Finished)
             {
                 e.Graphics.DrawString(gameState.Lost.Item2 + " won!", new Font("Arial", 20), 
-                    Brushes.Green, GameSettings.Resolution.X / 2 - 200, GameSettings.Resolution.Y / 2.0f);
+                    Brushes.Green, GameSettings.Resolution.X / 5f, GameSettings.Resolution.Y / 2.0f);
                 return;
             }
             if (gameState.Lost.Item1)
@@ -135,27 +144,21 @@ namespace Game.GameWindows
         private void DrawBars(Fighter fighter, PaintEventArgs e)
         {
             if (fighter.Number == PlayerNumber.FirstPlayer)
-            {
-                e.Graphics.DrawRectangle(new Pen(Color.Black), 0, 0, GameSettings.Resolution.X / 2.0f - settings.XIndent, 20);
-                e.Graphics.FillRectangle(Brushes.Red, 2, 2, 
-                    fighter.Body.Width * fighter.HealthPoints / 100 * 8 - settings.XIndent, 18);
-
-                e.Graphics.DrawRectangle(new Pen(Color.Black), 0, 20, GameSettings.Resolution.X / 2.0f - settings.XIndent, 20);
-                e.Graphics.FillRectangle(Brushes.Blue, 2, 22, 
-                    fighter.Body.Width * fighter.ManaPoints / 100 * 8 - settings.XIndent, 18);
-            }
+                DrawHpAndManaBars(e.Graphics, fighter, 0, 0, GameSettings.Resolution.X / 2.0f, GameSettings.Resolution.Y / 45f);
             else
-            {
-                e.Graphics.DrawRectangle(new Pen(Color.Black), GameSettings.Resolution.X / 2.0f, 0,
-                    GameSettings.Resolution.X / 2.0f - settings.XIndent, 20);
-                e.Graphics.FillRectangle(Brushes.Red, GameSettings.Resolution.X / 2.0f, 2, 
-                    fighter.Body.Width * fighter.HealthPoints / 100 * 8 - settings.XIndent, 18);
+                DrawHpAndManaBars(e.Graphics, fighter, GameSettings.Resolution.X / 2.0f, 0, 
+                                  GameSettings.Resolution.X / 2.0f, GameSettings.Resolution.Y / 45f);
+        }
 
-                e.Graphics.DrawRectangle(new Pen(Color.Black), GameSettings.Resolution.X / 2.0f, 20,
-                    GameSettings.Resolution.X / 2.0f - settings.XIndent, 20);
-                e.Graphics.FillRectangle(Brushes.Blue, GameSettings.Resolution.X / 2.0f, 22, 
-                    fighter.Body.Width * fighter.ManaPoints / 100 * 8 - settings.XIndent, 18);
-            }
+        private void DrawHpAndManaBars(Graphics drawer, Fighter fighter, float x, float y, float width, float height)
+        {
+            drawer.DrawRectangle(new Pen(Color.Black), x, y, width - settings.XIndent, height);
+            drawer.FillRectangle(Brushes.Red, x + 2, y + 2,
+                fighter.Body.Width * fighter.HealthPoints / 100 * 8 - settings.XIndent, height - 2);
+
+            drawer.DrawRectangle(new Pen(Color.Black), x, y + height + 2, GameSettings.Resolution.X / 2.0f - settings.XIndent, height);
+            drawer.FillRectangle(Brushes.Blue, x + 2, y + height + 4,
+                fighter.Body.Width * fighter.ManaPoints / 100 * 8 - settings.XIndent, height - 2);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
