@@ -43,7 +43,7 @@ namespace Game.Fighters
 
         public void TakeDamage(float damage)
         {
-            HealthPoints -= damage;
+            State = FighterMotionState.NotMoving;
         }
 
         public void Turn(MovingSide side)
