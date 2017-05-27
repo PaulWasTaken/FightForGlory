@@ -36,9 +36,14 @@ namespace Game.Fighters
             LookingRight = Number == PlayerNumber.FirstPlayer;
         }
 
+        public void StandStill()
+        {
+            State = FighterMotionState.NotMoving;
+        }
+
         public void TakeDamage(int damage)
         {
-            
+            HealthPoints -= damage;
         }
 
         public void Turn(MovingSide side)
