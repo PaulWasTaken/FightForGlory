@@ -30,20 +30,22 @@ namespace Game.Figters
             AttackRange = Body.Width / 2;
         }
 
-        public override ComboController GetCombos()
+        public override ComboController GetComboController()
         {
-            var detector = new ComboDetector<Command>();
-
-            detector.Add(new[] { Command.Jump, Command.Down, Command.Down }, ComboName.HolyLight);
-
-            var comboPerfomer = new Dictionary<ComboName, Func<GameObject>>();
-            comboPerfomer[ComboName.HolyLight] = () => {
-                if (!(ManaPoints >= 40)) return null;
-                ManaPoints -= 40;
-                return new Wisp(Body, LookRight, Number);
+            var comboResults = new Dictionary<ComboName, Func<GameObject>>
+            {
+                [ComboName.HolyLight] = () =>
+                {
+                    if (!(ManaPoints >= 40)) return null;
+                    ManaPoints -= 40;
+                    return new Wisp(Body, LookRight, Number);
+                }
             };
 
-            return new ComboController(detector, comboPerfomer);
+            var controller = new ComboController(comboResults);
+            controller.AddCombo(new[] { Command.Jump, Command.Down, Command.Down }, ComboName.HolyLight);
+
+            return controller;
         }
 
         public override void ManaRegeneration()

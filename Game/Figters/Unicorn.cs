@@ -55,38 +55,9 @@ namespace Game.Figters
             };
         }
 
-        public override ComboController GetCombos()
+        public override ComboController GetComboController()
         {
-            return new ComboController(new ComboDetector<Command>(), new Dictionary<ComboName, Func<GameObject>>());
-            /*
-            var comboDetector = new ComboDetector<Command>();
-            var comboPerfomer = new Dictionary<ComboName, Func<GameObject>>();
-
-            if (Number == PlayerNumber.FirstPlayer)
-            {
-                comboDetector.Add(new[] { Keys.D, Keys.D, Keys.D, Keys.Z }, ComboName.DevastatingCharge);
-                comboDetector.Add(new[] { Keys.A, Keys.A, Keys.A, Keys.Z }, ComboName.DevastatingCharge);
-                CurrentImage = Picture.Right;
-                LookRight = true;
-            }
-            else
-            {
-                comboDetector.Add(new[] { Keys.Right, Keys.Right, Keys.Right, Keys.K }, ComboName.DevastatingCharge);
-                comboDetector.Add(new[] { Keys.Left, Keys.Left, Keys.Left, Keys.K }, ComboName.DevastatingCharge);
-                CurrentImage = Picture.Left;
-            }
-
-            comboPerfomer[ComboName.DevastatingCharge] = () => {
-                if (ManaPoints >= 30)
-                {
-                    ManaPoints -= 30;
-                    //GameWindow.SpecialStrikes.Add(new DevastatingCharge(this));
-                }
-                return null;
-            };
-            
-            return new ComboController(comboDetector, comboPerfomer);
-            */
+            return new ComboController(new Dictionary<ComboName, Func<GameObject>>());
         }
     }
 }

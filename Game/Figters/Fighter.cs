@@ -50,7 +50,6 @@ namespace Game.BaseStructures.AbstractClasses
 
         public void DoAttack()
         {
-            //if (Name == "Necromancer") return;
             if (Attack || Block.Blocking)
                 return;
 
@@ -87,7 +86,7 @@ namespace Game.BaseStructures.AbstractClasses
 
         public abstract void BlockCooldown();
         public abstract void AttackCooldown();
-        public abstract ComboController GetCombos();
+        public abstract ComboController GetComboController();
         public abstract void ManaRegeneration();
     }
 }

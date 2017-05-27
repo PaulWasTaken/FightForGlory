@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
@@ -9,26 +10,37 @@ namespace Game.Controllers
 {
     public class ComboController
     {
-        private readonly ComboDetector<Command> comboDetector;
-        private readonly Dictionary<ComboName, Func<GameObject>> comboPerformer;
+        private readonly AutomatNode<Command> defaultState = new AutomatNode<Command>(ComboName.NotACombo);
+        public AutomatNode<Command> CurrentState { get; private set; }
+        private readonly Dictionary<ComboName, Func<GameObject>> comboResults;
+        public bool ComboCompleted => comboResults.ContainsKey(CurrentState.Name);
 
-        public ComboController(ComboDetector<Command> comboDetector, Dictionary<ComboName, Func<GameObject>> comboPerformer)
+        public ComboController(Dictionary<ComboName, Func<GameObject>> comboResults)
         {
-            this.comboDetector = comboDetector;
-            this.comboPerformer = comboPerformer;
+            this.comboResults = comboResults;
+            CurrentState = defaultState;
         }
-        public bool CheckForCombo(Command command)
+        public void AddCombo(Command[] combo, ComboName name)
         {
-            if (comboDetector.CurrentState.Name != ComboName.Default)
-                return comboDetector.CheckState(command);
-            comboDetector.FindValue(command);
-            return false;
+            var current = defaultState;
+            for(var i = 0; i < combo.Length - 1; i++)
+            {
+                current.NextStates.Add(new AutomatNode<Command>(combo[i], ComboName.NotACombo));
+                current = current.NextStates.Last();
+            }
+            current.NextStates.Add(new AutomatNode<Command>(combo.Last(), name));
+        }
+
+        public void UpdateState(Command move)
+        {
+            var nextState = CurrentState.NextStates.FirstOrDefault(n => n.Value.Equals(move));
+            CurrentState = nextState ?? defaultState;
         }
 
         public GameObject PerformCombo()
         {
-            var obj = comboPerformer[comboDetector.CurrentState.Name]();
-            comboDetector.CurrentState = comboDetector.DefaultState;
+            var obj = comboResults[CurrentState.Name]();
+            CurrentState = defaultState;
             return obj;
         }
     }

@@ -56,20 +56,22 @@ namespace Game.Figters
             };
         }
 
-        public override ComboController GetCombos()
+        public override ComboController GetComboController()
         {
-            var comboDetector = new ComboDetector<Command>();
-            var comboPerfomer = new Dictionary<ComboName, Func<GameObject>>();
-
-            comboDetector.Add(new[] { Command.NormalAttack, Command.Down, Command.StrongAttack}, ComboName.ThrowSpear);
-
-            comboPerfomer[ComboName.ThrowSpear] = () => {
-                if (ManaPoints < 40) return null;
-                ManaPoints -= 40;
-                return new Spear(Body, LookRight, Number);
+            var comboResults = new Dictionary<ComboName, Func<GameObject>>
+            {
+                [ComboName.ThrowSpear] = () =>
+                {
+                    if (ManaPoints < 40) return null;
+                    ManaPoints -= 40;
+                    return new Spear(Body, LookRight, Number);
+                }
             };
 
-            return new ComboController(comboDetector, comboPerfomer);
+            var controller = new ComboController(comboResults);
+            controller.AddCombo(new[] { Command.NormalAttack, Command.Down, Command.StrongAttack }, ComboName.ThrowSpear);
+
+            return controller;
         }
     }
 }

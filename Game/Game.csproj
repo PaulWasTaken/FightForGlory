@@ -61,10 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseStructures\AbstractClasses\Fighter.cs" />
+    <Compile Include="Figters\Fighter.cs" />
     <Compile Include="BaseStructures\AbstractClasses\GameObject.cs" />
-    <Compile Include="BaseStructures\ComboWorker\ComboDetector.cs" />
-    <Compile Include="BaseStructures\ComboWorker\Node.cs" />
+    <Compile Include="BaseStructures\AutomatNode.cs" />
     <Compile Include="BaseStructures\Enums\BlockSide.cs" />
     <Compile Include="BaseStructures\Enums\ComboName.cs" />
     <Compile Include="BaseStructures\Enums\FigterMotionState.cs" />

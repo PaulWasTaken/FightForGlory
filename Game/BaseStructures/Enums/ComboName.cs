@@ -2,7 +2,7 @@
 {
     public enum ComboName
     {
-        Default,
+        NotACombo,
         ThrowSpear,
         HolyLight,
         LightningAttack,

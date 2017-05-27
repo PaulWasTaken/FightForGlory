@@ -66,49 +66,25 @@ namespace Game.Figters
             };
         }
 
-        public override ComboController GetCombos()
+        public override ComboController GetComboController()
         {
-            var comboDetector = new ComboDetector<Command>();
-            var comboPerfomer = new Dictionary<ComboName, Func<GameObject>>();
-
-            comboDetector.Add(new[] { Command.NormalAttack, Command.NormalAttack, Command.NormalAttack, Command.NormalAttack, Command.NormalAttack }, ComboName.LightningAttack);
-            comboDetector.Add(new[] { Command.Down, Command.Down, Command.Down }, ComboName.Teleport);
-
-            comboPerfomer[ComboName.LightningAttack] = () =>
+            var comboResults = new Dictionary<ComboName, Func<GameObject>>
             {
-                if (!(ManaPoints >= 40)) return null;
-                ManaPoints -= 40;
-                Attack = true;
-                AttackCooldown();
-                return new Lightning(Body, LookRight, Number);
-            };
-            /*
-            comboPerfomer[ComboName.Teleport] = () =>
-            {
-                if (ManaPoints >= 10)
+                [ComboName.LightningAttack] = () =>
                 {
-                    ManaPoints -= 10;
-                    var dx = GameSettings.Resolution.X / 5;
-                    if (LookRight)
-                    {
-                        if (!this.IsMovementAllowed(dx, 0, Opponent)) return null;
-                        Body = Body.Move(dx, 0);
-                        //CurrentImage = Resources.NecromancerTeleportRight;
-                        TeleportCooldown();
-                    }
-                    else
-                    {
-                        if (!this.IsMovementAllowed(-dx, 0, Opponent)) return null;
-                        Body = Body.Move(-dx, 0);
-                        //CurrentImage = Resources.NecromancerTeleportLeft;
-                        TeleportCooldown();
-                    }
-                    return null;
+                    if (!(ManaPoints >= 40)) return null;
+                    ManaPoints -= 40;
+                    Attack = true;
+                    AttackCooldown();
+                    return new Lightning(Body, LookRight, Number);
                 }
-                return null;
             };
-            */
-            return new ComboController(comboDetector, comboPerfomer);
+
+            var controller = new ComboController(comboResults);
+            controller.AddCombo(new[] { Command.NormalAttack, Command.NormalAttack, Command.NormalAttack, Command.NormalAttack, Command.NormalAttack }, ComboName.LightningAttack);
+            controller.AddCombo(new[] { Command.Down, Command.Down, Command.Down }, ComboName.Teleport);
+
+            return controller;
         }
     }
 }

@@ -85,7 +85,7 @@ namespace Game.GameInformation
 
         public void AddControllersForPlayer(Fighter player)
         {
-            dictWithComboControllers[player.Number] = player.GetCombos();
+            dictWithComboControllers[player.Number] = player.GetComboController();
             dictWithImageControllers[player.Number] = new ImageController(player);
         }
 

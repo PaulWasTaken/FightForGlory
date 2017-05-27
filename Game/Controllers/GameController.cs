@@ -22,14 +22,15 @@ namespace Game.Controllers
         {
             foreach (var fighter in gameState.Fighters)
             {
-                var comboPerformer = settings.GetComboController(fighter.Number);
+                var comboController = settings.GetComboController(fighter.Number);
                 if (gameState.SpecialStrikes.Count != 0)
                     break;
                 if (!settings.Determinater[fighter.Number].ContainsKey(e.KeyData)) continue;
                 var command = settings.Determinater[fighter.Number][e.KeyData];
-                if (comboPerformer.CheckForCombo(command))
+                comboController.UpdateState(command);
+                if (comboController.ComboCompleted)
                 {
-                    var res = comboPerformer.PerformCombo();
+                    var res = comboController.PerformCombo();
                     if (res != null)
                         gameState.GameObjects.Add(res);
                 }
