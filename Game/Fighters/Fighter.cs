@@ -75,8 +75,6 @@ namespace Game.Fighters
                 return;
             if (!IsMovementAllowed(dx, 0, opponent)) return;
             Body = Body.Move(dx, 0);
-            if (!IsMovementAllowed(dx, 0, opponent)) return;
-            Body = Body.Move(dx, 0);
         }
 
         public void Attack()
