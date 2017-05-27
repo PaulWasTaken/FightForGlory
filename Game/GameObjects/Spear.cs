@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
-using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
+using Game.Fighters;
 using Game.GameInformation;
 using Game.Properties;
 
@@ -34,12 +34,12 @@ namespace Game.GameObjects
             if (IsOutsideScreen()) return true;
             if (Speed > 0)
             {
-                if (opponent.Block.Blocking && opponent.Block.Side == BlockSide.Left) return false;
+                if (opponent.IsBlocking && !opponent.LookingRight) return false;
                 if (!HasReached(opponent)) return false;
                 opponent.HealthPoints -= Damage;
                 return true;
             }
-            if (opponent.Block.Blocking && opponent.Block.Side == BlockSide.Right) return false;
+            if (opponent.IsBlocking && opponent.LookingRight) return false;
             if (!HasReached(opponent)) return false;
             opponent.HealthPoints -= Damage;
             return true;

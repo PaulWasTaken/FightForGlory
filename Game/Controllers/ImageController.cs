@@ -1,7 +1,8 @@
 ﻿using System.Drawing;
 using Game.BaseStructures;
-using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
+using Game.Fighters;
+using Game.GameObjects;
 
 namespace Game.Controllers
 {
@@ -18,7 +19,7 @@ namespace Game.Controllers
             this.fighter = fighter;
             Trigger = true;
             Picture = ImageInfo.CreateFigtherInfo(fighter.Name);
-            CurrentImage = fighter.LookRight ? Picture.Right : Picture.Left;
+            CurrentImage = fighter.LookingRight ? Picture.Right : Picture.Left;
             PreviousImage = CurrentImage;
         }
 
@@ -38,30 +39,30 @@ namespace Game.Controllers
             if (fighter.State == FighterMotionState.MovingRight)
             {
                 CurrentImage = Picture.GetMovingImage(movingRight: true);
-                fighter.LookRight = true;
+                fighter.LookingRight = true;
             }
             if (fighter.State == FighterMotionState.MovingLeft)
             {
                 CurrentImage = Picture.GetMovingImage(movingRight: false);
-                fighter.LookRight = false;
+                fighter.LookingRight = false;
             }
         }
 
         private void UpdateFighterBattleImage()
         {
-            if (fighter.Attack)
+            if (fighter.IsAttacking)
             {
                 if (Trigger)
                     PreviousImage = CurrentImage;
                 Trigger = false;
-                CurrentImage = fighter.LookRight ? Picture.AttackRight : Picture.AttackLeft;
+                CurrentImage = fighter.LookingRight ? Picture.AttackRight : Picture.AttackLeft;
             }
-            else if (fighter.Block.Blocking)
+            else if (fighter.IsBlocking)
             {
                 if (Trigger)
                     PreviousImage = CurrentImage;
                 Trigger = false;
-                CurrentImage = fighter.LookRight ? Picture.BlockRight : Picture.BlockLeft;
+                CurrentImage = fighter.LookingRight ? Picture.BlockRight : Picture.BlockLeft;
             }
             else
             {

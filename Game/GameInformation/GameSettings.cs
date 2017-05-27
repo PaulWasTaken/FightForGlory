@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.Commands;
 using Game.Controllers;
+using Game.Fighters;
 using Game.GameObjects;
 
 namespace Game.GameInformation

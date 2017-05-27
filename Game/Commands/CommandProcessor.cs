@@ -1,30 +1,30 @@
 ﻿using System;
-using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
+using Game.Fighters;
 
 namespace Game.Commands
 {
-    public class CommandProcessor : ICommandProcessor
+    public class CommandProcessor
     {
         public void Perfrom(Command command, Fighter fighter)
         {
             switch (command)
             {
                 case Command.NormalAttack:
-                    fighter.DoAttack();
+                    fighter.Attack();
                     break;
                 case Command.Block:
-                    fighter.DoBlock();
+                    fighter.Block();
                     break;
                 case Command.Jump:
                     fighter.Jump();
                     break;
                 case Command.MoveLeft:
-                    fighter.LookRight = false;
+                    fighter.LookingRight = false;
                     fighter.State = FighterMotionState.MovingLeft;
                     break;
                 case Command.MoveRight:
-                    fighter.LookRight = true;
+                    fighter.LookingRight = true;
                     fighter.State = FighterMotionState.MovingRight;
                     break;
                 case Command.Down:

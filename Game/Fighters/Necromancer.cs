@@ -2,25 +2,20 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Game.BaseStructures;
-using Game.BaseStructures.AbstractClasses;
-using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
 using Game.Commands;
 using Game.Controllers;
 using Game.GameInformation;
 using Game.GameObjects;
 
-namespace Game.Figters
+namespace Game.Fighters
 {
     public class Necromancer : Fighter
     {
         public Necromancer(string name, float x, float y)
         {
             State = FighterMotionState.NotMoving;
-            Attack = false;
-            LookRight = Number == PlayerNumber.FirstPlayer;
-            Block = new BlockState();
+            LookingRight = Number == PlayerNumber.FirstPlayer;
 
             Name = name;
             HealthPoints = 100;
@@ -41,7 +36,7 @@ namespace Game.Figters
             var cooldown = new Timer { Interval = 200, Enabled = true };
             cooldown.Tick += (sender, args) =>
             {
-                Block.Blocking = false;
+                IsBlocking = false;
                 cooldown.Dispose();
             };
         }
@@ -51,7 +46,7 @@ namespace Game.Figters
             var cooldown = new Timer { Interval = 10, Enabled = true };
             cooldown.Tick += (sender, args) =>
             {
-                Attack = false;
+                IsAttacking = false;
                 cooldown.Dispose();
             };
         }
@@ -74,9 +69,9 @@ namespace Game.Figters
                 {
                     if (!(ManaPoints >= 40)) return null;
                     ManaPoints -= 40;
-                    Attack = true;
+                    IsAttacking = true;
                     AttackCooldown();
-                    return new Lightning(Body, LookRight, Number);
+                    return new Lightning(Body, LookingRight, Number);
                 }
             };
 

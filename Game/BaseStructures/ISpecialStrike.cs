@@ -1,4 +1,6 @@
-﻿namespace Game.BaseStructures.AbstractClasses
+﻿using Game.Fighters;
+
+namespace Game.BaseStructures
 {
     public interface ISpecialStrike
     {

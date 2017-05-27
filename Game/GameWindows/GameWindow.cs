@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.Controllers;
+using Game.Fighters;
 using Game.GameInformation;
 
 namespace Game.GameWindows
@@ -93,12 +93,12 @@ namespace Game.GameWindows
             if (location.X < GameSettings.Resolution.X  / 2f)
             {
                 fighter.Number = PlayerNumber.FirstPlayer;
-                fighter.LookRight = true;
+                fighter.LookingRight = true;
             }
             else
             {
                 fighter.Number = PlayerNumber.SecondPlayer;
-                fighter.LookRight = false;
+                fighter.LookingRight = false;
             }
             return fighter;
         }

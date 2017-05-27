@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using Game.BaseStructures.AbstractClasses;
+using Game.Fighters;
 
 namespace Game.GameWindows
 {

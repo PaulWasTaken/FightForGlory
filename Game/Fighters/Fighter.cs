@@ -3,7 +3,7 @@ using Game.BaseStructures.Enums;
 using Game.Controllers;
 using Game.GameInformation;
 
-namespace Game.BaseStructures.AbstractClasses
+namespace Game.Fighters
 {
     public abstract class Fighter
     {
@@ -16,9 +16,9 @@ namespace Game.BaseStructures.AbstractClasses
         public float AttackRange { get; set; }
         public bool OnGround { get; set; }
         public RectangleF Body { get; set; }
-        public bool LookRight { get; set; }
-        public BlockState Block { get; set; }
-        public bool Attack { get; set; }
+        public bool LookingRight { get; set; }
+        public bool IsBlocking { get; protected set; }
+        public bool IsAttacking { get; protected set; }
         public FighterMotionState State { get; set; }
 
         public void ToTheGround()
@@ -31,7 +31,7 @@ namespace Game.BaseStructures.AbstractClasses
 
         public void Jump()
         {
-            if (Attack || Block.Blocking)
+            if (IsAttacking || IsBlocking)
                 return;
             if (!OnGround || !(Body.Y / 2 > 200)) return;
             OnGround = false;
@@ -40,30 +40,29 @@ namespace Game.BaseStructures.AbstractClasses
 
         public void Move(int dx, Fighter opponent)
         {
-            if (Attack || Block.Blocking)
+            if (IsAttacking || IsBlocking)
                 return;
-            if (!this.IsMovementAllowed(dx, 0, opponent)) return;
+            if (!IsMovementAllowed(dx, 0, opponent)) return;
             Body = Body.Move(dx, 0);
             if (!IsMovementAllowed(dx, 0, opponent)) return;
             Body = Body.Move(dx, 0);
         }
 
-        public void DoAttack()
+        public void Attack()
         {
-            if (Attack || Block.Blocking)
+            if (IsAttacking || IsBlocking)
                 return;
 
-            Attack = true;
+            IsAttacking = true;
             AttackCooldown();
         }
 
-        public void DoBlock()
+        public void Block()
         {
-            if (Attack || Block.Blocking)
+            if (IsAttacking || IsBlocking)
                 return;
-            Block.Blocking = true;
+            IsBlocking = true;
             BlockCooldown();
-            Block.Side = LookRight ? BlockSide.Right : BlockSide.Left;
         }
 
         protected bool IsMovementAllowed(float dx, float dy, Fighter opponent)
