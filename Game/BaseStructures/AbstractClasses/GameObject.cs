@@ -1,28 +1,43 @@
 ﻿using System.Drawing;
 using Game.BaseStructures.Enums;
-using Game.GameInformation;
 
 namespace Game.BaseStructures.AbstractClasses
 {
     public abstract class GameObject
     {
+        protected GameObject(RectangleF body, bool lookRight, float speed, PlayerNumber source, float width, float height)
+        {
+            Source = source;
+            var y = body.Bottom - (body.Bottom - body.Top) / 1.5f;
+            float x;
+            if (lookRight)
+            {
+                Speed = speed;
+                x = body.Right;
+            }
+            else
+            {
+                Speed = -speed;
+                x = body.Left;
+            }
+            Size = new RectangleF(x, y, width, height);
+        }
         protected float Speed { get; set; }
         public RectangleF Size { get; set; }
         public abstract int Damage { get; }
-        public abstract bool CheckState(Fighter opponent);
         public PlayerNumber Source { get; set; }
-        protected bool HasReached(Fighter enemy)
+
+        public bool IfLookingRight()
         {
-            return enemy.Body.Contains(Size.X, Size.Y + Size.Height / 2);
+            return Speed > 0;
         }
 
-        protected bool IsOutsideScreen()
-        {
-            return !(Size.X >= 0 && Size.X <= GameSettings.Resolution.X);
-        }
-        public void Move()
-        {
-            Size = Size.Move(Speed, 0);
-        }
+        public abstract bool ShouldBeRemoved(Fighter opponent);
+
+        protected abstract bool HasReached(Fighter opponent);
+
+        public abstract void Move();
+
+        public abstract bool ShouldDealDamage(Fighter opponent);
     }
 }

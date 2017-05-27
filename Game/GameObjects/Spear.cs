@@ -2,7 +2,6 @@
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.GameInformation;
-using Game.Properties;
 
 namespace Game.GameObjects
 {
@@ -10,39 +9,38 @@ namespace Game.GameObjects
     {
         public override int Damage => 20;
 
-        public Spear(RectangleF body, bool lookRight, PlayerNumber source)
+        public Spear(RectangleF body, bool lookRight, PlayerNumber source) : 
+            base(body, lookRight, GameSettings.Resolution.X / 18f, source, 
+                GameSettings.Resolution.X / 10f, GameSettings.Resolution.Y / 18f)
         {
-            Source = source;
-            var y = body.Bottom - (body.Bottom - body.Top) / 1.5f;
-            float x;
-            if (lookRight)
-            {
-                Speed = 60;
-                x = body.Right;
-
-            }
-            else
-            {
-                Speed = -60;
-                x = body.Left;
-            }
-            Size = new RectangleF(x, y, GameSettings.Resolution.X / 10f, GameSettings.Resolution.Y / 18f);
         }
 
-        public override bool CheckState(Fighter opponent)
+        public override bool ShouldDealDamage(Fighter opponent)
         {
-            if (IsOutsideScreen()) return true;
-            if (Speed > 0)
+            if (IfLookingRight())
             {
-                if (opponent.Block.Blocking && opponent.Block.Side == BlockSide.Left) return false;
+                if (opponent.Block.Blocking && !opponent.LookRight) return false;
                 if (!HasReached(opponent)) return false;
-                opponent.HealthPoints -= Damage;
                 return true;
             }
-            if (opponent.Block.Blocking && opponent.Block.Side == BlockSide.Right) return false;
+            if (opponent.Block.Blocking && opponent.LookRight) return false;
             if (!HasReached(opponent)) return false;
-            opponent.HealthPoints -= Damage;
             return true;
+        }
+
+        public override bool ShouldBeRemoved(Fighter opponent)
+        {
+            if (!(Size.X >= 0 && Size.X <= GameSettings.Resolution.X)) return true;
+            return HasReached(opponent);
+        }
+        protected override bool HasReached(Fighter opponent)
+        {
+            return opponent.Body.Contains(Size.X, Size.Y + Size.Height / 2);
+        }
+
+        public override void Move()
+        {
+            Size = Size.Move(Speed, 0);
         }
     }
 }

@@ -30,7 +30,9 @@ namespace Game.Controllers
         {
             if (Picture == null)
                 Picture = ImageInfo.CreateGameObjectInfo(obj.GetType().Name, new Size((int)obj.Size.Width, (int)obj.Size.Height));
-            return obj.Source == PlayerNumber.FirstPlayer ? Picture.Right : Picture.Left;
+            if (Picture.Right.Width != (int)obj.Size.Width || Picture.Left.Width != (int)obj.Size.Width)
+                Picture = ImageInfo.CreateGameObjectInfo(obj.GetType().Name, new Size((int)obj.Size.Width, (int)obj.Size.Height));
+            return obj.IfLookingRight() ? Picture.Right : Picture.Left;
         }
 
         private void UpdateFighterMovingImage()

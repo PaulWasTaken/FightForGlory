@@ -130,11 +130,6 @@ namespace Game.GameWindows
             foreach (var obj in gameState.GameObjects)
             {
                 obj.Move();
-                if (obj.CheckState(gameState.GetOpponent(obj.Source)))
-                {
-                    gameState.GameObjects.Remove(obj);
-                    break;
-                }
                 var imageController = settings.GetObjImageController(obj.GetType().Name);
                 var image = imageController.GetCurrentObjImage(obj);
                 e.Graphics.DrawImage(image, obj.Size.X, obj.Size.Y);
@@ -196,7 +191,7 @@ namespace Game.GameWindows
                 if (fighter.HealthPoints <= 0)
                     gameState.Lost = Tuple.Create(true, gameState.GetOpponent(fighter.Number).Number.ToString());
             }
-            combatController.CheckForCombat(gameState.GameObjects);          
+            combatController.CheckForCombat(gameState);          
             Invalidate();
         }
 

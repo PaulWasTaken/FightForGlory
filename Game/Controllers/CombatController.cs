@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
+using Game.GameInformation;
 
 namespace Game.Controllers
 {
@@ -17,7 +18,7 @@ namespace Game.Controllers
             this.second = second;
         }
 
-        public void CheckForCombat(List<GameObject> gameObjects)
+        public void CheckForCombat(GameState gameState)
         {
             if (first.Attack)
             {
@@ -39,10 +40,15 @@ namespace Game.Controllers
             }
             else
                 wasCompletedSecond = false;
-            foreach (var obj in gameObjects)
+
+            var toRemove = new List<GameObject>();
+            foreach (var obj in gameState.GameObjects)
             {
-                
-            }   
+                HandleDamage(obj, gameState.GetOpponent(obj.Source));
+                if (obj.ShouldBeRemoved(gameState.GetOpponent(obj.Source)))
+                    toRemove.Add(obj);
+            }
+            gameState.GameObjects.RemoveAll(item => toRemove.Contains(item));
         }
 
         private void HandleDamage(Fighter attacker, Fighter defender)
@@ -66,7 +72,8 @@ namespace Game.Controllers
 
         private void HandleDamage(GameObject obj, Fighter target)
         {
-            
+            if (obj.ShouldDealDamage(target))
+                target.HealthPoints -= obj.Damage;
         }
     }
 }
