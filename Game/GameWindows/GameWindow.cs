@@ -87,19 +87,9 @@ namespace Game.GameWindows
 
         private static Fighter CreateFighter(Type type, PointF location)
         {
-            var constuctor = type.GetConstructor(new[] { typeof(string), typeof(float), typeof(float) });
+            var constuctor = type.GetConstructor(new[] { typeof(string), typeof(PointF)});
             // ReSharper disable once PossibleNullReferenceException
-            var fighter = (Fighter)constuctor.Invoke(new object[] { type.Name, location.X, location.Y });
-            if (location.X < GameSettings.Resolution.X  / 2f)
-            {
-                fighter.Number = PlayerNumber.FirstPlayer;
-                fighter.LookingRight = true;
-            }
-            else
-            {
-                fighter.Number = PlayerNumber.SecondPlayer;
-                fighter.LookingRight = false;
-            }
+            var fighter = (Fighter)constuctor.Invoke(new object[] { type.Name, location });
             return fighter;
         }
 
@@ -192,7 +182,7 @@ namespace Game.GameWindows
                 fighter.Move((int)fighter.State * 10, gameState.GetOpponent(fighter.Number));
                 settings.GetImageController(fighter.Number).UpdateFighterImage();
                 fighter.ToTheGround();
-                fighter.ManaRegeneration();
+                fighter.RegenerateMana();
                 if (fighter.HealthPoints <= 0)
                     gameState.Lost = Tuple.Create(true, gameState.GetOpponent(fighter.Number).Number.ToString());
             }

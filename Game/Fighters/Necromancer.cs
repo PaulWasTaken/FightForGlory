@@ -12,20 +12,13 @@ namespace Game.Fighters
 {
     public class Necromancer : Fighter
     {
-        public Necromancer(string name, float x, float y)
+        public Necromancer(string name, PointF location) : base(name, location)
         {
-            State = FighterMotionState.NotMoving;
-            LookingRight = Number == PlayerNumber.FirstPlayer;
-
-            Name = name;
-            HealthPoints = 100;
             AttackDamage = 0;
             AttackRange = 0;
-
-            Body = new RectangleF(x, y, GameSettings.Resolution.X / 16f, GameSettings.Resolution.Y / 4.5f);
         }
 
-        public override void ManaRegeneration()
+        public override void RegenerateMana()
         {
             if (ManaPoints <= 100)
                 ManaPoints += 0.4f;
@@ -67,7 +60,7 @@ namespace Game.Fighters
             {
                 [ComboName.LightningAttack] = () =>
                 {
-                    if (!(ManaPoints >= 40)) return null;
+                    if (ManaPoints < 40) return null;
                     ManaPoints -= 40;
                     IsAttacking = true;
                     AttackCooldown();

@@ -39,12 +39,12 @@ namespace Game.Controllers
             if (fighter.State == FighterMotionState.MovingRight)
             {
                 CurrentImage = Picture.GetMovingImage(movingRight: true);
-                fighter.LookingRight = true;
+                //fighter.LookingRight = true;
             }
             if (fighter.State == FighterMotionState.MovingLeft)
             {
                 CurrentImage = Picture.GetMovingImage(movingRight: false);
-                fighter.LookingRight = false;
+                //fighter.LookingRight = false;
             }
         }
 

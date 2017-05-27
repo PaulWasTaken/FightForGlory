@@ -2,7 +2,7 @@
 {
     public enum MovingSide
     {
-        GoLeft = -1,
-        GoRight = 1,
+        Left = -1,
+        Right = 1,
     }
 }

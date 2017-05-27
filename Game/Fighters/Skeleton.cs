@@ -12,20 +12,8 @@ namespace Game.Fighters
 {
     public class Skeleton : Fighter
     {
-        public Skeleton(string name, float x, float y)
-        {
-            State = FighterMotionState.NotMoving;
-            LookingRight = Number == PlayerNumber.FirstPlayer;
-
-            Body = new RectangleF(x, y, GameSettings.Resolution.X / 16f, GameSettings.Resolution.Y / 4.5f);
-
-            Name = name;
-            HealthPoints = 100;
-            AttackDamage = 10;
-            AttackRange = Body.Width / 2;
-        }
-
-        public override void ManaRegeneration()
+        public Skeleton(string name, PointF location) : base(name, location) { }
+        public override void RegenerateMana()
         {
             if (ManaPoints <= 100)
                 ManaPoints += 0.2f;

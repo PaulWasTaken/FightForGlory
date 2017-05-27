@@ -7,19 +7,45 @@ namespace Game.Fighters
 {
     public abstract class Fighter
     {
-        public PlayerNumber Number { get; set; }
-        public bool IsFrozen { get; set; }
-        public string Name { get; set; }
-        public float HealthPoints { get; set; }
-        public float ManaPoints { get; set; }
-        public float AttackDamage { get; set; }
-        public float AttackRange { get; set; }
-        public bool OnGround { get; set; }
-        public RectangleF Body { get; set; }
-        public bool LookingRight { get; set; }
+        public PlayerNumber Number { get; }
+        public string Name { get; }
+        public bool IsFrozen { get; protected set; }
+        public float HealthPoints { get; protected set; }
+        public float ManaPoints { get; protected set; }
+        public float AttackDamage { get; protected set; }
+        public float AttackRange { get; protected set; }
+        public bool OnGround { get; private set; }
+        public RectangleF Body { get; protected set; }
+        public bool LookingRight { get; protected set; }
         public bool IsBlocking { get; protected set; }
         public bool IsAttacking { get; protected set; }
-        public FighterMotionState State { get; set; }
+        public FighterMotionState State { get; protected set; }
+
+        protected Fighter(string name, PointF location)
+        {
+            Name = name;
+            Number = location.X < GameSettings.Resolution.X / 2f
+                ? PlayerNumber.FirstPlayer
+                : PlayerNumber.SecondPlayer;
+            Body = new RectangleF(location.X, location.Y,
+                 GameSettings.Resolution.X / 16f, GameSettings.Resolution.Y / 4.5f);
+            HealthPoints = 100;
+            AttackDamage = 10;
+            AttackRange = Body.Width / 2;
+            State = FighterMotionState.NotMoving;
+            LookingRight = Number == PlayerNumber.FirstPlayer;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            
+        }
+
+        public void Turn(MovingSide side)
+        {
+            LookingRight = side == MovingSide.Right;
+            State = (FighterMotionState) side;
+        }
 
         public void ToTheGround()
         {
@@ -86,6 +112,6 @@ namespace Game.Fighters
         public abstract void BlockCooldown();
         public abstract void AttackCooldown();
         public abstract ComboController GetComboController();
-        public abstract void ManaRegeneration();
+        public abstract void RegenerateMana();
     }
 }
