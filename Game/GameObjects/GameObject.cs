@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using Game.BaseStructures.Enums;
 using Game.Fighters;
-using Game.GameInformation;
 
 namespace Game.GameObjects
 {

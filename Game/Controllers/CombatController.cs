@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Game.BaseStructures.Enums;
 using Game.GameInformation;
 using Game.Fighters;
 using Game.GameObjects;
@@ -7,39 +8,16 @@ namespace Game.Controllers
 {
     public class CombatController
     {
-        private readonly Fighter first;
-        private readonly Fighter second;
-        private bool wasCompletedFirst;
-        private bool wasCompletedSecond;
-
+        private readonly Dictionary<PlayerNumber, bool> wasProcessed;
         public CombatController(Fighter first, Fighter second)
         {
-            this.first = first;
-            this.second = second;
+            wasProcessed = new Dictionary<PlayerNumber, bool> {{first.Number, false}, {second.Number, false}};
         }
 
         public void CheckForCombat(GameState gameState)
         {
-            if (first.IsAttacking)
-            {
-                if (!wasCompletedFirst)
-                {
-                    HandleDamage(first, second);
-                    wasCompletedFirst = true;
-                }
-            }
-            else
-                wasCompletedFirst = false;
-            if (second.IsAttacking)
-            {
-                if (!wasCompletedSecond)
-                {
-                    HandleDamage(second, first);
-                    wasCompletedSecond = true;
-                }
-            }
-            else
-                wasCompletedSecond = false;
+            ProcessCombat(gameState.FirstPlayer, gameState.SecondPlayer);
+            ProcessCombat(gameState.SecondPlayer, gameState.FirstPlayer);
 
             var toRemove = new List<GameObject>();
             foreach (var obj in gameState.GameObjects)
@@ -49,6 +27,20 @@ namespace Game.Controllers
                     toRemove.Add(obj);
             }
             gameState.GameObjects.RemoveAll(item => toRemove.Contains(item));
+        }
+
+        private void ProcessCombat(Fighter firstFighter, Fighter secondFighter)
+        {
+            if (firstFighter.IsAttacking)
+            {
+                if (!wasProcessed[firstFighter.Number])
+                {
+                    HandleDamage(firstFighter, secondFighter);
+                    wasProcessed[firstFighter.Number] = true;
+                }
+            }
+            else
+                wasProcessed[firstFighter.Number] = false;
         }
 
         private void HandleDamage(Fighter attacker, Fighter defender)
