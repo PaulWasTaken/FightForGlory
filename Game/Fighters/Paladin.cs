@@ -2,33 +2,16 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Game.BaseStructures;
-using Game.BaseStructures.AbstractClasses;
-using Game.BaseStructures.ComboWorker;
 using Game.BaseStructures.Enums;
 using Game.Commands;
 using Game.Controllers;
-using Game.GameInformation;
 using Game.GameObjects;
 
-namespace Game.Figters
+namespace Game.Fighters
 {
     public class Paladin : Fighter
     {
-        public Paladin(string name, float x, float y)
-        {
-            State = FighterMotionState.NotMoving;
-            Attack = false;
-            LookRight = Number == PlayerNumber.FirstPlayer;
-            Block = new BlockState();
-
-            Body = new RectangleF(x, y, GameSettings.Resolution.X / 16f, GameSettings.Resolution.Y / 4.5f);
-
-            Name = name;
-            HealthPoints = 100;
-            AttackDamage = 10;
-            AttackRange = Body.Width / 2;
-        }
+        public Paladin(string name, PointF location) : base(name, location) { }
 
         public override ComboController GetComboController()
         {
@@ -38,7 +21,7 @@ namespace Game.Figters
                 {
                     if (!(ManaPoints >= 40)) return null;
                     ManaPoints -= 40;
-                    return new Wisp(Body, LookRight, Number);
+                    return new Wisp(Body, LookingRight, Number);
                 }
             };
 
@@ -48,7 +31,7 @@ namespace Game.Figters
             return controller;
         }
 
-        public override void ManaRegeneration()
+        public override void RegenerateMana()
         {
             if (ManaPoints <= 100)
                 ManaPoints += 0.2f;
@@ -59,7 +42,7 @@ namespace Game.Figters
             var cooldown = new Timer { Interval = 1000, Enabled = true };
             cooldown.Tick += (sender, args) =>
             {
-                Block.Blocking = false;
+                IsBlocking = false;
                 cooldown.Dispose();
             };
         }
@@ -69,7 +52,7 @@ namespace Game.Figters
             var cooldown = new Timer { Interval = 500, Enabled = true };
             cooldown.Tick += (sender, args) =>
             {
-                Attack = false;
+                IsAttacking = false;
                 cooldown.Dispose();
             };
         }

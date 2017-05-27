@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Game.BaseStructures.AbstractClasses;
-using Game.BaseStructures.Enums;
 using Game.GameInformation;
+using Game.Fighters;
+using Game.GameObjects;
 
 namespace Game.Controllers
 {
@@ -20,7 +20,7 @@ namespace Game.Controllers
 
         public void CheckForCombat(GameState gameState)
         {
-            if (first.Attack)
+            if (first.IsAttacking)
             {
                 if (!wasCompletedFirst)
                 {
@@ -30,7 +30,7 @@ namespace Game.Controllers
             }
             else
                 wasCompletedFirst = false;
-            if (second.Attack)
+            if (second.IsAttacking)
             {
                 if (!wasCompletedSecond)
                 {
@@ -56,24 +56,24 @@ namespace Game.Controllers
             if (defender.Body.Bottom < attacker.Body.Bottom - attacker.Body.Height / 2)
                 return;
 
-            if (attacker.LookRight)
+            if (attacker.LookingRight)
             {
-                if (defender.Block.Blocking && defender.Block.Side == BlockSide.Left) return;
+                if (defender.IsBlocking && !defender.LookingRight) return;
                 if (defender.Body.Contains(attacker.Body.Right + attacker.AttackRange, attacker.Body.Y + attacker.Body.Height / 4))
-                    defender.HealthPoints -= attacker.AttackDamage;
+                    defender.TakeDamage(attacker.AttackDamage);
             }
             else
             {
-                if (defender.Block.Blocking && defender.Block.Side == BlockSide.Right) return;
+                if (defender.IsBlocking && defender.LookingRight) return;
                 if (defender.Body.Contains(attacker.Body.Left - attacker.AttackRange, attacker.Body.Y + attacker.Body.Height / 4))
-                    defender.HealthPoints -= attacker.AttackDamage;
+                    defender.TakeDamage(attacker.AttackDamage);
             }
         }
 
         private void HandleDamage(GameObject obj, Fighter target)
         {
             if (obj.ShouldDealDamage(target))
-                target.HealthPoints -= obj.Damage;
+                target.TakeDamage(obj.Damage);
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.Controllers;
+using Game.Fighters;
 using Game.GameInformation;
 
 namespace Game.GameWindows
@@ -87,19 +87,9 @@ namespace Game.GameWindows
 
         private static Fighter CreateFighter(Type type, PointF location)
         {
-            var constuctor = type.GetConstructor(new[] { typeof(string), typeof(float), typeof(float) });
+            var constuctor = type.GetConstructor(new[] { typeof(string), typeof(PointF)});
             // ReSharper disable once PossibleNullReferenceException
-            var fighter = (Fighter)constuctor.Invoke(new object[] { type.Name, location.X, location.Y });
-            if (location.X < GameSettings.Resolution.X  / 2f)
-            {
-                fighter.Number = PlayerNumber.FirstPlayer;
-                fighter.LookRight = true;
-            }
-            else
-            {
-                fighter.Number = PlayerNumber.SecondPlayer;
-                fighter.LookRight = false;
-            }
+            var fighter = (Fighter)constuctor.Invoke(new object[] { type.Name, location });
             return fighter;
         }
 
@@ -187,7 +177,7 @@ namespace Game.GameWindows
                 fighter.Move((int)fighter.State * 10, gameState.GetOpponent(fighter.Number));
                 settings.GetImageController(fighter.Number).UpdateFighterImage();
                 fighter.ToTheGround();
-                fighter.ManaRegeneration();
+                fighter.RegenerateMana();
                 if (fighter.HealthPoints <= 0)
                     gameState.Lost = Tuple.Create(true, gameState.GetOpponent(fighter.Number).Number.ToString());
             }

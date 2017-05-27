@@ -61,31 +61,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Figters\Fighter.cs" />
-    <Compile Include="BaseStructures\AbstractClasses\GameObject.cs" />
+    <Compile Include="Fighters\Fighter.cs" />
+    <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="BaseStructures\AutomatNode.cs" />
-    <Compile Include="BaseStructures\Enums\BlockSide.cs" />
     <Compile Include="BaseStructures\Enums\ComboName.cs" />
     <Compile Include="BaseStructures\Enums\FigterMotionState.cs" />
     <Compile Include="BaseStructures\Enums\PlayerNumber.cs" />
-    <Compile Include="BaseStructures\BlockState.cs" />
     <Compile Include="BaseStructures\Enums\MovingSide.cs" />
     <Compile Include="BaseStructures\ImageInfo.cs" />
     <Compile Include="Controllers\CombatController.cs" />
     <Compile Include="Controllers\ComboController.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandProcessor.cs" />
-    <Compile Include="Figters\Necromancer.cs" />
-    <Compile Include="Figters\Paladin.cs" />
+    <Compile Include="Fighters\Necromancer.cs" />
+    <Compile Include="Fighters\Paladin.cs" />
     <Compile Include="GameInformation\GameState.cs" />
     <Compile Include="GameInformation\GameSettings.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GameObjects\Lightning.cs" />
     <Compile Include="GameObjects\Spear.cs" />
     <Compile Include="GameObjects\Wisp.cs" />
-    <Compile Include="BaseStructures\AbstractClasses\SpecialStrike.cs" />
+    <Compile Include="BaseStructures\ISpecialStrike.cs" />
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="Commands\ICommandProcessor.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="GameWindows\CharacterSelectMenu.cs">
@@ -98,8 +95,8 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Figters\Skeleton.cs" />
-    <Compile Include="Figters\Unicorn.cs" />
+    <Compile Include="Fighters\Skeleton.cs" />
+    <Compile Include="Fighters\Unicorn.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

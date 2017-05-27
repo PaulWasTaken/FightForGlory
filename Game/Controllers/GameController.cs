@@ -45,13 +45,13 @@ namespace Game.Controllers
                 gameState.FirstPlayer.State == FighterMotionState.MovingLeft ||
                 settings.GetButtonCommand(PlayerNumber.FirstPlayer, Command.MoveRight) == e.KeyData && 
                 gameState.FirstPlayer.State == FighterMotionState.MovingRight)
-                gameState.FirstPlayer.State = FighterMotionState.NotMoving;
+                gameState.FirstPlayer.StandStill();
 
             if (settings.GetButtonCommand(PlayerNumber.SecondPlayer, Command.MoveLeft) == e.KeyData &&
                 gameState.SecondPlayer.State == FighterMotionState.MovingLeft ||
                 settings.GetButtonCommand(PlayerNumber.SecondPlayer, Command.MoveRight) == e.KeyData &&
                 gameState.SecondPlayer.State == FighterMotionState.MovingRight)
-                gameState.SecondPlayer.State = FighterMotionState.NotMoving;
+                gameState.SecondPlayer.StandStill();
         }
     }
 }

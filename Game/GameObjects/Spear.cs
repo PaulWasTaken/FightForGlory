@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
-using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
+using Game.Fighters;
 using Game.GameInformation;
 
 namespace Game.GameObjects
@@ -19,11 +19,11 @@ namespace Game.GameObjects
         {
             if (IfLookingRight())
             {
-                if (opponent.Block.Blocking && !opponent.LookRight) return false;
+                if (opponent.IsBlocking && !opponent.LookingRight) return false;
                 if (!HasReached(opponent)) return false;
                 return true;
             }
-            if (opponent.Block.Blocking && opponent.LookRight) return false;
+            if (opponent.IsBlocking && opponent.LookingRight) return false;
             if (!HasReached(opponent)) return false;
             return true;
         }

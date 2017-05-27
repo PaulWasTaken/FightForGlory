@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Game.BaseStructures.AbstractClasses;
+using Game.BaseStructures;
 using Game.BaseStructures.Enums;
+using Game.Fighters;
+using Game.GameObjects;
 
 namespace Game.GameInformation
 {

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
-using Game.BaseStructures.AbstractClasses;
 using Game.BaseStructures.Enums;
 using Game.GameInformation;
+using Game.Fighters;
 
 namespace Game.GameObjects
 {
@@ -19,10 +19,10 @@ namespace Game.GameObjects
         {
             if (IfLookingRight())
             {
-                if (opponent.Block.Blocking && !opponent.LookRight) return false;
+                if (opponent.IsBlocking && !opponent.LookingRight) return false;
                 return HasReached(opponent);
             }
-            if (opponent.Block.Blocking && opponent.LookRight) return false;
+            if (opponent.IsBlocking && opponent.LookingRight) return false;
             return HasReached(opponent);
         }
         public override bool ShouldBeRemoved(Fighter opponent)
