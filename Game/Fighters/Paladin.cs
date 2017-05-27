@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 using Game.BaseStructures.Enums;
 using Game.Commands;
 using Game.Controllers;
@@ -31,30 +30,8 @@ namespace Game.Fighters
             return controller;
         }
 
-        public override void RegenerateMana()
-        {
-            if (ManaPoints <= 100)
-                ManaPoints += 0.2f;
-        }
-
-        public override void BlockCooldown()
-        {
-            var cooldown = new Timer { Interval = 1000, Enabled = true };
-            cooldown.Tick += (sender, args) =>
-            {
-                IsBlocking = false;
-                cooldown.Dispose();
-            };
-        }
-
-        public override void AttackCooldown()
-        {
-            var cooldown = new Timer { Interval = 500, Enabled = true };
-            cooldown.Tick += (sender, args) =>
-            {
-                IsAttacking = false;
-                cooldown.Dispose();
-            };
-        }
+        protected override float ManaRegenerationAmount => 0.2f;
+        protected override int AttackCooldownValue => 500;
+        protected override int BlockCooldownValue => 1000;
     }
 }

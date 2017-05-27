@@ -17,32 +17,6 @@ namespace Game.Fighters
             AttackRange = 0;
         }
 
-        public override void RegenerateMana()
-        {
-            if (ManaPoints <= 100)
-                ManaPoints += 0.4f;
-        }
-
-        public override void BlockCooldown()
-        {
-            var cooldown = new Timer { Interval = 200, Enabled = true };
-            cooldown.Tick += (sender, args) =>
-            {
-                IsBlocking = false;
-                cooldown.Dispose();
-            };
-        }
-
-        public override void AttackCooldown()
-        {
-            var cooldown = new Timer { Interval = 200, Enabled = true };
-            cooldown.Tick += (sender, args) =>
-            {
-                IsAttacking = false;
-                cooldown.Dispose();
-            };
-        }
-
         public void TeleportCooldown()
         {
             var cooldown = new Timer { Interval = 200, Enabled = true };
@@ -73,5 +47,9 @@ namespace Game.Fighters
 
             return controller;
         }
+
+        protected override float ManaRegenerationAmount => 0.5f;
+        protected override int AttackCooldownValue => 200;
+        protected override int BlockCooldownValue => 200;
     }
 }

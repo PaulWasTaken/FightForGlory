@@ -12,35 +12,13 @@ namespace Game.Fighters
     {
         public Unicorn(string name, PointF location) : base(name, location) { }
 
-        public override void RegenerateMana()
-        {
-            if (ManaPoints <= 100)
-                ManaPoints += 0.2f;
-        }
-
-        public override void BlockCooldown()
-        {
-            var cooldown = new Timer { Interval = 500, Enabled = true };
-            cooldown.Tick += (sender, args) =>
-            {
-                IsBlocking = false;
-                cooldown.Dispose();
-            };
-        }
-
-        public override void AttackCooldown()
-        {
-            var cooldown = new Timer { Interval = 250, Enabled = true };
-            cooldown.Tick += (sender, args) =>
-            {
-                IsAttacking = false;
-                cooldown.Dispose();
-            };
-        }
-
         public override ComboController GetComboController()
         {
             return new ComboController(new Dictionary<ComboName, Func<GameObject>>());
         }
+
+        protected override int AttackCooldownValue => 400;
+        protected override int BlockCooldownValue => 600;
+        protected override float ManaRegenerationAmount => 0.2f;
     }
 }

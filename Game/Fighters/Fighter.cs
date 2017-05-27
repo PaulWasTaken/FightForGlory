@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 using Game.BaseStructures.Enums;
 using Game.Controllers;
 using Game.GameInformation;
@@ -20,6 +21,11 @@ namespace Game.Fighters
         public bool IsBlocking { get; protected set; }
         public bool IsAttacking { get; protected set; }
         public FighterMotionState State { get; protected set; }
+
+        protected abstract int AttackCooldownValue { get; }
+        protected abstract int BlockCooldownValue { get; }
+
+        protected abstract float ManaRegenerationAmount { get; }
 
         protected Fighter(string name, PointF location)
         {
@@ -112,9 +118,32 @@ namespace Game.Fighters
             return newFighterPos.IntersectsWith(leftScreenBorder) || newFighterPos.IntersectsWith(rightScreenBorder);
         }
 
-        public abstract void BlockCooldown();
-        public abstract void AttackCooldown();
+        public void BlockCooldown()
+        {
+            var cooldown = new Timer { Interval = BlockCooldownValue, Enabled = true };
+            cooldown.Tick += (sender, args) =>
+            {
+                IsBlocking = false;
+                cooldown.Dispose();
+            };
+        }
+
+        public void AttackCooldown()
+        {
+            var cooldown = new Timer { Interval = AttackCooldownValue, Enabled = true };
+            cooldown.Tick += (sender, args) =>
+            {
+                IsAttacking = false;
+                cooldown.Dispose();
+            };
+        }
+
+        public void RegenerateMana()
+        {
+            if (ManaPoints <= 100)
+                ManaPoints += ManaRegenerationAmount;
+        }
+
         public abstract ComboController GetComboController();
-        public abstract void RegenerateMana();
     }
 }
