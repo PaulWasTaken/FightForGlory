@@ -30,9 +30,11 @@ namespace Game.Controllers
         public Image GetCurrentObjImage(GameObject obj)
         {
             if (Picture == null)
-                Picture = ImageInfo.CreateGameObjectInfo(obj.GetType().Name, new Size((int)obj.Size.Width, (int)obj.Size.Height));
-            if (Picture.Right.Width != (int)obj.Size.Width || Picture.Left.Width != (int)obj.Size.Width)
-                Picture = ImageInfo.CreateGameObjectInfo(obj.GetType().Name, new Size((int)obj.Size.Width, (int)obj.Size.Height));
+                Picture = ImageInfo.CreateGameObjectInfo(obj.GetType().Name,
+                    new Size((int) obj.Size.Width, (int) obj.Size.Height));
+            if (Picture.Right.Width != (int) obj.Size.Width || Picture.Left.Width != (int) obj.Size.Width)
+                Picture = ImageInfo.CreateGameObjectInfo(obj.GetType().Name,
+                    new Size((int) obj.Size.Width, (int) obj.Size.Height));
             return obj.IfLookingRight() ? Picture.Right : Picture.Left;
         }
 

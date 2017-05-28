@@ -10,7 +10,9 @@ namespace Game.Fighters
 {
     public class Unicorn : Fighter
     {
-        public Unicorn(string name, PointF location) : base(name, location) { }
+        public Unicorn(string name, PointF location) : base(name, location)
+        {
+        }
 
         public override ComboController GetComboController()
         {

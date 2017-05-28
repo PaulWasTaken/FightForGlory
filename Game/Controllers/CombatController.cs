@@ -9,6 +9,7 @@ namespace Game.Controllers
     public class CombatController
     {
         private readonly Dictionary<PlayerNumber, bool> wasProcessed;
+
         public CombatController(Fighter first, Fighter second)
         {
             wasProcessed = new Dictionary<PlayerNumber, bool> {{first.Number, false}, {second.Number, false}};
@@ -31,16 +32,14 @@ namespace Game.Controllers
 
         private void ProcessCombat(Fighter firstFighter, Fighter secondFighter)
         {
-            if (firstFighter.IsAttacking)
+            if (!firstFighter.IsAttacking)
             {
-                if (!wasProcessed[firstFighter.Number])
-                {
-                    HandleDamage(firstFighter, secondFighter);
-                    wasProcessed[firstFighter.Number] = true;
-                }
-            }
-            else
                 wasProcessed[firstFighter.Number] = false;
+                return;
+            }
+            if (wasProcessed[firstFighter.Number]) return;
+            HandleDamage(firstFighter, secondFighter);
+            wasProcessed[firstFighter.Number] = true;
         }
 
         private void HandleDamage(Fighter attacker, Fighter defender)
@@ -51,13 +50,15 @@ namespace Game.Controllers
             if (attacker.LookingRight)
             {
                 if (defender.IsBlocking && !defender.LookingRight) return;
-                if (defender.Body.Contains(attacker.Body.Right + attacker.AttackRange, attacker.Body.Y + attacker.Body.Height / 4))
+                if (defender.Body.Contains(attacker.Body.Right + attacker.AttackRange,
+                    attacker.Body.Y + attacker.Body.Height / 4))
                     defender.TakeDamage(attacker.AttackDamage);
             }
             else
             {
                 if (defender.IsBlocking && defender.LookingRight) return;
-                if (defender.Body.Contains(attacker.Body.Left - attacker.AttackRange, attacker.Body.Y + attacker.Body.Height / 4))
+                if (defender.Body.Contains(attacker.Body.Left - attacker.AttackRange,
+                    attacker.Body.Y + attacker.Body.Height / 4))
                     defender.TakeDamage(attacker.AttackDamage);
             }
         }

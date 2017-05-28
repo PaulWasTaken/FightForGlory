@@ -11,7 +11,10 @@ namespace Game.Fighters
 {
     public class Skeleton : Fighter
     {
-        public Skeleton(string name, PointF location) : base(name, location) { }
+        public Skeleton(string name, PointF location) : base(name, location)
+        {
+        }
+
         public override ComboController GetComboController()
         {
             var comboResults = new Dictionary<ComboName, Func<GameObject>>
@@ -25,7 +28,7 @@ namespace Game.Fighters
             };
 
             var controller = new ComboController(comboResults);
-            controller.AddCombo(new[] { Command.NormalAttack, Command.Down, Command.StrongAttack }, ComboName.ThrowSpear);
+            controller.AddCombo(new[] {Command.NormalAttack, Command.Down, Command.StrongAttack}, ComboName.ThrowSpear);
 
             return controller;
         }

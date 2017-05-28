@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Game.GameWindows;
+using Ninject;
 
 namespace Game
 {
@@ -9,9 +10,17 @@ namespace Game
         [STAThread]
         public static void Main()
         {
+            var container = BuildContainer();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GameWindow());
+            var window = container.Get<GameWindow>();
+            Application.Run(window);
+        }
+
+        private static StandardKernel BuildContainer()
+        {
+            var container = new StandardKernel();
+            return container;
         }
     }
 }

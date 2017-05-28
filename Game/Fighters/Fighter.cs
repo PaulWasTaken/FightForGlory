@@ -34,9 +34,9 @@ namespace Game.Fighters
                 ? PlayerNumber.FirstPlayer
                 : PlayerNumber.SecondPlayer;
             Body = new RectangleF(location.X, location.Y,
-                 GameSettings.Resolution.X / 16f, GameSettings.Resolution.Y / 4.5f);
+                GameSettings.Resolution.X / 16f, GameSettings.Resolution.Y / 4.5f);
             HealthPoints = 100;
-            AttackDamage = 10;  //Should be specified since attack cooldown is different
+            AttackDamage = 10; //Should be specified since attack cooldown is different
             AttackRange = Body.Width / 2;
             State = FighterMotionState.NotMoving;
             LookingRight = Number == PlayerNumber.FirstPlayer;
@@ -120,7 +120,7 @@ namespace Game.Fighters
 
         public void BlockCooldown()
         {
-            var cooldown = new Timer { Interval = BlockCooldownValue, Enabled = true };
+            var cooldown = new Timer {Interval = BlockCooldownValue, Enabled = true};
             cooldown.Tick += (sender, args) =>
             {
                 IsBlocking = false;
@@ -130,7 +130,7 @@ namespace Game.Fighters
 
         public void AttackCooldown()
         {
-            var cooldown = new Timer { Interval = AttackCooldownValue, Enabled = true };
+            var cooldown = new Timer {Interval = AttackCooldownValue, Enabled = true};
             cooldown.Tick += (sender, args) =>
             {
                 IsAttacking = false;

@@ -44,29 +44,31 @@ namespace Game.GameInformation
         public Dictionary<PlayerNumber, Dictionary<Keys, Command>> Determinater =
             new Dictionary<PlayerNumber, Dictionary<Keys, Command>>
             {
-            {PlayerNumber.FirstPlayer, new Dictionary<Keys, Command>
                 {
-                {Keys.A, Command.MoveLeft},
-                {Keys.D, Command.MoveRight},
-                {Keys.Space, Command.Jump},
-                {Keys.S, Command.Down },
-                {Keys.Z, Command.NormalAttack},
-                {Keys.X, Command.StrongAttack},
-                {Keys.ShiftKey|Keys.Shift, Command.Block}
-            }
-            },
-            {PlayerNumber.SecondPlayer, new Dictionary<Keys, Command>()
-            {
-                {Keys.Left, Command.MoveLeft},
-                {Keys.Right, Command.MoveRight},
-                {Keys.Up, Command.Jump},
-                {Keys.Down, Command.Down },
-                {Keys.J, Command.NormalAttack},
-                {Keys.K, Command.StrongAttack},
-                {Keys.L, Command.Block}
-            }
-            }
-        };
+                    PlayerNumber.FirstPlayer, new Dictionary<Keys, Command>
+                    {
+                        {Keys.A, Command.MoveLeft},
+                        {Keys.D, Command.MoveRight},
+                        {Keys.Space, Command.Jump},
+                        {Keys.S, Command.Down},
+                        {Keys.Z, Command.NormalAttack},
+                        {Keys.X, Command.StrongAttack},
+                        {Keys.ShiftKey | Keys.Shift, Command.Block}
+                    }
+                },
+                {
+                    PlayerNumber.SecondPlayer, new Dictionary<Keys, Command>()
+                    {
+                        {Keys.Left, Command.MoveLeft},
+                        {Keys.Right, Command.MoveRight},
+                        {Keys.Up, Command.Jump},
+                        {Keys.Down, Command.Down},
+                        {Keys.J, Command.NormalAttack},
+                        {Keys.K, Command.StrongAttack},
+                        {Keys.L, Command.Block}
+                    }
+                }
+            };
 
         public ComboController GetComboController(PlayerNumber player)
         {
@@ -89,9 +91,14 @@ namespace Game.GameInformation
             dictWithImageControllers[player.Number] = new ImageController(player);
         }
 
-        private readonly Dictionary<string, ImageController> objectImageControllers = new Dictionary<string, ImageController>();
-        private readonly Dictionary<PlayerNumber, ComboController> dictWithComboControllers = new Dictionary<PlayerNumber, ComboController>();
-        private readonly Dictionary<PlayerNumber, ImageController> dictWithImageControllers = new Dictionary<PlayerNumber, ImageController>();
+        private readonly Dictionary<string, ImageController> objectImageControllers =
+            new Dictionary<string, ImageController>();
+
+        private readonly Dictionary<PlayerNumber, ComboController> dictWithComboControllers =
+            new Dictionary<PlayerNumber, ComboController>();
+
+        private readonly Dictionary<PlayerNumber, ImageController> dictWithImageControllers =
+            new Dictionary<PlayerNumber, ImageController>();
 
         public static Point Resolution { get; set; }
         public float XIndent => Resolution.X / 80f;

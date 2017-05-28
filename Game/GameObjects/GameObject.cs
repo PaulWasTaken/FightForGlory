@@ -6,7 +6,8 @@ namespace Game.GameObjects
 {
     public abstract class GameObject
     {
-        protected GameObject(RectangleF body, bool lookRight, float speed, PlayerNumber source, float width, float height)
+        protected GameObject(RectangleF body, bool lookRight, float speed, PlayerNumber source, float width,
+            float height)
         {
             Source = source;
             var y = body.Bottom - (body.Bottom - body.Top) / 1.5f;
@@ -23,6 +24,7 @@ namespace Game.GameObjects
             }
             Size = new RectangleF(x, y, width, height);
         }
+
         protected float Speed { get; set; }
         public RectangleF Size { get; set; }
         public abstract int Damage { get; }

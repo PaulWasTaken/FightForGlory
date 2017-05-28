@@ -17,19 +17,21 @@ namespace Game.GameInformation
             GameObjects = new List<GameObject>();
             SpecialStrikes = new List<ISpecialStrike>();
 
-            Opponent = new Dictionary<PlayerNumber, Fighter> {
-                { PlayerNumber.FirstPlayer, SecondPlayer},
-                { PlayerNumber.SecondPlayer, FirstPlayer}
+            Opponent = new Dictionary<PlayerNumber, Fighter>
+            {
+                {PlayerNumber.FirstPlayer, SecondPlayer},
+                {PlayerNumber.SecondPlayer, FirstPlayer}
             };
 
-            
-            Fighters = new List<Fighter> { FirstPlayer, SecondPlayer };
+
+            Fighters = new List<Fighter> {FirstPlayer, SecondPlayer};
         }
 
         public Fighter GetOpponent(PlayerNumber number)
         {
             return Opponent[number];
         }
+
         public Fighter FirstPlayer { get; set; }
         public Fighter SecondPlayer { get; set; }
         public List<GameObject> GameObjects { get; set; }

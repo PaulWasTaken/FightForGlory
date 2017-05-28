@@ -6,11 +6,8 @@ namespace Game.GameWindows
 {
     public sealed class MainMenu : UserControl
     {
-        private readonly GameWindow parent;
-
-        public MainMenu(GameWindow parent)
+        public MainMenu()
         {
-            this.parent = parent;
             DoubleBuffered = true;
             Dock = DockStyle.Fill;
             BackColor = Color.Transparent;
@@ -20,7 +17,7 @@ namespace Game.GameWindows
 
         private FlowLayoutPanel CreateLayout()
         {
-            var layout = new FlowLayoutPanel { Dock = DockStyle.Fill };
+            var layout = new FlowLayoutPanel {Dock = DockStyle.Fill};
             var start = new Button
             {
                 Text = @"Начать игру"
@@ -38,6 +35,7 @@ namespace Game.GameWindows
 
         private void OnExitClick(object sender, EventArgs e)
         {
+            var parent = Parent as GameWindow;
             parent.Close();
         }
 
@@ -45,6 +43,7 @@ namespace Game.GameWindows
         {
             Visible = false;
             Enabled = false;
+            var parent = Parent as GameWindow;
             parent.DrawCharactedSelectMenu();
         }
     }

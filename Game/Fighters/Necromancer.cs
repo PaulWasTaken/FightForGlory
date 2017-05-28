@@ -19,7 +19,7 @@ namespace Game.Fighters
 
         public void TeleportCooldown()
         {
-            var cooldown = new Timer { Interval = 200, Enabled = true };
+            var cooldown = new Timer {Interval = 200, Enabled = true};
             cooldown.Tick += (sender, args) =>
             {
                 State = FighterMotionState.NotMoving;
@@ -42,8 +42,13 @@ namespace Game.Fighters
             };
 
             var controller = new ComboController(comboResults);
-            controller.AddCombo(new[] { Command.NormalAttack, Command.NormalAttack, Command.NormalAttack, Command.NormalAttack, Command.NormalAttack }, ComboName.LightningAttack);
-            controller.AddCombo(new[] { Command.Down, Command.Down, Command.Down }, ComboName.Teleport);
+            controller.AddCombo(
+                new[]
+                {
+                    Command.NormalAttack, Command.NormalAttack, Command.NormalAttack, Command.NormalAttack,
+                    Command.NormalAttack
+                }, ComboName.LightningAttack);
+            controller.AddCombo(new[] {Command.Down, Command.Down, Command.Down}, ComboName.Teleport);
 
             return controller;
         }

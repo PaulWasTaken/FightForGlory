@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using Game.GameInformation;
+// ReSharper disable UnusedAutoPropertyAccessor.Local
 
 namespace Game.BaseStructures
 {
@@ -23,18 +24,14 @@ namespace Game.BaseStructures
         private Image[] MovingRight;
         private Image[] MovingLeft;
 
-        private static Image ResizeImage(Image imgToResize, Size size)
-        {
-            return new Bitmap(imgToResize, size);
-        }
-
         public static ImageInfo CreateFigtherInfo(string name)
         {
-            var properties = typeof(ImageInfo).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            var size = new Size(GameSettings.Resolution.X / 10, (int)(GameSettings.Resolution.Y / 4.5));
+            var properties =
+                typeof(ImageInfo).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var size = new Size(GameSettings.Resolution.X / 10, (int) (GameSettings.Resolution.Y / 4.5));
             var info = new ImageInfo(name, properties, size);
-            info.MovingLeft = new[] { info.Left, info.MoveLeft };
-            info.MovingRight = new[] { info.Right, info.MoveRight };
+            info.MovingLeft = new[] {info.Left, info.MoveLeft};
+            info.MovingRight = new[] {info.Right, info.MoveRight};
             return info;
         }
 
@@ -43,7 +40,7 @@ namespace Game.BaseStructures
             var left = typeof(ImageInfo).GetProperty("Left");
             var right = typeof(ImageInfo).GetProperty("Right");
             //size = new Size(GameSettings.Resolution.X / 10, (int)(GameSettings.Resolution.Y / 4.5));
-            var info = new ImageInfo(name, new []{left, right}, size);
+            var info = new ImageInfo(name, new[] {left, right}, size);
             return info;
         }
 
@@ -52,8 +49,8 @@ namespace Game.BaseStructures
             foreach (var property in properties)
             {
                 var propertyInfo = typeof(Properties.Resources).GetProperty(name + property.Name);
-                var image = (Bitmap)propertyInfo.GetValue(null, null);
-                property.SetValue(this, ResizeImage(image, pictureSize));
+                var image = (Bitmap) propertyInfo.GetValue(null, null);
+                property.SetValue(this, image.Resize(pictureSize.Width, pictureSize.Height));
             }
         }
 

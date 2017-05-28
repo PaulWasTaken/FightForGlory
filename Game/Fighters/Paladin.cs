@@ -10,7 +10,9 @@ namespace Game.Fighters
 {
     public class Paladin : Fighter
     {
-        public Paladin(string name, PointF location) : base(name, location) { }
+        public Paladin(string name, PointF location) : base(name, location)
+        {
+        }
 
         public override ComboController GetComboController()
         {
@@ -25,7 +27,7 @@ namespace Game.Fighters
             };
 
             var controller = new ComboController(comboResults);
-            controller.AddCombo(new[] { Command.Jump, Command.Down, Command.Down }, ComboName.HolyLight);
+            controller.AddCombo(new[] {Command.Jump, Command.Down, Command.Down}, ComboName.HolyLight);
 
             return controller;
         }

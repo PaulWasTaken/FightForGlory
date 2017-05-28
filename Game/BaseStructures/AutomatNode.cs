@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Game.BaseStructures.Enums;
 
-namespace Game.BaseStructures.ComboWorker
+namespace Game.BaseStructures
 {
     public class AutomatNode<T>
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Game.BaseStructures.ComboWorker;
+using Game.BaseStructures;
 using Game.BaseStructures.Enums;
 using Game.Commands;
 using Game.GameObjects;
@@ -20,10 +20,11 @@ namespace Game.Controllers
             this.comboResults = comboResults;
             CurrentState = defaultState;
         }
+
         public void AddCombo(Command[] combo, ComboName name)
         {
             var current = defaultState;
-            for(var i = 0; i < combo.Length - 1; i++)
+            for (var i = 0; i < combo.Length - 1; i++)
             {
                 current.NextStates.Add(new AutomatNode<Command>(combo[i], ComboName.NotACombo));
                 current = current.NextStates.Last();

@@ -11,14 +11,12 @@ namespace Game.GameWindows
     {
         private bool isFirstPlayer = true;
         private bool isSecondPlayer = true;
-        private readonly GameWindow parent;
 
         private Type FirstPlayer;
         private Type SecondPlayer;
 
-        public CharacterSelectMenu(GameWindow parent)
+        public CharacterSelectMenu()
         {
-            this.parent = parent;
             DoubleBuffered = true;
             Dock = DockStyle.Fill;
             BackColor = Color.Transparent;
@@ -30,7 +28,7 @@ namespace Game.GameWindows
 
         private FlowLayoutPanel CreateLayout()
         {
-            var layout = new FlowLayoutPanel { Dock = DockStyle.Fill };
+            var layout = new FlowLayoutPanel {Dock = DockStyle.Fill};
             var baseType = typeof(Fighter);
             var types = Assembly.GetExecutingAssembly()
                 .GetTypes()
@@ -62,7 +60,8 @@ namespace Game.GameWindows
 
             Visible = false;
             Enabled = false;
-            parent.StartGame(new []{FirstPlayer, SecondPlayer});
+            var parent = Parent as GameWindow;
+            parent.StartGame(new[] {FirstPlayer, SecondPlayer});
         }
     }
 }
