@@ -34,7 +34,6 @@ namespace Game.Controllers
                     fighter.Move(10, settings.Resolution.X);
                     */
                 fighter.Move((int) fighter.State * 10, gameState.GetOpponent(fighter.Number));
-                settings.GetImageController(fighter.Number).UpdateFighterImage();
                 fighter.ToTheGround();
                 fighter.RegenerateMana();
                 if (fighter.HealthPoints <= 0)

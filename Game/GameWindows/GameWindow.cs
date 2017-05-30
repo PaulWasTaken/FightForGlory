@@ -116,6 +116,7 @@ namespace Game.GameWindows
 
             foreach (var fighter in gameState.Fighters)
             {
+                settings.GetImageController(fighter.Number).UpdateFighterImage();
                 e.Graphics.DrawImage(settings.GetImageController(fighter.Number).CurrentImage, fighter.Body.Location);
                 DrawBars(fighter, e);
             }
