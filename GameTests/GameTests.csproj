@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <Choose>
@@ -52,6 +53,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Automat_should.cs" />
+    <Compile Include="CombatController_should.cs" />
+    <Compile Include="GameObject_should.cs" />
+    <Compile Include="Movement_should.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
