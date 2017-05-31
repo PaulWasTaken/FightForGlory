@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using FluentAssertions;
 using Game.BaseStructures.Enums;
 using Game.Commands;
 using Game.Controllers;
 using Game.GameObjects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace GameTests
 {
-    [TestClass]
+    [TestFixture]
     public class Tests
     {
-        [TestMethod]
+        [Test]
         public void TestIfShouldPerform()
         {
             var automat = new ComboController(new Dictionary<ComboName, Func<GameObject>> { {ComboName.HolyLight,
@@ -20,12 +21,15 @@ namespace GameTests
             automat.AddCombo(new[] { Command.MoveLeft, Command.MoveRight, Command.NormalAttack }, ComboName.HolyLight);
             automat.UpdateState(Command.MoveLeft);
             automat.UpdateState(Command.MoveRight);
-            Assert.AreEqual(automat.ComboCompleted, false);
+
+            automat.ComboCompleted.Should().Be(false);
+
             automat.UpdateState(Command.NormalAttack);
-            Assert.AreEqual(automat.ComboCompleted, true);
+
+            automat.ComboCompleted.Should().Be(true);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIfShouldNotPerform()
         {
             var automat = new ComboController(new Dictionary<ComboName, Func<GameObject>> { {ComboName.HolyLight,
@@ -44,7 +48,7 @@ namespace GameTests
             Assert.AreEqual(automat.ComboCompleted, false);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIfRightObjReturned()
         {
             var automat = new ComboController(new Dictionary<ComboName, Func<GameObject>> { {ComboName.HolyLight,
@@ -57,7 +61,7 @@ namespace GameTests
             Assert.AreEqual(typeof(Wisp), res.GetType());
         }
 
-        [TestMethod]
+        [Test]
         public void TestIfRightObjReturned2()
         {
             var automat = new ComboController(new Dictionary<ComboName, Func<GameObject>> {
