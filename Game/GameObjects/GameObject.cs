@@ -35,6 +35,11 @@ namespace Game.GameObjects
             return Speed > 0;
         }
 
+        public float GetSpeed()
+        {
+            return Speed;
+        }
+
         public abstract bool ShouldBeRemoved(Fighter opponent);
 
         protected abstract bool HasReached(Fighter opponent);
