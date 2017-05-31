@@ -28,6 +28,7 @@ namespace Game.Factories
         private static Fighter CreateFighter(Type type, PointF location)
         {
             var constuctor = type.GetConstructor(new[] {typeof(string), typeof(PointF)});
+            // ReSharper disable once PossibleNullReferenceException
             var fighter = (Fighter) constuctor.Invoke(new object[] {type.Name, location});
             return fighter;
         }

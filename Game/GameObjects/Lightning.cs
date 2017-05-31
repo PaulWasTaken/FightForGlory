@@ -10,7 +10,7 @@ namespace Game.GameObjects
         public override int Damage => 40;
 
         public Lightning(RectangleF body, bool lookRight, PlayerNumber source)
-            : base(body, lookRight, GameSettings.Resolution.X / 10f, source,
+            : base(body, lookRight, GameSettings.Resolution.X / 18f, source,
                 GameSettings.Resolution.X / 16f, GameSettings.Resolution.Y / 16f)
         {
         }
