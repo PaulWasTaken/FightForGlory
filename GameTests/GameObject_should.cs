@@ -1,17 +1,18 @@
 ﻿using System.Drawing;
+using FluentAssertions;
 using Game.BaseStructures.Enums;
 using Game.Controllers;
 using Game.Fighters;
 using Game.GameInformation;
 using Game.GameObjects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace GameTests
 {
-    [TestClass]
+    [TestFixture]
     public class GameObject_should
     {
-        [TestMethod]
+        [Test]
         public void TestMovementBehaviour()
         {
             var settings = new GameSettings(400, 200);
@@ -23,10 +24,13 @@ namespace GameTests
             var prevPos = spear.Size.X;
             gameState.GameObjects.Add(spear);
             gc.UpdateGameState();
-            Assert.AreEqual(spear.Size.X, prevPos + spear.GetSpeed());
+
+            spear.Size.X.Should().Be(prevPos + spear.GetSpeed());
+
             for (var i = 0; i < 1000; i++)
                 gc.UpdateGameState();
-            Assert.AreEqual(gameState.GameObjects.Contains(spear), false);
+
+            gameState.GameObjects.Should().NotContain(spear);
         }
     }
 }

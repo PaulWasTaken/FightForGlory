@@ -1,14 +1,15 @@
 ﻿using System.Drawing;
+using FluentAssertions;
 using Game.Fighters;
 using Game.GameInformation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace GameTests
 {
-    [TestClass]
+    [TestFixture]
     public class Movement_should
     {
-        [TestMethod]
+        [Test]
         public void TestWhenPossible()
         {
             const int width = 2000;
@@ -17,16 +18,18 @@ namespace GameTests
             var second = new Skeleton("skeleton", new PointF(1000, 1000));
             const int delta = 10;
             float prevPos;
+
             for (; first.Body.X + first.Body.Width + delta < second.Body.X ;)
             {
                 prevPos = first.Body.X;
                 first.Move(delta, second);
-                Assert.AreEqual(prevPos + delta, first.Body.X);
+
+                first.Body.X.Should().Be(prevPos + delta);
             }
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestWhenOpponentInFrontOf()
         {
             const int width = 2000;
@@ -41,11 +44,12 @@ namespace GameTests
             {
                 prevPos = first.Body.X;
                 first.Move(delta, second);
-                Assert.AreEqual(prevPos, first.Body.X);
+
+                first.Body.X.Should().Be(prevPos);
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestWithScreenBorders()
         {
             const int width = 2000;
@@ -58,13 +62,14 @@ namespace GameTests
             first.Move((int)-first.Body.X + 1, second);
             prevPos = first.Body.X;
             first.Move(-delta, second);
-            Assert.AreEqual(prevPos, first.Body.X);
+
+            first.Body.X.Should().Be(prevPos);
 
             second.Move((int)(width - second.Body.X - second.Body.Width - 1), first);
             prevPos = second.Body.X;
             second.Move(delta, first);
-            Assert.AreEqual(prevPos, second.Body.X);
 
+            second.Body.X.Should().Be(prevPos);
         }
     }
 }

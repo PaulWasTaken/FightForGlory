@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace GameTests
 {
     [TestFixture]
-    public class Tests
+    public class Automat_should
     {
         [Test]
         public void TestIfShouldPerform()
@@ -22,11 +22,11 @@ namespace GameTests
             automat.UpdateState(Command.MoveLeft);
             automat.UpdateState(Command.MoveRight);
 
-            automat.ComboCompleted.Should().Be(false);
+            automat.ComboCompleted.Should().BeFalse();
 
             automat.UpdateState(Command.NormalAttack);
 
-            automat.ComboCompleted.Should().Be(true);
+            automat.ComboCompleted.Should().BeTrue();
         }
 
         [Test]
@@ -35,17 +35,28 @@ namespace GameTests
             var automat = new ComboController(new Dictionary<ComboName, Func<GameObject>> { {ComboName.HolyLight,
                     () => new Wisp(new RectangleF(), false, PlayerNumber.FirstPlayer)} });
             automat.AddCombo(new[] { Command.MoveLeft, Command.MoveRight, Command.NormalAttack }, ComboName.HolyLight);
-            Assert.AreEqual(automat.ComboCompleted, false);
+
+            automat.ComboCompleted.Should().BeFalse();
+
             automat.UpdateState(Command.MoveLeft);
-            Assert.AreEqual(automat.ComboCompleted, false);
+
+            automat.ComboCompleted.Should().BeFalse();
+
             automat.UpdateState(Command.StrongAttack);
-            Assert.AreEqual(automat.ComboCompleted, false);
+
+            automat.ComboCompleted.Should().BeFalse();
+
             automat.UpdateState(Command.MoveLeft);
-            Assert.AreEqual(automat.ComboCompleted, false);
+
+            automat.ComboCompleted.Should().BeFalse();
+
             automat.UpdateState(Command.MoveRight);
-            Assert.AreEqual(automat.ComboCompleted, false);
+
+            automat.ComboCompleted.Should().BeFalse();
+
             automat.UpdateState(Command.Block);
-            Assert.AreEqual(automat.ComboCompleted, false);
+
+            automat.ComboCompleted.Should().BeFalse();
         }
 
         [Test]
@@ -58,7 +69,7 @@ namespace GameTests
             automat.UpdateState(Command.MoveRight);
             automat.UpdateState(Command.NormalAttack);
             var res = automat.PerformCombo();
-            Assert.AreEqual(typeof(Wisp), res.GetType());
+            res.GetType().Should().Be(typeof(Wisp));
         }
 
         [Test]
@@ -74,16 +85,18 @@ namespace GameTests
             automat.UpdateState(Command.MoveRight);
             automat.UpdateState(Command.NormalAttack);
             var res = automat.PerformCombo();
-            Assert.AreEqual(typeof(Wisp), res.GetType());
+            res.GetType().Should().Be(typeof(Wisp));
 
             automat.UpdateState(Command.StrongAttack);
-            Assert.AreEqual(automat.ComboCompleted, false);
+
+            automat.ComboCompleted.Should().BeFalse();
 
             automat.UpdateState(Command.MoveLeft);
             automat.UpdateState(Command.MoveRight);
             automat.UpdateState(Command.StrongAttack);
             res = automat.PerformCombo();
-            Assert.AreEqual(typeof(Spear), res.GetType());
+
+            res.GetType().Should().Be(typeof(Spear));
         }
     }
 }

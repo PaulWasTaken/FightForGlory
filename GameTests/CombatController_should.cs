@@ -1,15 +1,16 @@
 ﻿using System.Drawing;
+using FluentAssertions;
 using Game.Controllers;
 using Game.Fighters;
 using Game.GameInformation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace GameTests
 {
-    [TestClass]
+    [TestFixture]
     public class CombatController_should
     {
-        [TestMethod]
+        [Test]
         public void TestNoOneInRange()
         {
             var settings = new GameSettings(600, 600);
@@ -21,25 +22,27 @@ namespace GameTests
             first.Attack();
             second.Attack();
             cc.CheckForCombat(gameState);
-            Assert.AreEqual(second.HealthPoints, 100);
-            Assert.AreEqual(first.HealthPoints, 100);
+
+            second.HealthPoints.Should().Be(100);
+            first.HealthPoints.Should().Be(100);
 
             first.Move(50, second);
             second.Move(-50, first);
             first.Attack();
             second.Attack();
             cc.CheckForCombat(gameState);
-            Assert.AreEqual(second.HealthPoints, 100);
-            Assert.AreEqual(first.HealthPoints, 100);
+
+            second.HealthPoints.Should().Be(100);
+            first.HealthPoints.Should().Be(100);
         }
 
-        [TestMethod]
+        [Test]
         public void TestOneInRange()
         {
             //You need to change range setter.
         }
 
-        [TestMethod]
+        [Test]
         public void TestBothInRange()
         {
             var settings = new GameSettings(600, 600);
@@ -51,17 +54,19 @@ namespace GameTests
             first.Attack();
             second.Attack();
             cc.CheckForCombat(gameState);
-            Assert.AreEqual(second.HealthPoints, 100 - first.AttackDamage);
-            Assert.AreEqual(first.HealthPoints, 100 - second.AttackDamage);
+
+            second.HealthPoints.Should().Be(100 - first.AttackDamage);
+            first.HealthPoints.Should().Be(100 - second.AttackDamage);
 
             first.Move((int)-(second.AttackRange - (second.Body.X - first.Body.X) - 1), second);
 
             second.Attack();
             cc.CheckForCombat(gameState);
-            Assert.AreEqual(first.HealthPoints, 100 - second.AttackDamage);
+
+            first.HealthPoints.Should().Be(100 - second.AttackDamage);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCameOutOfRange()
         {
             var settings = new GameSettings(600, 600);
@@ -73,19 +78,22 @@ namespace GameTests
             first.Attack();
             second.Attack();
             cc.CheckForCombat(gameState);
-            Assert.AreEqual(second.HealthPoints, 100 - first.AttackDamage);
-            Assert.AreEqual(first.HealthPoints, 100 - second.AttackDamage);
+
+            second.HealthPoints.Should().Be(100 - first.AttackDamage);
+            first.HealthPoints.Should().Be(100 - second.AttackDamage);
 
             first.Move((int)-(second.AttackRange - (second.Body.X - first.Body.X) - 1), second);
 
             second.Attack();
             cc.CheckForCombat(gameState);
-            Assert.AreEqual(first.HealthPoints, 100 - second.AttackDamage);
+
+            first.HealthPoints.Should().Be(100 - second.AttackDamage);
 
             second.Move((int)-(second.Body.X - first.Body.X - first.AttackRange + 1), first);
             first.Attack();
             cc.CheckForCombat(gameState);
-            Assert.AreEqual(second.HealthPoints, 100 - first.AttackDamage);
+
+            second.HealthPoints.Should().Be(100 - first.AttackDamage);
         }
     }
 }
