@@ -24,18 +24,34 @@ namespace Game.Controllers
         public void AddCombo(Command[] combo, ComboName name)
         {
             var current = defaultState;
-            for (var i = 0; i < combo.Length - 1; i++)
+            var position = 0;
+            SetBaseValues(combo, ref current, ref position);
+            for (; position < combo.Length - 1; position++)
             {
-                current.NextStates.Add(new AutomatNode<Command>(combo[i], ComboName.NotACombo));
+                current.NextStates.Add(new AutomatNode<Command>(combo[position], ComboName.NotACombo));
                 current = current.NextStates.Last();
             }
             current.NextStates.Add(new AutomatNode<Command>(combo.Last(), name));
         }
 
+        private void SetBaseValues(Command[] combo, ref AutomatNode<Command> current, ref int start)
+        {
+            foreach (var command in combo)
+            {
+                var next = current.NextStates.FirstOrDefault(node => node.Value.Equals(command));
+                if (next == null) return;
+                current = next;
+                start++;
+            }
+        }
+
         public void UpdateState(Command move)
         {
             var nextState = CurrentState.NextStates.FirstOrDefault(n => n.Value.Equals(move));
-            CurrentState = nextState ?? defaultState;
+            if (nextState == null)
+                CurrentState = defaultState.NextStates.FirstOrDefault(n => n.Value.Equals(move)) ?? defaultState;
+            else
+                CurrentState = nextState;
         }
 
         public GameObject PerformCombo()

@@ -98,5 +98,21 @@ namespace GameTests
 
             res.GetType().Should().Be(typeof(Spear));
         }
+
+        [Test]
+        public void TestStatesChanging()
+        {
+            var automat = new ComboController(new Dictionary<ComboName, Func<GameObject>>
+            {
+                {ComboName.HolyLight, () => new Wisp(new RectangleF(), false, PlayerNumber.FirstPlayer)}
+            });
+
+            automat.AddCombo(new[] {Command.MoveLeft, Command.MoveRight, Command.NormalAttack}, ComboName.HolyLight);
+            automat.UpdateState(Command.MoveLeft);
+            automat.UpdateState(Command.MoveRight);
+            automat.UpdateState(Command.MoveLeft);
+
+            automat.CurrentState.Value.ShouldBeEquivalentTo(Command.MoveLeft);
+        }
     }
 }
